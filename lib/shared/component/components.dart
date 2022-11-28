@@ -303,7 +303,7 @@ Widget defaultFormFeild3({
   context
 
 })=>TextFormField(
-  showCursor: false,
+  showCursor: true,
   validator: (value){
     if(value!.isEmpty)
     {return validatorText;}
