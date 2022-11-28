@@ -72,8 +72,6 @@ class ReceiptScreen extends StatelessWidget {
                       separatorBuilder:(context,index)=>SizedBox(height:8,) ,
                     )
 
-
-
                   ],
                 ),
               ),
@@ -84,7 +82,11 @@ class ReceiptScreen extends StatelessWidget {
 }
 
 Widget buildItem(context)=>InkWell(
-  onTap: (){},
+  onTap: (){
+    navigateTo(context,
+
+        CheckOutScreen());
+  },
   child:   Card(
     color: Colors.grey[100],
 
