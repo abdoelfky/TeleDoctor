@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "134827706672",
+    "project_id": "teledoctor-94083",
+    "storage_bucket": "teledoctor-94083.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134827706672:android:1d97f53d516311ee0920f5",
+        "android_client_info": {
+          "package_name": "com.example.teledoctor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134827706672-ivpsf906jaa9o1fdo9ar55j0f8ahv632.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATfz7qdcz4-co1ABuqKZQt97dk-mBg2k0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134827706672-ivpsf906jaa9o1fdo9ar55j0f8ahv632.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
