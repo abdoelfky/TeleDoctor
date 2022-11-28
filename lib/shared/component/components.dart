@@ -56,32 +56,82 @@ Widget defaultButton({
     );
 
 Widget defaultButton2({
-  double width = 200,
+  double width =double.infinity,
   double height = 50.0,
   Color? color,
   required String string,
   required Function function,
 }) =>
     Container(
-      width: width,
       height: height,
+      width: width,
       decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(50)
+          color: primaryColor,
+          borderRadius: BorderRadius.circular(10)
       ),
       child: Center(
         child: MaterialButton(
-            minWidth: width,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(string.toUpperCase(),
-                  style: TextStyle(fontSize: 18.2, fontWeight: FontWeight.bold,color: Colors.white)),
+                  style: TextStyle(fontSize: 18.2,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
             ),
             onPressed: function()),
       ),
     );
 
+Widget defaultButton3({
+  double width =double.infinity,
+  double height = 50.0,
+  Color? color,
+  required String string,
+  required Function function,
+}) =>Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.red)
+      ),
+      child: Center(
+        child: MaterialButton(
+            child: Text(string.toUpperCase(),
+                style: TextStyle(fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.red)),
+            onPressed: function()),
+      ),
+    );
 
+Widget defaultButton4({
+  double width =double.infinity,
+  double height = 50.0,
+  Color? color,
+  required String string,
+  required Function function,
+}) =>
+    Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+          color: primaryColor,
+          borderRadius: BorderRadius.circular(10)
+      ),
+      child: Center(
+        child: MaterialButton(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(string.toUpperCase(),
+                  style: TextStyle(fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white)),
+            ),
+            onPressed: function()),
+      ),
+    );
 
 
 
@@ -94,7 +144,7 @@ Widget defaultFormFeild({
   required var inputType,
   IconButton? suffixIcon ,
   Function? suffixPressed,
-  required Icon prefixIcon ,
+  Icon? prefixIcon ,
   required String labelText,
   bool isObsecured=false,
   context
@@ -133,6 +183,58 @@ Widget defaultFormFeild({
   ),
 );
 
+
+
+Widget defaultFormFeild1({
+  var cursorColor=Colors.black,
+  var color=Colors.black,
+  var borderColor=Colors.black,
+  required String validatorText,
+  required var controller,
+  required var inputType,
+  IconButton? suffixIcon ,
+  Function? suffixPressed,
+  Icon? prefixIcon ,
+  required String labelText,
+  bool isObsecured=false,
+  context
+
+})=>TextFormField(
+  validator: (value){
+    if(value!.isEmpty)
+    {return validatorText;}
+    return null;
+  },
+  controller: controller,
+  keyboardType: inputType,
+  obscureText: isObsecured,
+  decoration: InputDecoration(
+    labelStyle: GoogleFonts.laila(
+      fontSize: 22,
+      color:primaryColor,
+      fontStyle: FontStyle.italic,
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12.0),
+      borderSide: BorderSide(
+        color:primaryColor,
+        width:2,
+      ),
+    ),
+    focusedBorder:OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12.0),
+      borderSide: BorderSide(
+        color:primaryColor,
+        width:3,
+      ),
+    ),
+    labelText: labelText,
+    prefixIcon: prefixIcon,
+    suffixIcon: suffixIcon,
+
+
+  ),
+);
 
 
 Widget defaultFormFeild2({

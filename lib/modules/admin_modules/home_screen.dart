@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
+import 'package:teledoctor/modules/admin_modules/add_new_account_screen.dart';
+import 'package:teledoctor/modules/admin_modules/add_new_room_screen.dart';
+import 'package:teledoctor/modules/admin_modules/empty_rooms_screen.dart';
+import 'package:teledoctor/modules/admin_modules/full_rooms_screen.dart';
+import 'package:teledoctor/shared/component/components.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
+
+import 'edit_account_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,6 +21,7 @@ class HomeScreen extends StatelessWidget {
       listener:(context,state){} ,
       builder:(context,state)
       {
+        var cubit=AppCubit.get(context);
         Size size=MediaQuery.of(context).size;
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -36,9 +44,9 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children:
                   [
-                    HomeScreenItem(size,'add new account','Add New Account'),
+                    HomeScreenItem(size,'add new account','Add New Account',context,AddNewAccountScreen()),
                     const SizedBox(width:15,),
-                    HomeScreenItem(size,'edit account','Edit Account'),
+                    HomeScreenItem(size,'edit account','Edit Account',context,EditAccountScreen()),
 
 
 
@@ -57,16 +65,16 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children:
                   [
-                    HomeScreenItem(size,'add new room','Add New Room'),
+                    HomeScreenItem(size,'add new room','Add New Room',context,AddNewRoomsScreen()),
                     const SizedBox(width:15,),
-                    HomeScreenItem(size,'full rooms','Full Rooms'),
+                    HomeScreenItem(size,'full rooms','Full Rooms',context,FullRoomsScreen()),
 
 
 
                   ],
                 ),
                 const SizedBox(height: 10,),
-                HomeScreenItem(size,'empty rooms','Empty Rooms'),
+                HomeScreenItem(size,'empty rooms','Empty Rooms',context,EmptyRoomsScreen()),
 
 
 
@@ -82,8 +90,11 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-Widget HomeScreenItem(size,logoName,text)=>InkWell(
-  onTap: (){},
+Widget HomeScreenItem(size,logoName,text,context,screen)=>InkWell(
+  onTap: ()
+  {
+    navigateTo(context,screen);
+  },
   child:   Container(
     width:size.width*.4 ,
     height:size.height*.2 ,

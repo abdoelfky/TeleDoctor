@@ -44,7 +44,7 @@ dependencies:
   shared_preferences:
   salomon_bottom_bar:
   iconsax:
-
+  dropdown_button2:
 
   #FIREBASE
   firebase_core:

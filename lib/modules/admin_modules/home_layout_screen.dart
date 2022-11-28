@@ -21,7 +21,7 @@ class HomeLayoutScreen extends StatelessWidget {
         {
           var cubit=AppCubit.get(context);
           return Scaffold(
-            body:cubit.socialScreens[cubit.currentIndex] ,
+            body:cubit.layOutScreens[cubit.currentIndex] ,
             bottomNavigationBar: SalomonBottomBar(
               currentIndex: cubit.currentIndex,
               onTap:(index)=>cubit.changeBottomNav(index),

@@ -31,7 +31,6 @@ class ProfileScreen extends StatelessWidget {
             child: Container(
               height: size.height,
               width: size.width,
-              color: Colors.white,
               child: Stack(
                 children:
                 [
@@ -53,9 +52,9 @@ class ProfileScreen extends StatelessWidget {
                                   Image.asset('images/profile.png', fit: BoxFit.cover),
                                   ClipRRect( // Clip it cleanly.
                                     child: BackdropFilter(
-                                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                      filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                                       child: Container(
-                                        color:blue4.withOpacity(0.3),
+                                        color:blue5.withOpacity(0.5),
                                         alignment: Alignment.center,
                                       ),
                                     ),
