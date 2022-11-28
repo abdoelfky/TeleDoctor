@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teledoctor/modules/admin_modules/add_new_account_screen.dart';
-import '../modules/admin_modules/add_user_screen.dart';
+import '../modules/admin_modules/add_patient_screen.dart';
 import '../modules/admin_modules/home_screen.dart';
 import '../modules/admin_modules/profile_screen.dart';
 import '../modules/admin_modules/receipt_screen.dart';
@@ -210,7 +209,7 @@ class AppCubit extends Cubit<AppState> {
   [
     HomeScreen(),
     ReceiptScreen(),
-    AddUserScreen(),
+    AddPatientScreen(),
     ProfileScreen(),
 
   ];
@@ -224,6 +223,7 @@ class AppCubit extends Cubit<AppState> {
 
 
   }
+
 
 
 

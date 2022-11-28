@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-class AddUserScreen extends StatelessWidget {
-  const AddUserScreen({Key? key}) : super(key: key);
+class AddPatientScreen extends StatelessWidget {
+  const AddPatientScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

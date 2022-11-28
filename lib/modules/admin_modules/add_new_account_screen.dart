@@ -152,7 +152,7 @@ class AddNewAccountScreen extends StatelessWidget {
                           backgroundColor: Colors.white,
                           child: CircleAvatar(
                             radius: 73.0,
-                            backgroundImage:AssetImage('images/profile.jpeg'),
+                            backgroundImage:AssetImage('images/admin.png'),
                           ),
                         ),
                       ),
