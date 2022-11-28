@@ -11,6 +11,7 @@ import 'package:teledoctor/shared/component/components.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 
 import 'edit_account_screen.dart';
+import 'edit_acount_1_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                   [
                     HomeScreenItem(size,'add new account','Add New Account',context,AddNewAccountScreen()),
                     const SizedBox(width:15,),
-                    HomeScreenItem(size,'edit account','Edit Account',context,EditAccountScreen()),
+                    HomeScreenItem(size,'edit account','Edit Account',context,EditScreen1()),
 
 
 

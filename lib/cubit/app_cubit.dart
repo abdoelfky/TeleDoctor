@@ -209,7 +209,7 @@ class AppCubit extends Cubit<AppState> {
   [
     HomeScreen(),
     ReceiptScreen(),
-    AddPatientScreen(),
+    AddNewPatientScreen(),
     ProfileScreen(),
 
   ];

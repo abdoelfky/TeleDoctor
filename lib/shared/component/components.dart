@@ -289,6 +289,57 @@ Widget defaultFormFeild2({
   ),
 );
 
+Widget defaultFormFeild3({
+  var color=Colors.black,
+  var borderColor=Colors.grey,
+  String? validatorText,
+  required var controller,
+  var inputType,
+  IconButton? suffixIcon ,
+  Function? suffixPressed,
+  Icon? prefixIcon ,
+  required String labelText,
+  bool isObsecured=false,
+  context
+
+})=>TextFormField(
+  showCursor: false,
+  validator: (value){
+    if(value!.isEmpty)
+    {return validatorText;}
+    return null;
+  },
+  controller: controller,
+  keyboardType: inputType,
+  obscureText: isObsecured,
+  decoration: InputDecoration(
+    labelStyle: GoogleFonts.laila(
+      fontSize: 22,
+      color:Colors.grey[700],
+      fontStyle: FontStyle.italic,
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12.0),
+      borderSide: BorderSide(
+        color:Colors.grey.shade400,
+        width:2,
+      ),
+    ),
+    focusedBorder:OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12.0),
+      borderSide: BorderSide(
+        color:Colors.grey.shade400,
+        width:3,
+      ),
+    ),
+    labelText: labelText,
+    prefixIcon: prefixIcon,
+    suffixIcon: suffixIcon,
+
+
+  ),
+);
+
 
 Widget myDivider() => Padding(
   padding: const EdgeInsets.symmetric(vertical: 1.0,horizontal: 15),
