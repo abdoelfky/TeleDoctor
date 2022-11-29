@@ -157,7 +157,7 @@ class FullRoomsScreen extends StatelessWidget {
                           itemCount:14 ,
                           itemBuilder:(context,index)
                           {
-                            return roomItem(size,[1,2,3,4,5,6,7,8,9,10,11,12,13,14],['1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3'],context,index);
+                            return roomItem(size,[1,2,3,4,5,6,7,8,9,10,11,12,13,14],['3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3'],context,index);
                           },
                           gridDelegate:SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 150,
