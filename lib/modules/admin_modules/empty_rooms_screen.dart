@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
+import 'package:teledoctor/modules/admin_modules/room_information_screen.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
+
+import '../../shared/component/components.dart';
 
 class EmptyRoomsScreen extends StatelessWidget {
 
@@ -177,28 +180,58 @@ class EmptyRoomsScreen extends StatelessWidget {
 }
 
 
-Widget roomItem(size,roomNumber,bedsNumber,context,index)=>Container(
-  decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(12),
-      border: Border.all(
-        width: 2,
-        color:blue5,
-      )
-  ),
-  child:Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children:
-    [
-      Text('Room #${roomNumber[index]}',style: TextStyle(fontSize: 16,
-      fontWeight:FontWeight.w700,
-        color: primaryColor
-  )),
-      SizedBox(height:2,),
-      Text('${bedsNumber[index]} Beds',style: TextStyle(fontSize: 15,
-          fontWeight:FontWeight.w500
-      )),
+Widget roomItem(size,roomNumber,bedsNumber,context,index)=>InkWell(
+  onTap: (){
+    navigateTo(context, RoomInformation());
+
+  },
+  child:   Container(
+
+    decoration: BoxDecoration(
+
+        borderRadius: BorderRadius.circular(12),
+
+        border: Border.all(
+
+          width: 2,
+
+          color:blue5,
+
+        )
+
+    ),
+
+    child:Column(
+
+      mainAxisAlignment: MainAxisAlignment.center,
+
+      children:
+
+      [
+
+        Text('Room #${roomNumber[index]}',style: TextStyle(fontSize: 16,
+
+        fontWeight:FontWeight.w700,
+
+          color: primaryColor
+
+    )),
+
+        SizedBox(height:2,),
+
+        Text('${bedsNumber[index]} Beds',style: TextStyle(fontSize: 15,
+
+            fontWeight:FontWeight.w500
+
+        )),
 
 
-    ],
+
+
+
+      ],
+
+    ),
+
   ),
 );

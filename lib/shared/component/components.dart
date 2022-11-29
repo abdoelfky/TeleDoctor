@@ -328,7 +328,7 @@ Widget defaultFormFeild3({
     focusedBorder:OutlineInputBorder(
       borderRadius: BorderRadius.circular(12.0),
       borderSide: BorderSide(
-        color:Colors.grey.shade400,
+        color:primaryColor,
         width:3,
       ),
     ),

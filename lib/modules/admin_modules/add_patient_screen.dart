@@ -53,15 +53,22 @@ class AddNewPatientScreen extends StatelessWidget {
                   //patient name
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
-                    child: defaultFormFeild3(
-                        controller: patientName, labelText: 'Patient Name'),
+                    child: defaultFormFeild1(
+                      inputType: TextInputType.text,
+                      validatorText: 'Patient Name must not be empty',
+                      controller: patientName,
+                      labelText: 'Patient Name',
+
+                    ),
                   ),
 
                   //patient Age
                   Padding(
                     padding:
                     const EdgeInsets.only(left: 20, right: 20, top: 20),
-                    child: defaultFormFeild3(
+                    child: defaultFormFeild1(
+                        inputType: TextInputType.text,
+                        validatorText: 'Patient Age must not be empty',
                         controller: patientAge,
                         labelText: 'Patient Age'),
                   ),
@@ -70,7 +77,9 @@ class AddNewPatientScreen extends StatelessWidget {
                   Padding(
                     padding:
                     const EdgeInsets.only(left: 20, right: 20, top: 20),
-                    child: defaultFormFeild3(
+                    child: defaultFormFeild1(
+                        inputType: TextInputType.number,
+                        validatorText: 'Room No must not be empty',
                         controller: roomNo, labelText: 'Select Room No'),
                   ),
 
@@ -78,7 +87,9 @@ class AddNewPatientScreen extends StatelessWidget {
                   Padding(
                     padding:
                     const EdgeInsets.only(left: 20, right: 20, top: 20),
-                    child: defaultFormFeild3(
+                    child: defaultFormFeild1(
+                        inputType: TextInputType.text,
+                        validatorText: 'Doctor must not be empty',
                         controller: selectDoctor,
                         labelText: 'Select Doctor'),
                   ),
@@ -87,7 +98,9 @@ class AddNewPatientScreen extends StatelessWidget {
                   Padding(
                     padding:
                     const EdgeInsets.only(left: 20, right: 20, top: 20),
-                    child: defaultFormFeild3(
+                    child: defaultFormFeild1(
+                        inputType: TextInputType.text,
+                        validatorText: 'Nurse must not be empty',
                         controller: selectNurse,
                         labelText: 'Select Nurse'),
                   ),
@@ -96,7 +109,9 @@ class AddNewPatientScreen extends StatelessWidget {
                   Padding(
                     padding:
                     const EdgeInsets.only(left: 20, right: 20, top: 20),
-                    child: defaultFormFeild3(
+                    child: defaultFormFeild1(
+                        inputType: TextInputType.text,
+                        validatorText: 'Gender must not be empty',
                         controller: selectGender,
                         labelText: 'Select Gender'),
                   ),
@@ -105,7 +120,9 @@ class AddNewPatientScreen extends StatelessWidget {
                   Padding(
                     padding:
                     const EdgeInsets.only(left: 20, right: 20, top: 20),
-                    child: defaultFormFeild3(
+                    child: defaultFormFeild1(
+                        inputType: TextInputType.number,
+                        validatorText: 'Patient ID must not be empty',
                         controller: patientId,
                         labelText: 'Patient ID'),
                   ),
