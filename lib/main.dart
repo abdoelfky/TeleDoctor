@@ -23,7 +23,7 @@ Future<void> main() async {
     if (CacheHelper.getData(key: 'uId')!=null) {
       print(uId);
       uId = CacheHelper.getData(key: 'uId');
-      widget = SplashScreen();
+      widget = const SplashScreen();
     } else {
       widget = LoginScreen();
     }    }
@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MultiBlocProvider(
 
       providers: [
@@ -52,7 +53,9 @@ class MyApp extends StatelessWidget {
         )
 
       ],
+
       child:MaterialApp(
+
             theme: ThemeData(
             textTheme: GoogleFonts.lailaTextTheme(
               Theme.of(context).textTheme,
