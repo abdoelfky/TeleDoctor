@@ -8,6 +8,7 @@ import '../modules/admin_modules/profile_screen.dart';
 import '../modules/admin_modules/receipt_screen.dart';
 import '../modules/doctor_nurse_modules/doctor_nurse_notification_screen.dart';
 import '../modules/doctor_nurse_modules/doctor_nurse_profile_screen.dart';
+import '../modules/doctor_nurse_modules/search_for_petient_screen.dart';
 import '../modules/start_modules/login/login_screen.dart';
 import '../shared/component/components.dart';
 import '../shared/local/shared_preference.dart';
@@ -220,7 +221,7 @@ class AppCubit extends Cubit<AppState> {
   List<Widget> doctorAndNurseLayOutScreens =
   [
     DoctorAndNurseHomeScreen(),
-    ReceiptScreen(),
+    SearchForPatientScreen(),
     DoctorAndNurseNotificationScreen(),
     DoctorAndNurseProfileScreen(),
 
