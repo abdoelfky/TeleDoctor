@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
 import 'package:teledoctor/modules/doctor_nurse_modules/patient_details_1_screen.dart';
+import 'package:teledoctor/modules/doctor_nurse_modules/patient_details_2_screen.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 
 import '../../shared/component/components.dart';
@@ -86,7 +87,7 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
 }
 Widget buildItem(context)=>InkWell(
   onTap: (){
-    navigateTo(context,PatientDetaiels1Screen());
+    navigateTo(context,PatientDetailsScreen1());
 
   },
   child:   Card(

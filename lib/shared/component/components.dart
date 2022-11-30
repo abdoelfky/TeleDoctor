@@ -147,9 +147,11 @@ Widget defaultFormFeild({
   Icon? prefixIcon ,
   required String labelText,
   bool isObsecured=false,
-  context
-  
+  context,
+  int ?maxLines,
+
 })=>TextFormField(
+  maxLines: maxLines,
   cursorColor: cursorColor,
   validator: (value){
     if(value!.isEmpty)
