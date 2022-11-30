@@ -411,7 +411,10 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                         right: 8, left: 50),
                                     child: TextButton(
                                       child: Text('Chat with Reem'),
-                                      onPressed: () {},
+                                      onPressed: ()
+                                      {
+
+                                      },
                                     ),
                                   ),
                                 ],
@@ -575,7 +578,6 @@ class PatientDetailsScreen1 extends StatelessWidget {
                           string: 'ADD New Recored',
                           function: () {
                             navigateTo(context, PatientDetailsScreen2());
-
                           })),
 
                   //recored

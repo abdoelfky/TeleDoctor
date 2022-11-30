@@ -57,10 +57,10 @@ Widget defaultButton({
 
 Widget defaultButton2({
   double width =double.infinity,
-  double height = 50.0,
+  double height = 60.0,
   Color? color,
   required String string,
-  required Function function,
+  required Function? function(),
 }) =>
     Container(
       height: height,
@@ -70,7 +70,7 @@ Widget defaultButton2({
           borderRadius: BorderRadius.circular(10)
       ),
       child: Center(
-        child: MaterialButton(
+        child: TextButton(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(string.toUpperCase(),
@@ -78,7 +78,7 @@ Widget defaultButton2({
                       fontWeight: FontWeight.bold,
                       color: Colors.white)),
             ),
-            onPressed: function()),
+            onPressed: function!),
       ),
     );
 
