@@ -345,8 +345,8 @@ Widget myDivider() => Padding(
   padding: const EdgeInsets.symmetric(vertical: 1.0,horizontal: 15),
   child: Container(
     width: double.infinity,
-    height: 0.4,
-    color: Colors.grey,
+    height:3,
+    color: Colors.grey[200],
   ),
 );
 

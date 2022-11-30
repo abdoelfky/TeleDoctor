@@ -33,7 +33,7 @@ class ReceiptScreen extends StatelessWidget {
                         children: [
                           Padding(
                             padding:
-                            EdgeInsets.only(top: 7.0, left: size.width * .24),
+                            EdgeInsets.only(top: 7.0, left: size.width * .2),
                             child: Text(
                               'Check Out',
                               style: TextStyle(
