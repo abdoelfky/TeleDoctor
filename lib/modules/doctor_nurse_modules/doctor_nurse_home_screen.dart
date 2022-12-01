@@ -14,7 +14,10 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit,AppState>(
-        listener:(context,state){},
+        listener:(context,state)
+        {
+
+        },
          builder:(context,state)
          {
            var cubit=AppCubit.get(context);
@@ -32,7 +35,7 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
                    ),),
                    Row(
                      children: [
-                       const Text('Mrs. Rania',style: TextStyle(fontSize: 22,
+                       Text('Mrs. ${userModel!.name}',style: TextStyle(fontSize: 22,
                            fontWeight:FontWeight.w600
                        ),),
                        SizedBox(width: 8,),

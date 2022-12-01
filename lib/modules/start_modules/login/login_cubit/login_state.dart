@@ -29,4 +29,8 @@ class GetAdminsLoadingState extends LoginStates{}
 
 class GetAdminsSuccessState extends LoginStates{}
 
-class GetAdminsErrorState extends LoginStates{}
+class GetAdminsErrorState extends LoginStates
+{
+  final error;
+  GetAdminsErrorState(this.error);
+}

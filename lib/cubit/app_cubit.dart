@@ -73,7 +73,7 @@ class AppCubit extends Cubit<AppState> {
         password: password,
         type: type);
     FirebaseFirestore.instance
-        .collection('users')
+        .collection('admins')
         .doc(uId)
         .set(model.toMap()).then((value)
     {
@@ -90,26 +90,43 @@ class AppCubit extends Cubit<AppState> {
 
 //get user data
 
-  void getUserData() {
+  Future<void> getUserData() async {
 
     emit(GetAdminsLoadingState());
-    FirebaseFirestore.instance.collection('admins').get()
+
+    await FirebaseFirestore.instance.collection('admins').doc(uId).get()
         .then((value) async {
-      value.docs.forEach((element)
-      {
+      isSuper= CacheHelper.getData(key: 'isSuper');
+      isDoctor= CacheHelper.getData(key: 'isDoctor');
+      isAdmin= CacheHelper.getData(key: 'isAdmin');
+      isNurse= CacheHelper.getData(key: 'isNurse');
+      //if user is Admin
+      print(isAdmin);
+      print(isDoctor);
+      print(isNurse);
+      if(isAdmin!){
 
-
-        if(element.data()['uId']==uId){
-
-          adminModel=AdminModel.fromJson(element.data());
+          adminModel=AdminModel.fromJson(value.data()!);
           CacheHelper.saveData(key: 'userType', value:adminModel!.type).then((value)
           {
             userType=value.toString().toUpperCase();
+            print(userType);
           });
 
 
         }
-      });
+      //if user is Doctor or Nurse
+      if(isDoctor!||isNurse!) {
+          userModel = UserModel.fromJson(value.data()!);
+          print(value.data());
+          CacheHelper.saveData(key: 'userType', value: userModel!.type)
+              .then((value) {
+            userType = value.toString().toUpperCase();
+            print(userType);
+
+          });
+
+      }
 
 
         emit(GetAdminsSuccessState());

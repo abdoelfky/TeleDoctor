@@ -108,7 +108,7 @@ class ProfileScreen extends StatelessWidget {
                         //name
                         Padding(
                           padding: const EdgeInsets.all(25.0),
-                          child: Text('Abdo Elfeky',
+                          child: Text('${adminModel!.name}',
                             style: TextStyle(fontSize: 23,
                                 color:primaryColor,
                                 fontWeight: FontWeight.w600),),

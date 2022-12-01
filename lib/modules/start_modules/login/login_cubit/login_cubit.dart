@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
+import '../../../../cubit/app_cubit.dart';
 import '../../../../models/admin_model.dart';
+import '../../../../models/user_model.dart';
 import '../../../../shared/local/shared_preference.dart';
 import 'login_state.dart';
 
@@ -23,9 +25,9 @@ class LoginCubit extends Cubit<LoginStates> {
     emit(ChangeVisibilityState());
   }
 
-  bool? isSuper=false;
 
-  void userLogin({
+
+  Future<void> userLogin({
     required String email,
     required String password,
   }) async {
@@ -43,10 +45,25 @@ class LoginCubit extends Cubit<LoginStates> {
       //check if user is not super admin
       await FirebaseFirestore.instance.collection('admins').doc(value.user!.uid)
           .get().then((value){
-        isSuper=value.data()!.containsValue('super admin');
+
+        CacheHelper.saveData(key: 'isSuper', value:value.data()!.containsValue('super admin'));
+        CacheHelper.saveData(key: 'isAdmin', value:value.data()!.containsValue('ADMIN'));
+        CacheHelper.saveData(key: 'isNurse', value:value.data()!.containsValue('NURSE'));
+        CacheHelper.saveData(key: 'isDoctor', value:value.data()!.containsValue('DOCTOR'));
+        isSuper= CacheHelper.getData(key: 'isSuper');
+        isDoctor= CacheHelper.getData(key: 'isDoctor');
+        isAdmin= CacheHelper.getData(key: 'isAdmin');
+        isNurse= CacheHelper.getData(key: 'isNurse');
+
       })       ;
-      print(isSuper!);
+      // print(isSuper!);
+      // print(isAdmin!);
+      // print(isDoctor!);
+      // print(isNurse!);
       if(!isSuper!) {
+        CacheHelper.saveData(key: 'uId', value:value.user!.uid);
+        await getUserData(value.user!.uid);
+
         emit(LoginSuccessState(uId));
 
       }
@@ -56,7 +73,6 @@ class LoginCubit extends Cubit<LoginStates> {
 
       }
 
-      CacheHelper.saveData(key: 'uId', value:value.user!.uid);
 
 
 
@@ -69,6 +85,54 @@ class LoginCubit extends Cubit<LoginStates> {
     });
   }
 
+
+  Future<void> getUserData(uId) async {
+
+    emit(GetAdminsLoadingState());
+
+    await FirebaseFirestore.instance.collection('admins').doc(uId).get()
+        .then((value) async {
+      isSuper= CacheHelper.getData(key: 'isSuper');
+      isDoctor= CacheHelper.getData(key: 'isDoctor');
+      isAdmin= CacheHelper.getData(key: 'isAdmin');
+      isNurse= CacheHelper.getData(key: 'isNurse');
+      //if user is Admin
+      print(isAdmin);
+      print(isDoctor);
+      print(isNurse);
+      if(isAdmin!){
+
+        adminModel=AdminModel.fromJson(value.data()!);
+        CacheHelper.saveData(key: 'userType', value:adminModel!.type).then((value)
+        {
+          userType=value.toString().toUpperCase();
+          print(userType);
+        });
+
+
+      }
+      //if user is Doctor or Nurse
+      if(isDoctor!||isNurse!) {
+        userModel = UserModel.fromJson(value.data()!);
+        print(value.data());
+        CacheHelper.saveData(key: 'userType', value: userModel!.type)
+            .then((value) {
+          userType = value.toString().toUpperCase();
+          print(userType);
+
+        });
+
+      }
+
+
+      emit(GetAdminsSuccessState());
+
+
+    })
+        .catchError((onError) {
+      emit(GetAdminsErrorState(onError.toString()));
+    });
+  }
 
 
 

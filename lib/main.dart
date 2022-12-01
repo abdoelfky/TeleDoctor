@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
+import 'package:teledoctor/modules/admin_modules/home_layout_screen.dart';
 import 'package:teledoctor/modules/start_modules/onBoarding_screen.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 import 'package:teledoctor/shared/local/shared_preference.dart';
@@ -21,9 +22,10 @@ Future<void> main() async {
   if (await CacheHelper.getData(key: 'onBoarding')!=
       null&&await CacheHelper.getData(key: 'onBoarding')==true) {
     if (CacheHelper.getData(key: 'uId')!=null) {
+      userType=CacheHelper.getData(key: 'userType');
       print(uId);
       uId = CacheHelper.getData(key: 'uId');
-      widget = const SplashScreen();
+      widget =HomeLayoutScreen();
     } else {
       widget = LoginScreen();
     }    }
@@ -44,11 +46,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+
     return MultiBlocProvider(
 
       providers: [
-        BlocProvider(create: (BuildContext context) =>AppCubit()..getUserData() ,
-        ),
+        BlocProvider(create: (BuildContext context) =>AppCubit()..getUserData(),
+
+        )
+        ,
         BlocProvider(create: (BuildContext context) =>LoginCubit(),
         )
 

@@ -21,10 +21,10 @@ class DoctorAndNurseProfileScreen extends StatelessWidget {
         listener:(context,state){} ,
         builder:(context,state)
         {
-          nameController.text='Abdo Elfeky';
-          emailController.text='Abdo@gmail.com';
-          jopController.text='heart Surgeon';
-          categoryController.text='Nurse';
+          nameController.text=userModel!.name!;
+          emailController.text=userModel!.email!;
+          jopController.text=userModel!.jop!;
+          categoryController.text=userModel!.type!;
           Size size=MediaQuery.of(context).size;
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -49,10 +49,10 @@ class DoctorAndNurseProfileScreen extends StatelessWidget {
                               child: Stack(
                                 fit: StackFit.expand,
                                 children: [
-                                  userType=='ADMIN'?
+                                  isAdmin!?
                                   Image.asset('images/profile.png', fit: BoxFit.cover):
 
-                                  Image.asset('images/${userType!.toLowerCase()}.jpg', fit: BoxFit.cover),                                  ClipRRect( // Clip it cleanly.
+                                  Image.asset('images/${userModel!.type.toString().toLowerCase()}.jpg', fit: BoxFit.cover),                                  ClipRRect( // Clip it cleanly.
                                     child: BackdropFilter(
                                       filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                                       child: Container(
@@ -110,7 +110,7 @@ class DoctorAndNurseProfileScreen extends StatelessWidget {
                         //name
                         Padding(
                           padding: const EdgeInsets.all(25.0),
-                          child: Text('Abdo Elfeky',
+                          child: Text('${userModel!.name}',
                             style: TextStyle(fontSize: 23,
                                 color:primaryColor,
                                 fontWeight: FontWeight.w600),),
@@ -119,7 +119,7 @@ class DoctorAndNurseProfileScreen extends StatelessWidget {
                         //admin text
                         Padding(
                           padding: const EdgeInsets.all(60.0),
-                          child: Text('Nurse',
+                          child: Text('${userModel!.type.toString()}',
                             style: TextStyle(fontSize: 20,
                                 color:Colors.grey[600],
                                 fontWeight: FontWeight.w600),),

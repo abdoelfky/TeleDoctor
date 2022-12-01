@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:teledoctor/models/user_model.dart';
 import 'dart:ui';
 
 import '../../models/admin_model.dart';
 
 String uId='';
+bool? isSuper=false;
+bool? isDoctor=false;
+bool? isNurse=false;
+bool? isAdmin=false;
 String? userType;
 AdminModel? adminModel;
+UserModel? userModel;
 
 Color blue1 = const Color(0xff253d79);
 Color primaryColor = const Color(0xff004f9a);

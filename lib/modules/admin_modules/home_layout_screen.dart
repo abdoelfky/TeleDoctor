@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
+import 'package:teledoctor/modules/start_modules/splash_screen.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 
 
@@ -16,12 +17,21 @@ class HomeLayoutScreen extends StatelessWidget {
     Size size=MediaQuery.of(context).size;
 
     return BlocConsumer<AppCubit,AppState>(
-      listener:(context,state){} ,
+      listener:(context,state)
+      {
+
+      }
+      ,
         builder:(context,state)
         {
+
           var cubit=AppCubit.get(context);
-          return Scaffold(
-            body:userType=='DOCTOR'||userType=='NURSE'?cubit.doctorAndNurseLayOutScreens[cubit.currentIndex]:
+
+          return isDoctor!&&userModel!=null||
+              isNurse!&&userModel!=null||isAdmin!&&adminModel!=null?
+          Scaffold(
+            body:isDoctor!||isNurse!?
+            cubit.doctorAndNurseLayOutScreens[cubit.currentIndex]:
             cubit.adminLayOutScreens[cubit.currentIndex],
             bottomNavigationBar: SalomonBottomBar(
               currentIndex: cubit.currentIndex,
@@ -35,7 +45,7 @@ class HomeLayoutScreen extends StatelessWidget {
                     icon: Icon(Iconsax.home_25,size: size.width*.09,),
                   title: Text("Home")),
 
-                userType=='NURSE'||userType=='DOCTOR'?
+                isDoctor!||isNurse!?
                 SalomonBottomBarItem(
                     icon: Icon(Iconsax.receipt_search,size: size.width*.09,),
                     title: Text("Search")):
@@ -44,7 +54,7 @@ class HomeLayoutScreen extends StatelessWidget {
                     title: Text("Receipt"))
 
                 ,
-                userType=='NURSE'||userType=='DOCTOR'?
+                isDoctor!||isNurse!?
                 SalomonBottomBarItem(
                     icon: Icon(Icons.notifications_active,size: size.width*.09,),
                     title: Text("Notification")):
@@ -61,7 +71,7 @@ class HomeLayoutScreen extends StatelessWidget {
               ],
 
             )
-          );
+          ):SplashScreen();
         }
     );
   }
