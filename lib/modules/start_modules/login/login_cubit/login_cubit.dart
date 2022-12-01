@@ -23,6 +23,7 @@ class LoginCubit extends Cubit<LoginStates> {
   }
 
   bool? isSuper=false;
+
   void userLogin({
     required String email,
     required String password,
@@ -37,23 +38,28 @@ class LoginCubit extends Cubit<LoginStates> {
         .then((value) async {
       print(value.user!.email);
       print(value.user!.uid);
-      CacheHelper.saveData(key: 'uId', value:value.user!.uid);
 
-//check if user is super admin
+      //check if user is not super admin
       await FirebaseFirestore.instance.collection('admins').doc(value.user!.uid)
           .get().then((value){
         isSuper=value.data()!.containsValue('super admin');
       })       ;
-      print(isSuper);
-      if(isSuper!) {
+      print(isSuper!);
+      if(!isSuper!) {
         emit(LoginSuccessState(uId));
 
       }
-        else
-        {
-          emit(LoginErrorState('this user can\' access these data'));
+      else
+      {
+        emit(LoginErrorState('this user can\' access these data'));
 
-        }
+      }
+
+      CacheHelper.saveData(key: 'uId', value:value.user!.uid);
+
+
+
+
 
       })
         .catchError((error)

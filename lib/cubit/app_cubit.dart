@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/modules/doctor_nurse_modules/doctor_nurse_home_screen.dart';
+import '../models/admin_model.dart';
 import '../modules/admin_modules/add_patient_screen.dart';
 import '../modules/admin_modules/home_screen.dart';
 import '../modules/admin_modules/profile_screen.dart';
@@ -11,6 +13,7 @@ import '../modules/doctor_nurse_modules/doctor_nurse_profile_screen.dart';
 import '../modules/doctor_nurse_modules/search_for_petient_screen.dart';
 import '../modules/start_modules/login/login_screen.dart';
 import '../shared/component/components.dart';
+import '../shared/constants/constants.dart';
 import '../shared/local/shared_preference.dart';
 import 'app_state.dart';
 
@@ -82,58 +85,36 @@ class AppCubit extends Cubit<AppState> {
 //     });
 //   }
 //
-// //get all admins data
-//   List <AdminModel> admins1=[];
-//   List <AdminModel> admins2=[];
-//
-//   bool? isSuper=false;
-//
-//   void getUsers() {
-//     admins1=[];
-//     admins2=[];
-//
-//     emit(GetAdminsLoadingState());
-//     FirebaseFirestore.instance.collection('admins').get()
-//         .then((value) async {
-//       value.docs.forEach((element)
-//       {
-//
-//
-//         if(element.data()['uId']!=uId){
-//           admins1.add(AdminModel.fromJson(element.data()));
-//         }
-//         print(admins1);
-//       });
-//
-//       //check if user is super admin
-//
-//       admins1.forEach((element) {
-//
-//         isSuper=true;
-//         if(element.type=='admin'){
-//           admins2.add(element);
-//         }
-//
-//         });
-//
-//       print(isSuper);
-//       if(!isSuper!) {
-//         emit(GetAdminsSuccessState());
-//
-//       }
-//       else
-//       {
-//         emit(GetAdminsErrorState('this user can\' access these data'));
-//
-//       }
-//
-//
-//
-//     })
-//         .catchError((onError) {
-//       emit(GetAdminsErrorState(onError.toString()));
-//     });
-//   }
+//get user data
+  AdminModel? userData;
+
+  void getUserData() {
+
+    emit(GetAdminsLoadingState());
+    FirebaseFirestore.instance.collection('admins').get()
+        .then((value) async {
+      value.docs.forEach((element)
+      {
+
+
+        if(element.data()['uId']==uId){
+          userData=AdminModel.fromJson(element.data());
+          CacheHelper.saveData(key: 'userType', value:userData!.type).then((value)
+          {
+            userType=value.toString().toUpperCase();
+          });
+        }
+      });
+
+
+        emit(GetAdminsSuccessState());
+
+
+    })
+        .catchError((onError) {
+      emit(GetAdminsErrorState(onError.toString()));
+    });
+  }
 //
 // //update admin data
 //   Future<void> updateAdminData({

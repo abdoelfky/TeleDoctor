@@ -52,7 +52,7 @@ class DoctorAndNurseProfileScreen extends StatelessWidget {
                                   userType=='ADMIN'?
                                   Image.asset('images/profile.png', fit: BoxFit.cover):
 
-                                  Image.asset('images/${userType.toLowerCase()}.jpg', fit: BoxFit.cover),                                  ClipRRect( // Clip it cleanly.
+                                  Image.asset('images/${userType!.toLowerCase()}.jpg', fit: BoxFit.cover),                                  ClipRRect( // Clip it cleanly.
                                     child: BackdropFilter(
                                       filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                                       child: Container(

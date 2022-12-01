@@ -1,8 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.teledoctor">
    <application
-        android:label="teledoctor"
-        android:name="${applicationName}"
+        android:label="Teledoctor"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

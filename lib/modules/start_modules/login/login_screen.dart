@@ -130,7 +130,8 @@ class LoginScreen extends StatelessWidget {
                       height: 30,
                     ),
 
-                    inProgress?Center(child: const CircularProgressIndicator()):defaultButton(
+                    inProgress?Center(child: const CircularProgressIndicator()):
+                    defaultButton(
                       color: primaryColor,
                       textColor: Colors.white,
                       width: size.width * .95,

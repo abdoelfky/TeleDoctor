@@ -155,7 +155,7 @@ class PatientDetailsScreen2 extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         top: 25,
                         left: 20, right: 20),
-                    child: defaultFormFeild(
+                    child: defaultFormFeild0(
                       maxLines: 4,
                       inputType: TextInputType.text,
                       validatorText: 'Type the record',
