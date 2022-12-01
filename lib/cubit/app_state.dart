@@ -6,21 +6,21 @@ class ChangeVisibilityState extends AppState{}
 
 class ChangeOnBoardingState extends AppState{}
 
-class AddNewAdminRegisterLoadingState extends AppState{}
+class AddUserRegisterLoadingState extends AppState{}
 
-class AddNewAdminRegisterSuccessState extends AppState{}
+class AddUserRegisterSuccessState extends AppState{}
 
-class AddNewAdminErrorState extends AppState{
+class AddUserErrorState extends AppState{
   final error;
-  AddNewAdminErrorState(this.error);
+  AddUserErrorState(this.error);
 }
 
-class AdminCreateUserSuccessState extends AppState{}
+class CreateUserSuccessState extends AppState{}
 
-class AdminCreateUserErrorState extends AppState{
+class CreateUserErrorState extends AppState{
   final error;
 
-  AdminCreateUserErrorState(this.error);
+  CreateUserErrorState(this.error);
 }
 
 class GetAdminsLoadingState extends AppState{}

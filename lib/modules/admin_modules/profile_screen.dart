@@ -21,10 +21,10 @@ class ProfileScreen extends StatelessWidget {
         listener:(context,state){} ,
         builder:(context,state)
         {
-          nameController.text='Abdo Elfeky';
-          emailController.text='Abdo@gmail.com';
-          hospitalNameController.text='Elsalam Hospital';
-          hospitalLocationController.text='Tanta';
+          nameController.text=adminModel!.name!;
+          emailController.text=adminModel!.email!;
+          hospitalNameController.text=adminModel!.hospitalName!;
+          hospitalLocationController.text=adminModel!.hospitalLocation!;
           Size size=MediaQuery.of(context).size;
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),

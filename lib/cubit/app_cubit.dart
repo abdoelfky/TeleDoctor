@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/modules/doctor_nurse_modules/doctor_nurse_home_screen.dart';
 import '../models/admin_model.dart';
+import '../models/user_model.dart';
 import '../modules/admin_modules/add_patient_screen.dart';
 import '../modules/admin_modules/home_screen.dart';
 import '../modules/admin_modules/profile_screen.dart';
@@ -21,72 +23,72 @@ class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitial());
   static AppCubit get(context) => BlocProvider.of(context);
 
-//   //add new admin
-//   void addNewAdmin({
-//     required String email,
-//     required String password,
-//     required String name,
-//     required String phone,
-//     required String id,
-//     required String hospitalLocation,
-//     required String hospitalName,
-//
-//
-//   }) {
-//     emit(AddNewAdminRegisterLoadingState());
-//
-//     FirebaseAuth.instance
-//         .createUserWithEmailAndPassword(email: email, password: password)
-//         .then((value) {
-//       print(value.user?.email);
-//       print(value.user?.uid);
-//       userCreate(email: email, name: name,password: password ,phone: phone, uId: value.user?.uid,
-//           id:id, hospitalLocation: hospitalLocation, hospitalName:hospitalName);
-//       emit(AddNewAdminRegisterSuccessState());
-//
-//     }).catchError((onError) {
-//       emit(AddNewAdminErrorState(onError.toString()));
-//     });
-//   }
-//
-//   void userCreate({
-//     required String email,
-//     required String name,
-//     required String phone,
-//     required String? uId,
-//     required String id,
-//     required String hospitalLocation,
-//     required String hospitalName,
-//     required String password
-//
-//
-//   }) {
-//     AdminModel model=AdminModel(
-//         name:name ,
-//         email:email ,
-//         phone:phone ,
-//         uId: uId,
-//       id:id,
-//       hospitalLocation:hospitalLocation,
-//       hospitalName:hospitalName,
-//       password:password,
-//       type: 'admin'
-//     );
-//     FirebaseFirestore.instance
-//         .collection('admins')
-//         .doc(uId)
-//         .set(model.toMap()).then((value)
-//     {
-//       emit(AdminCreateUserSuccessState());
-//     }).catchError((onError)
-//     {
-//       emit(AdminCreateUserErrorState(onError.toString()));
-//
-//     });
-//   }
-//
+  //add new user
+  void addNewUser({
+    required String email,
+    required String password,
+    required String name,
+    required String phone,
+    required String id,
+    required String type,
+    required String jop,
+
+
+  }) {
+    emit(AddUserRegisterLoadingState());
+
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((value) {
+      print(value.user?.email);
+      print(value.user?.uid);
+      userCreate(email: email, name: name, phone: phone, uId:value.user?.uid,
+          id: id, jop: jop, type: type, password: password);
+      emit(AddUserRegisterSuccessState());
+
+    }).catchError((onError) {
+      emit(AddUserErrorState(onError.toString()));
+    });
+  }
+
+  void userCreate({
+    required String email,
+    required String name,
+    required String phone,
+    required String? uId,
+    required String id,
+    required String jop,
+    required String type,
+    required String password
+
+
+  }) {
+    UserModel model=UserModel(
+        uId: uId,
+        id: id,
+        email: email,
+        phone: phone,
+        name: name,
+        jop: jop,
+        password: password,
+        type: type);
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .set(model.toMap()).then((value)
+    {
+      emit(CreateUserSuccessState());
+    }).catchError((onError)
+    {
+      emit(CreateUserErrorState(onError.toString()));
+
+    });
+  }
+
+
+
+
 //get user data
-  AdminModel? userData;
 
   void getUserData() {
 
@@ -98,11 +100,14 @@ class AppCubit extends Cubit<AppState> {
 
 
         if(element.data()['uId']==uId){
-          userData=AdminModel.fromJson(element.data());
-          CacheHelper.saveData(key: 'userType', value:userData!.type).then((value)
+
+          adminModel=AdminModel.fromJson(element.data());
+          CacheHelper.saveData(key: 'userType', value:adminModel!.type).then((value)
           {
             userType=value.toString().toUpperCase();
           });
+
+
         }
       });
 

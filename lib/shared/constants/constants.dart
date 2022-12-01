@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
+import '../../models/admin_model.dart';
+
 String uId='';
 String? userType;
+AdminModel? adminModel;
 
 Color blue1 = const Color(0xff253d79);
 Color primaryColor = const Color(0xff004f9a);
