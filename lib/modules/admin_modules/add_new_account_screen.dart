@@ -389,6 +389,7 @@ class AddNewAccountScreen extends StatelessWidget {
                                       type: accountTypeController.text.toUpperCase(),
                                       jop: jopController.text
                                   );
+
                                 }
 
 

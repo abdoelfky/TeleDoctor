@@ -51,3 +51,22 @@ class DeleteAdminDataErrorState extends AppState{
 }
 
 class BottomNavigationBarChangedState extends AppState{}
+
+
+class AddNewRoomSuccessState extends AppState{}
+
+class AddNewRoomErrorState extends AppState{
+  final error;
+  AddNewRoomErrorState(this.error);
+}
+
+class GetAllRoomsLoadingState extends AppState{}
+
+class GetAllRoomsSuccessState extends AppState{}
+
+class GetAllRoomsErrorState extends AppState{
+  final error;
+  GetAllRoomsErrorState(this.error);
+}
+
+class ChangeSelectedRoomState extends AppState{}

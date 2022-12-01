@@ -8,15 +8,15 @@ import 'package:teledoctor/cubit/app_state.dart';
 import 'package:teledoctor/modules/admin_modules/room_information_screen.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 
+import '../../models/room_model.dart';
 import '../../shared/component/components.dart';
 
 class EmptyRoomsScreen extends StatelessWidget {
 
-  final List<String> types = [
-    'Floor 1',
-    'Floor 2',
+  final List<String> floors = [
+    '1',
+    '2',
   ];
-  String? roomSelectedValue;
 
 
   @override
@@ -79,6 +79,7 @@ class EmptyRoomsScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         DropdownButtonFormField2(
+
                           focusColor: primaryColor,
 
                           decoration: InputDecoration(
@@ -123,12 +124,11 @@ class EmptyRoomsScreen extends StatelessWidget {
                           dropdownDecoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          items: types
+                          items: floors
                               .map((item) =>
                               DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
+                                value:'${item}',
+                                child: Text('Floor Number ${item}',
                                   style: TextStyle(
                                       fontSize: 20,
                                       color: primaryColor
@@ -142,20 +142,22 @@ class EmptyRoomsScreen extends StatelessWidget {
                             }
                           },
                           onChanged: (value) {
-                            //Do something when changing the item if you want.
+                            cubit.changeSelectedRoom(floorSelectedVal:value.toString());
+                            // floorSelectedValue=value.toString();
                           },
                           onSaved: (value) {
-                            roomSelectedValue = value.toString();
+
                           },
                         ),
 
+                        cubit.floorSelectedValue=='1'&&cubit.floorNumber1.isNotEmpty?
                         GridView.builder(
                           shrinkWrap:true,
                           physics: const BouncingScrollPhysics(),
-                          itemCount:14 ,
+                          itemCount:cubit.floorNumber1.length ,
                           itemBuilder:(context,index)
                           {
-                            return roomItem(size,[1,2,3,4,5,6,7,8,9,10,11,12,13,14],['1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3','1/3'],context,index);
+                            return roomItem(size,cubit.floorNumber1[index],context,index);
                           },
                           gridDelegate:SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 150,
@@ -165,6 +167,29 @@ class EmptyRoomsScreen extends StatelessWidget {
 
                           ),
 
+                        ):
+                        cubit.floorSelectedValue=='2'&&cubit.floorNumber2.isNotEmpty?
+                        GridView.builder(
+                          shrinkWrap:true,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount:cubit.floorNumber1.length ,
+                          itemBuilder:(context,index)
+                          {
+                            return roomItem(size,cubit.floorNumber2[index],context,index);
+                          },
+                          gridDelegate:SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 150,
+                              childAspectRatio: 2/1.3,
+                              crossAxisSpacing: size.width*.03,
+                              mainAxisSpacing: size.height*.02
+
+                          ),
+
+                        ):
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical:size.height*.2),
+                          child: Text('No Rooms Added Yet',style:
+                          TextStyle(fontSize: 20),),
                         ),
                         SizedBox(height: size.height*.5,)
                       ],
@@ -180,7 +205,7 @@ class EmptyRoomsScreen extends StatelessWidget {
 }
 
 
-Widget roomItem(size,roomNumber,bedsNumber,context,index)=>InkWell(
+Widget roomItem(size,RoomModel roomModel,context,index)=>InkWell(
   onTap: (){
     navigateTo(context, RoomInformation());
 
@@ -209,7 +234,7 @@ Widget roomItem(size,roomNumber,bedsNumber,context,index)=>InkWell(
 
       [
 
-        Text('Room #${roomNumber[index]}',style: TextStyle(fontSize: 16,
+        Text('Room #${roomModel.roomNo}',style: TextStyle(fontSize: 16,
 
         fontWeight:FontWeight.w700,
 
@@ -219,7 +244,7 @@ Widget roomItem(size,roomNumber,bedsNumber,context,index)=>InkWell(
 
         SizedBox(height:2,),
 
-        Text('${bedsNumber[index]} Beds',style: TextStyle(fontSize: 15,
+        Text('${roomModel.bedsNo} Beds',style: TextStyle(fontSize: 15,
 
             fontWeight:FontWeight.w500
 

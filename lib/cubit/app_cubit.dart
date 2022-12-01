@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teledoctor/models/room_model.dart';
 import 'package:teledoctor/modules/doctor_nurse_modules/doctor_nurse_home_screen.dart';
 import '../models/admin_model.dart';
 import '../models/user_model.dart';
@@ -210,6 +211,102 @@ class AppCubit extends Cubit<AppState> {
 // }
 
 
+  bool? isExist=false;
+  Future<void> addNewRoom({
+    required roomNo,
+    required floorNumber,
+    required bedsNo,
+    required pricePerNight,
+
+
+  }) async {
+    RoomModel model=RoomModel(
+        roomNo: roomNo,
+        floorNumber: floorNumber,
+        bedsNo: bedsNo,
+        pricePerNight: pricePerNight);
+
+    try {
+      final snapShot = await FirebaseFirestore.instance.collection('rooms')
+          .doc(roomNo).get();
+
+      if (snapShot.exists) {
+        emit(AddNewRoomErrorState('This room is already exist'));
+
+      isExist=false;
+      } else {
+        await FirebaseFirestore.instance
+            .collection('rooms')
+            .doc(roomNo)
+            .set(model.toMap())
+            .then((value)
+        {
+          emit(AddNewRoomSuccessState());
+        }).catchError((onError)
+        {
+          emit(AddNewRoomErrorState(onError.toString()));
+
+        });
+        isExist=true;
+      }
+    } catch (e) {
+
+    }
+
+
+
+  }
+
+  List<RoomModel> rooms=[];
+  List<RoomModel> floorNumber1=[];
+  List<RoomModel> floorNumber2=[];
+
+
+  void getAllRooms() {
+    rooms=[];
+    floorNumber1=[];
+    floorNumber2=[];
+    emit(GetAllRoomsLoadingState());
+    FirebaseFirestore.instance.collection('rooms').get()
+        .then((value) async {
+      value.docs.forEach((element)
+      {
+
+        rooms.add(RoomModel.fromJson(element.data()));
+
+      });
+      rooms.forEach((element) {
+        if(element.floorNumber.toString()=='1')
+        {
+          floorNumber1.add(element);
+        }
+        else if(element.floorNumber.toString()=='2')
+        {
+          floorNumber2.add(element);
+        }
+      });
+      emit(GetAllRoomsSuccessState());
+
+
+    })
+        .catchError((onError) {
+      emit(GetAllRoomsErrorState(onError.toString()));
+    });
+  }
+
+
+  String? floorSelectedValue;
+
+  void changeSelectedRoom(
+  {
+  required floorSelectedVal
+})
+  {
+    floorSelectedValue=floorSelectedVal;
+    print(floorSelectedValue);
+    emit(ChangeSelectedRoomState());
+
+  }
 
 
   List<Widget> adminLayOutScreens =
