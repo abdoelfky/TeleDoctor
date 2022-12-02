@@ -70,3 +70,19 @@ class GetAllRoomsErrorState extends AppState{
 }
 
 class ChangeSelectedRoomState extends AppState{}
+
+class AddNewPatientSuccessState extends AppState{}
+
+class AddNewPatientErrorState extends AppState{
+  final error;
+  AddNewPatientErrorState(this.error);
+}
+
+class GetAllUsersLoadingState extends AppState{}
+
+class GetAllUsersSuccessState extends AppState{}
+
+class GetAllUsersErrorState extends AppState{
+  final error;
+  GetAllUsersErrorState(this.error);
+}

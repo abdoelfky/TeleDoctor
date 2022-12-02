@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teledoctor/models/patient_model.dart';
 import 'package:teledoctor/models/room_model.dart';
 import 'package:teledoctor/modules/doctor_nurse_modules/doctor_nurse_home_screen.dart';
 import '../models/admin_model.dart';
@@ -210,6 +211,45 @@ class AppCubit extends Cubit<AppState> {
 //
 // }
 
+//get doctors and nurses
+  List<UserModel> users=[];
+  List<UserModel> doctors=[];
+  List<UserModel> nurses=[];
+
+  Future<void> getAllUsers() async {
+    users=[];
+    doctors=[];
+    nurses=[];
+    emit(GetAllUsersLoadingState());
+    await FirebaseFirestore.instance.collection('admins').get()
+        .then((value) async {
+      value.docs.forEach((element)
+      {
+
+        users.add(UserModel.fromJson(element.data()));
+
+      });
+      users.forEach((element) {
+        if(element.type.toString().toUpperCase()=='DOCTOR')
+        {
+          doctors.add(element);
+        }
+        else if(element.type.toString().toUpperCase()=='NURSE')
+        {
+          nurses.add(element);
+        }
+      });
+
+      emit(GetAllUsersSuccessState());
+
+
+    })
+        .catchError((onError) {
+      emit(GetAllUsersErrorState(onError.toString()));
+    });
+  }
+
+
 
   bool? isExist=false;
   Future<void> addNewRoom({
@@ -293,6 +333,64 @@ class AppCubit extends Cubit<AppState> {
       emit(GetAllRoomsErrorState(onError.toString()));
     });
   }
+
+
+  Future<void> addNewPatient({
+    required name,
+    required age,
+    required roomNo,
+    required selectedDoctorUID,
+    required selectedNurseUID,
+    required gender,
+    required id,
+    required registeredDate
+
+
+  }) async {
+   PatientModel model=PatientModel(
+       name: name,
+       age: age,
+       roomNo: roomNo,
+       selectedDoctorUID: selectedDoctorUID,
+       selectedNurseUID: selectedNurseUID,
+       gender: gender,
+       id: id,
+       registeredDate: registeredDate);
+
+    try {
+      final snapShot = await FirebaseFirestore.instance.collection('patients')
+          .doc(id).get();
+
+      if (snapShot.exists) {
+        emit(AddNewPatientErrorState('This patient is already exist'));
+
+        isExist=false;
+      } else {
+        await FirebaseFirestore.instance
+            .collection('patients')
+            .doc(id)
+            .set(model.toMap())
+            .then((value)
+        {
+          emit(AddNewPatientSuccessState());
+        }).catchError((onError)
+        {
+          emit(AddNewPatientErrorState(onError.toString()));
+
+        });
+        isExist=true;
+      }
+    } catch (e) {
+
+    }
+
+
+
+  }
+
+
+
+
 
 
   String? floorSelectedValue;
