@@ -23,6 +23,7 @@ import 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitial());
+
   static AppCubit get(context) => BlocProvider.of(context);
 
   //add new user
@@ -44,10 +45,15 @@ class AppCubit extends Cubit<AppState> {
         .then((value) {
       print(value.user?.email);
       print(value.user?.uid);
-      userCreate(email: email, name: name, phone: phone, uId:value.user?.uid,
-          id: id, jop: jop, type: type, password: password);
+      userCreate(email: email,
+          name: name,
+          phone: phone,
+          uId: value.user?.uid,
+          id: id,
+          jop: jop,
+          type: type,
+          password: password);
       emit(AddUserRegisterSuccessState());
-
     }).catchError((onError) {
       emit(AddUserErrorState(onError.toString()));
     });
@@ -65,7 +71,7 @@ class AppCubit extends Cubit<AppState> {
 
 
   }) {
-    UserModel model=UserModel(
+    UserModel model = UserModel(
         uId: uId,
         id: id,
         email: email,
@@ -77,172 +83,153 @@ class AppCubit extends Cubit<AppState> {
     FirebaseFirestore.instance
         .collection('admins')
         .doc(uId)
-        .set(model.toMap()).then((value)
-    {
+        .set(model.toMap()).then((value) {
       emit(CreateUserSuccessState());
-    }).catchError((onError)
-    {
+    }).catchError((onError) {
       emit(CreateUserErrorState(onError.toString()));
-
     });
   }
-
-
 
 
 //get user data
 
   Future<void> getUserData() async {
-
     emit(GetAdminsLoadingState());
 
     await FirebaseFirestore.instance.collection('admins').doc(uId).get()
         .then((value) async {
-      isSuper= CacheHelper.getData(key: 'isSuper');
-      isDoctor= CacheHelper.getData(key: 'isDoctor');
-      isAdmin= CacheHelper.getData(key: 'isAdmin');
-      isNurse= CacheHelper.getData(key: 'isNurse');
+      isSuper = CacheHelper.getData(key: 'isSuper');
+      isDoctor = CacheHelper.getData(key: 'isDoctor');
+      isAdmin = CacheHelper.getData(key: 'isAdmin');
+      isNurse = CacheHelper.getData(key: 'isNurse');
       //if user is Admin
       print(isAdmin);
       print(isDoctor);
       print(isNurse);
-      if(isAdmin!){
-
-          adminModel=AdminModel.fromJson(value.data()!);
-          CacheHelper.saveData(key: 'userType', value:adminModel!.type).then((value)
-          {
-            userType=value.toString().toUpperCase();
-            print(userType);
-          });
-
-
-        }
+      if (isAdmin!) {
+        adminModel = AdminModel.fromJson(value.data()!);
+        CacheHelper.saveData(key: 'userType', value: adminModel!.type).then((
+            value) {
+          userType = value.toString().toUpperCase();
+          print(userType);
+        });
+      }
       //if user is Doctor or Nurse
-      if(isDoctor!||isNurse!) {
-          userModel = UserModel.fromJson(value.data()!);
-          print(value.data());
-          CacheHelper.saveData(key: 'userType', value: userModel!.type)
-              .then((value) {
-            userType = value.toString().toUpperCase();
-            print(userType);
-
-          });
-
+      if (isDoctor! || isNurse!) {
+        userModel = UserModel.fromJson(value.data()!);
+        print(value.data());
+        CacheHelper.saveData(key: 'userType', value: userModel!.type)
+            .then((value) {
+          userType = value.toString().toUpperCase();
+          print(userType);
+        });
       }
 
 
-        emit(GetAdminsSuccessState());
-
-
+      emit(GetAdminsSuccessState());
     })
         .catchError((onError) {
       emit(GetAdminsErrorState(onError.toString()));
     });
   }
+
 //
-// //update admin data
-//   Future<void> updateAdminData({
-//     required String email,
-//     required String name,
-//     required String phone,
-//     required String uId,
-//     required String id,
-//     required String hospitalLocation,
-//     required String hospitalName,
-//     required String password
-//
-//   }) async {
-//     emit(UpdateAdminDataLoadingState());
-//     AdminModel model = AdminModel(
-//       name: name,
-//       phone: phone,
-//       email: email,
-//       id: id,
-//       hospitalLocation:hospitalLocation ,
-//       hospitalName:hospitalName ,
-//       password: password,
-//       uId: uId,
-//       type: 'admin'
-//
-//
-//     );
-//
-//
-//
-//     FirebaseFirestore.instance.collection('admins').doc(uId).update(model.toMap())
-//      .then((value)async
-//  {
-//
-//    getUsers();
-//    emit(UpdateAdminDataSuccessState());
-//  }).catchError((onError)
-//  {
-//    emit(UpdateAdminDataErrorState(onError.toString()));
-//
-//  });
-//
-//   }
-//
-//
-// //delete admin data
-//   Future<void> deleteAdminData({
-//     required String uId,
-//   }) async {
-//     emit(DeleteAdminDataLoadingState());
-//     FirebaseFirestore.instance.collection('admins').doc(uId).delete()
-//         .then((value)async
-//     {
-//
-//       getUsers();
-//       emit(DeleteAdminDataSuccessState());
-//     }).catchError((onError)
-//     {
-//       emit(DeleteAdminDataErrorState(onError.toString()));
-//
-//     });
-//
-//   }
-//
-//
-// void logOut(context)
-// {
-//   CacheHelper.removeData(key: 'uId');
-//   navigateAndEnd(context,LoginScreen());
-//
-// }
+//update admin data
+  Future<void> updateUserData({
+    required String email,
+    required String name,
+    required String phone,
+    required String uId,
+    required String id,
+    required String password,
+    required String jop,
+    required String type,
+
+
+
+  }) async {
+    emit(UpdateUserDataLoadingState());
+    UserModel model = UserModel(
+        uId: uId,
+        id: id,
+        email: email,
+        phone: phone,
+        name: name,
+        jop: jop,
+        password: password,
+        type: type);
+
+
+
+    FirebaseFirestore.instance.collection('admins').doc(uId).update(
+        model.toMap())
+        .then((value) async
+    {
+      getAllUsers();
+      emit(UpdateUserDataSuccessState());
+    }).catchError((onError) {
+      emit(UpdateUserDataErrorState(onError.toString()));
+    });
+  }
+
+
+//delete admin data
+  Future<void> deleteUserData({
+    required String uId,
+    required String email,
+    required String password
+  }) async {
+
+    emit(DeleteUserDataLoadingState());
+    FirebaseFirestore.instance.collection('admins').doc(uId).delete()
+        .then((value)async
+    {
+      AuthCredential credential = EmailAuthProvider.credential(email: email, password: password);
+      await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(credential);
+      await FirebaseAuth.instance.currentUser!.delete();
+
+      getAllUsers();
+      emit(DeleteUserDataSuccessState());
+
+    }).catchError((onError)
+    {
+      emit(DeleteUserDataErrorState(onError.toString()));
+
+    });
+
+  }
+
+
+  void logOut(context) {
+    CacheHelper.removeData(key: 'uId');
+    navigateAndEnd(context, LoginScreen());
+  }
 
 //get doctors and nurses
-  List<UserModel> users=[];
-  List<UserModel> doctors=[];
-  List<UserModel> nurses=[];
+  List<UserModel> users = [];
+  List<UserModel> doctors = [];
+  List<UserModel> nurses = [];
 
   Future<void> getAllUsers() async {
-    users=[];
-    doctors=[];
-    nurses=[];
+    users = [];
+    doctors = [];
+    nurses = [];
     emit(GetAllUsersLoadingState());
     await FirebaseFirestore.instance.collection('admins').get()
         .then((value) async {
-      value.docs.forEach((element)
-      {
-
+      value.docs.forEach((element) {
         users.add(UserModel.fromJson(element.data()));
-
       });
       users.forEach((element) {
-        if(element.type.toString().toUpperCase()=='DOCTOR')
-        {
+        if (element.type.toString().toUpperCase() == 'DOCTOR') {
           doctors.add(element);
         }
-        else if(element.type.toString().toUpperCase()=='NURSE')
-        {
+        else if (element.type.toString().toUpperCase() == 'NURSE') {
           nurses.add(element);
         }
       });
 
       emit(GetAllUsersSuccessState());
-
-
     })
         .catchError((onError) {
       emit(GetAllUsersErrorState(onError.toString()));
@@ -250,8 +237,8 @@ class AppCubit extends Cubit<AppState> {
   }
 
 
+  bool? isExist = false;
 
-  bool? isExist=false;
   Future<void> addNewRoom({
     required roomNo,
     required floorNumber,
@@ -260,7 +247,7 @@ class AppCubit extends Cubit<AppState> {
 
 
   }) async {
-    RoomModel model=RoomModel(
+    RoomModel model = RoomModel(
         roomNo: roomNo,
         floorNumber: floorNumber,
         bedsNo: bedsNo,
@@ -273,61 +260,48 @@ class AppCubit extends Cubit<AppState> {
       if (snapShot.exists) {
         emit(AddNewRoomErrorState('This room is already exist'));
 
-      isExist=false;
+        isExist = false;
       } else {
         await FirebaseFirestore.instance
             .collection('rooms')
             .doc(roomNo)
             .set(model.toMap())
-            .then((value)
-        {
+            .then((value) {
           emit(AddNewRoomSuccessState());
-        }).catchError((onError)
-        {
+        }).catchError((onError) {
           emit(AddNewRoomErrorState(onError.toString()));
-
         });
-        isExist=true;
+        isExist = true;
       }
     } catch (e) {
 
     }
-
-
-
   }
 
-  List<RoomModel> rooms=[];
-  List<RoomModel> floorNumber1=[];
-  List<RoomModel> floorNumber2=[];
+  List<RoomModel> rooms = [];
+  List<RoomModel> floorNumber1 = [];
+  List<RoomModel> floorNumber2 = [];
 
 
   void getAllRooms() {
-    rooms=[];
-    floorNumber1=[];
-    floorNumber2=[];
+    rooms = [];
+    floorNumber1 = [];
+    floorNumber2 = [];
     emit(GetAllRoomsLoadingState());
     FirebaseFirestore.instance.collection('rooms').get()
         .then((value) async {
-      value.docs.forEach((element)
-      {
-
+      value.docs.forEach((element) {
         rooms.add(RoomModel.fromJson(element.data()));
-
       });
       rooms.forEach((element) {
-        if(element.floorNumber.toString()=='1')
-        {
+        if (element.floorNumber.toString() == '1') {
           floorNumber1.add(element);
         }
-        else if(element.floorNumber.toString()=='2')
-        {
+        else if (element.floorNumber.toString() == '2') {
           floorNumber2.add(element);
         }
       });
       emit(GetAllRoomsSuccessState());
-
-
     })
         .catchError((onError) {
       emit(GetAllRoomsErrorState(onError.toString()));
@@ -347,15 +321,15 @@ class AppCubit extends Cubit<AppState> {
 
 
   }) async {
-   PatientModel model=PatientModel(
-       name: name,
-       age: age,
-       roomNo: roomNo,
-       selectedDoctorUID: selectedDoctorUID,
-       selectedNurseUID: selectedNurseUID,
-       gender: gender,
-       id: id,
-       registeredDate: registeredDate);
+    PatientModel model = PatientModel(
+        name: name,
+        age: age,
+        roomNo: roomNo,
+        selectedDoctorUID: selectedDoctorUID,
+        selectedNurseUID: selectedNurseUID,
+        gender: gender,
+        id: id,
+        registeredDate: registeredDate);
 
     try {
       final snapShot = await FirebaseFirestore.instance.collection('patients')
@@ -364,46 +338,33 @@ class AppCubit extends Cubit<AppState> {
       if (snapShot.exists) {
         emit(AddNewPatientErrorState('This patient is already exist'));
 
-        isExist=false;
+        isExist = false;
       } else {
         await FirebaseFirestore.instance
             .collection('patients')
             .doc(id)
             .set(model.toMap())
-            .then((value)
-        {
+            .then((value) {
           emit(AddNewPatientSuccessState());
-        }).catchError((onError)
-        {
+        }).catchError((onError) {
           emit(AddNewPatientErrorState(onError.toString()));
-
         });
-        isExist=true;
+        isExist = true;
       }
     } catch (e) {
 
     }
-
-
-
   }
-
-
-
-
 
 
   String? floorSelectedValue;
 
-  void changeSelectedRoom(
-  {
-  required floorSelectedVal
-})
-  {
-    floorSelectedValue=floorSelectedVal;
+  void changeSelectedRoom({
+    required floorSelectedVal
+  }) {
+    floorSelectedValue = floorSelectedVal;
     print(floorSelectedValue);
     emit(ChangeSelectedRoomState());
-
   }
 
 
@@ -428,37 +389,26 @@ class AppCubit extends Cubit<AppState> {
   int currentIndex = 0;
 
   void changeBottomNav(int index) {
-
-      currentIndex = index;
-      emit(BottomNavigationBarChangedState());
-
-
+    currentIndex = index;
+    emit(BottomNavigationBarChangedState());
   }
 
 
+  bool isObsecured = true;
 
-
-
-  bool isObsecured=true;
-
-  void changeVisibility()
-  {
-    isObsecured=!isObsecured;
+  void changeVisibility() {
+    isObsecured = !isObsecured;
     emit(ChangeVisibilityState());
   }
 
-  bool isLast =false;
+  bool isLast = false;
 
-  void changeOnBoarding(index,boardingLength)
-  {
-    if(index == boardingLength - 1)
-    {
-      isLast=true;
+  void changeOnBoarding(index, boardingLength) {
+    if (index == boardingLength - 1) {
+      isLast = true;
       emit(ChangeOnBoardingState());
-    }else
-    {
-
-      isLast=false;
+    } else {
+      isLast = false;
       emit(ChangeOnBoardingState());
     }
   }
@@ -468,9 +418,8 @@ class AppCubit extends Cubit<AppState> {
     CacheHelper.saveData(
       key: 'onBoarding',
       value: true,
-    ).then((value)
-    {
-      if (value==true) {
+    ).then((value) {
+      if (value == true) {
         navigateAndEnd(
           context,
           LoginScreen(),

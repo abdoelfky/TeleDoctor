@@ -32,22 +32,22 @@ class GetAdminsErrorState extends AppState{
   GetAdminsErrorState(this.error);
 }
 
-class UpdateAdminDataLoadingState extends AppState{}
+class UpdateUserDataLoadingState extends AppState{}
 
-class UpdateAdminDataSuccessState extends AppState{}
+class UpdateUserDataSuccessState extends AppState{}
 
-class UpdateAdminDataErrorState extends AppState{
+class UpdateUserDataErrorState extends AppState{
   final error;
-  UpdateAdminDataErrorState(this.error);
+  UpdateUserDataErrorState(this.error);
 }
 
-class DeleteAdminDataLoadingState extends AppState{}
+class DeleteUserDataLoadingState extends AppState{}
 
-class DeleteAdminDataSuccessState extends AppState{}
+class DeleteUserDataSuccessState extends AppState{}
 
-class DeleteAdminDataErrorState extends AppState{
+class DeleteUserDataErrorState extends AppState{
   final error;
-  DeleteAdminDataErrorState(this.error);
+  DeleteUserDataErrorState(this.error);
 }
 
 class BottomNavigationBarChangedState extends AppState{}

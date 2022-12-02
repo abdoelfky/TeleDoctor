@@ -376,6 +376,7 @@ class AddNewAccountScreen extends StatelessWidget {
                                 right:size.width*.08   ),
                             child:inProgress?const CircularProgressIndicator():
                             defaultButton2(
+                              height: 60,
                                 string: 'Add Account',
                                 function: ()
                                 {
@@ -389,6 +390,7 @@ class AddNewAccountScreen extends StatelessWidget {
                                       type: accountTypeController.text.toUpperCase(),
                                       jop: jopController.text
                                   );
+                                cubit.getAllUsers();
 
                                 }
 
