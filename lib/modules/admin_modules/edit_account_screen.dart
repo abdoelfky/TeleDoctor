@@ -6,9 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
 import 'package:teledoctor/shared/component/components.dart';
-import 'package:teledoctor/shared/constants/constants.dart';
+import '../../models/user_model.dart';
+import '../../shared/constants/constants.dart';
+
 
 class EditAccountScreen extends StatelessWidget {
+  final UserModel model;
+  EditAccountScreen({required this.model});
 
   var nameController = TextEditingController();
   var idController = TextEditingController();
@@ -20,8 +24,8 @@ class EditAccountScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
 
   final List<String> types = [
-    'Doctor',
-    'Nurse',
+    'DOCTOR',
+    'NURSE',
   ];
   String? typeSelectedValue;
 
@@ -35,6 +39,25 @@ class EditAccountScreen extends StatelessWidget {
         builder:(context,state)
         {
 
+        if(model!=null
+        &&model.email!=emailController.text.trim()
+        &&model.name!=nameController.text.trim()
+        &&model.id!=idController.text.trim()
+        &&model.password!=passwordController.text.trim()
+        &&model.jop!=jopController.text.trim()
+        &&model.type!=accountTypeController.text.trim()
+        &&model.phone!=phoneController.text.trim()
+
+
+        ) {
+          emailController.text = model.email!;
+          nameController.text = model.name!;
+          idController.text = model.id!;
+          passwordController.text = model.password!;
+          jopController.text = model.jop!;
+          accountTypeController.text = model.type!;
+          phoneController.text = model.phone!;
+        }
           var cubit=AppCubit.get(context);
           Size size=MediaQuery.of(context).size;
           return Scaffold(
@@ -227,7 +250,7 @@ class EditAccountScreen extends StatelessWidget {
                             right:size.width*.08   ),
                         child: DropdownButtonFormField2(
                           focusColor: primaryColor,
-
+                          value: model.type.toString(),
                           decoration: InputDecoration(
 
                             enabledBorder: OutlineInputBorder(
@@ -254,12 +277,6 @@ class EditAccountScreen extends StatelessWidget {
                             //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
                           ),
                           isExpanded: true,
-                          hint: Text(
-                            'Select Account Type',
-                            style: TextStyle(fontSize: 22,color:primaryColor,
-                            ),
-
-                          ),
                           icon: Icon(
                             Icons.arrow_drop_down,
                             color:primaryColor,
@@ -270,6 +287,7 @@ class EditAccountScreen extends StatelessWidget {
                           dropdownDecoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                           ),
+
                           items: types
                               .map((item) =>
                               DropdownMenuItem<String>(
@@ -284,15 +302,13 @@ class EditAccountScreen extends StatelessWidget {
                               ))
                               .toList(),
                           validator: (value) {
-                            if (value == null) {
-                              return 'Please select type';
-                            }
+                            value=accountTypeController.text;
                           },
                           onChanged: (value) {
                             //Do something when changing the item if you want.
                           },
                           onSaved: (value) {
-                            typeSelectedValue = value.toString();
+                            typeSelectedValue = accountTypeController.text;
                           },
                         ),
 

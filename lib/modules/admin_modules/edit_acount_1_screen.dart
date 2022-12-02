@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:teledoctor/models/user_model.dart';
+import 'package:teledoctor/modules/admin_modules/edit_account_screen.dart';
+import 'package:teledoctor/shared/component/components.dart';
 import '../../shared/constants/constants.dart';
 
 
@@ -16,7 +19,7 @@ class EditScreen1 extends StatefulWidget {
 class _EditScreen1State extends State<EditScreen1> {
   String name = "";
 
-  List<Map<String, dynamic>> data = [
+  /*List<Map<String, dynamic>> data = [
     {
       'name': 'John',
       'image':
@@ -95,12 +98,12 @@ class _EditScreen1State extends State<EditScreen1> {
       FirebaseFirestore.instance.collection('users').add(element);
     }
     print('all data added');
-  }
+  }*/
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    addData();
+    //addData();
   }
 
   @override
@@ -134,7 +137,7 @@ class _EditScreen1State extends State<EditScreen1> {
                     padding:
                     EdgeInsets.only(top: 7.0, left: size.width * .1),
                     child: Text(
-                      'Search For Patient',
+                      'Search ',
                       style: TextStyle(
                           color: primaryColor,
                           fontWeight: FontWeight.w600,
@@ -176,8 +179,6 @@ class _EditScreen1State extends State<EditScreen1> {
                       width:3,
                     ),
                   ),
-
-
                 ),
 
                 onChanged: (val) {
@@ -189,7 +190,7 @@ class _EditScreen1State extends State<EditScreen1> {
             ),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('users').snapshots(),
+                stream: FirebaseFirestore.instance.collection('admins').snapshots(),
                 builder: (context, snapshots) {
                   return (snapshots.connectionState == ConnectionState.waiting)
                       ? Center(
@@ -200,108 +201,100 @@ class _EditScreen1State extends State<EditScreen1> {
                       itemBuilder: (context, index) {
                         var data = snapshots.data!.docs[index].data()
                         as Map<String, dynamic>;
+                        UserModel model=UserModel.fromJson(data);
 
                         if (name.isEmpty) {
-                          return InkWell(
-                            onTap: (){
-                            },
-                            child: Card(
-                              color: Colors.grey[100],
+                          return Container();
+                          /*InkWell(
+                          onTap: (){
+                            navigateTo(context, EditAccountScreen());
+                          },
+                          child: Card(
+                            color: Colors.grey[100],
 
-                              elevation: 5,
+                            elevation: 5,
 
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15))),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(15))),
 
-                              //  color: Colors.blue,
+                            //  color: Colors.blue,
 
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 12,
-                                  left: 12,
-                                ),
-                                child: Container(
-                                  child: Row(
-                                    children: [
-                                      //image
-                                      Container(
-                                        width: 80,
-                                        height: 85,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(6),
-                                            border: Border.all(
-                                              width: 6,
-                                              color: Colors.white,
-                                            )),
-                                        child: Center(
-                                          child: Image(
-                                            image: NetworkImage(data['image']),
-                                            fit: BoxFit.fill,
-                                            width: 100,
-                                            height: 100,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                right: 12,
+                                left: 12,
+                              ),
+                              child: Container(
+                                child: Row(
+                                  children: [
+                                    //image
+                                    Container(
+                                      width: 80,
+                                      height: 85,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(6),
+                                          border: Border.all(
+                                            width: 6,
+                                            color: Colors.white,
+                                          )),
+                                      child: Center(
+                                        child: Image(
+                                          image: AssetImage('images/profile.png'
                                           ),
+                                          fit: BoxFit.fill,
+                                          width: 100,
+                                          height: 100,
                                         ),
                                       ),
+                                    ),
 
-                                      SizedBox(
-                                        width: 10.0,
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            data['name'],
+                                            style: TextStyle(
+                                                fontSize: 16.0, fontWeight: FontWeight.bold),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          Text(
+                                            data['email'],
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 13.0,
+                                              fontWeight: FontWeight.w200,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+
+                                        ],
                                       ),
-
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              data['name'],
-                                              style: TextStyle(
-                                                  fontSize: 16.0, fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            Text(
-                                              'Enter Data : 25,Nov 2022',
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 13.0,
-                                                fontWeight: FontWeight.w200,
-                                              ),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Room No : 7',
-                                                  style: TextStyle(color: primaryColor),
-                                                ),
-                                                Spacer(),
-                                                TextButton(
-                                                  child: Text('Regiestered'),
-                                                  onPressed: () {
-
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          );
+                          ),
+                          );*/
+
                         }
                         if (data['name']
                             .toString()
                             .toLowerCase()
-                            .startsWith(name.toLowerCase())) {
+                            .startsWith(name.toLowerCase())&&(data['type']=='DOCTOR'||data['type']=='NURSE')) {
                           return InkWell(
                             onTap: (){
+                              navigateTo(context, EditAccountScreen(model:model,));
                             },
                             child: ListTile(
                               title: Text(
@@ -323,7 +316,8 @@ class _EditScreen1State extends State<EditScreen1> {
                                     fontWeight: FontWeight.bold),
                               ),
                               leading: CircleAvatar(
-                                backgroundImage: NetworkImage(data['image']),
+                                backgroundImage: AssetImage('images/profile.png'
+                                ),
                               ),
                             ),
                           );
