@@ -172,7 +172,7 @@ class EmptyRoomsScreen extends StatelessWidget {
                         GridView.builder(
                           shrinkWrap:true,
                           physics: const BouncingScrollPhysics(),
-                          itemCount:cubit.floorNumber1.length ,
+                          itemCount:cubit.floorNumber2.length ,
                           itemBuilder:(context,index)
                           {
                             return roomItem(size,cubit.floorNumber2[index],context,index);

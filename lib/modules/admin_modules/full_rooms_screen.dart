@@ -6,19 +6,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
 import 'package:teledoctor/modules/admin_modules/room_information_screen.dart';
-import 'package:teledoctor/shared/component/components.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
+
+import '../../models/room_model.dart';
+import '../../shared/component/components.dart';
 
 class FullRoomsScreen extends StatelessWidget {
 
-  final List<String> types = [
-    'Floor number 1',
-    'Floor number 2',
-    'Floor number 3',
-    'Floor number 4',
-    'Floor number 5',
+  final List<String> floors = [
+    '1',
+    '2',
   ];
-  String? roomSelectedValue;
 
 
   @override
@@ -81,6 +79,7 @@ class FullRoomsScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         DropdownButtonFormField2(
+
                           focusColor: primaryColor,
 
                           decoration: InputDecoration(
@@ -125,12 +124,11 @@ class FullRoomsScreen extends StatelessWidget {
                           dropdownDecoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          items: types
+                          items: floors
                               .map((item) =>
                               DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
+                                value:'${item}',
+                                child: Text('Floor Number ${item}',
                                   style: TextStyle(
                                       fontSize: 20,
                                       color: primaryColor
@@ -144,20 +142,22 @@ class FullRoomsScreen extends StatelessWidget {
                             }
                           },
                           onChanged: (value) {
-                            //Do something when changing the item if you want.
+                            cubit.changeSelectedRoom(floorSelectedVal:value.toString());
+                            // floorSelectedValue=value.toString();
                           },
                           onSaved: (value) {
-                            roomSelectedValue = value.toString();
+
                           },
                         ),
 
+                        cubit.floorSelectedValue=='1'&&cubit.fullRooms1.isNotEmpty?
                         GridView.builder(
                           shrinkWrap:true,
                           physics: const BouncingScrollPhysics(),
-                          itemCount:14 ,
+                          itemCount:cubit.fullRooms1.length ,
                           itemBuilder:(context,index)
                           {
-                            return roomItem(size,[1,2,3,4,5,6,7,8,9,10,11,12,13,14],['3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3','3/3'],context,index);
+                            return roomItem(size,cubit.fullRooms1[index],context,index);
                           },
                           gridDelegate:SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 150,
@@ -167,6 +167,29 @@ class FullRoomsScreen extends StatelessWidget {
 
                           ),
 
+                        ):
+                        cubit.floorSelectedValue=='2'&&cubit.fullRooms2.isNotEmpty?
+                        GridView.builder(
+                          shrinkWrap:true,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount:cubit.fullRooms2.length ,
+                          itemBuilder:(context,index)
+                          {
+                            return roomItem(size,cubit.fullRooms2[index],context,index);
+                          },
+                          gridDelegate:SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 150,
+                              childAspectRatio: 2/1.3,
+                              crossAxisSpacing: size.width*.03,
+                              mainAxisSpacing: size.height*.02
+
+                          ),
+
+                        ):
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical:size.height*.2),
+                          child: Text('No Rooms Added Yet',style:
+                          TextStyle(fontSize: 20),),
                         ),
                         SizedBox(height: size.height*.5,)
                       ],
@@ -182,28 +205,58 @@ class FullRoomsScreen extends StatelessWidget {
 }
 
 
-Widget roomItem(size,roomNumber,bedsNumber,context,index)=>Container(
-  decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(12),
-      border: Border.all(
-        width: 2,
-        color:blue5,
-      )
-  ),
-  child:Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children:
-    [
-      Text('Room #${roomNumber[index]}',style: TextStyle(fontSize: 16,
-          fontWeight:FontWeight.w700,
-          color: primaryColor
-      )),
-      SizedBox(height:2,),
-      Text('${bedsNumber[index]} Beds',style: TextStyle(fontSize: 15,
-          fontWeight:FontWeight.w500
-      )),
+Widget roomItem(size,RoomModel roomModel,context,index)=>InkWell(
+  onTap: (){
+    navigateTo(context, RoomInformation());
+
+  },
+  child:   Container(
+
+    decoration: BoxDecoration(
+
+        borderRadius: BorderRadius.circular(12),
+
+        border: Border.all(
+
+          width: 2,
+
+          color:blue5,
+
+        )
+
+    ),
+
+    child:Column(
+
+      mainAxisAlignment: MainAxisAlignment.center,
+
+      children:
+
+      [
+
+        Text('Room #${roomModel.roomNo}',style: TextStyle(fontSize: 16,
+
+            fontWeight:FontWeight.w700,
+
+            color: primaryColor
+
+        )),
+
+        SizedBox(height:2,),
+
+        Text('${roomModel.bedsNo} Beds',style: TextStyle(fontSize: 15,
+
+            fontWeight:FontWeight.w500
+
+        )),
 
 
-    ],
+
+
+
+      ],
+
+    ),
+
   ),
 );

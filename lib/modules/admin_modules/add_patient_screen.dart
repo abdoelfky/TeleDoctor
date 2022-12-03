@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
+import 'package:teledoctor/models/room_model.dart';
 import 'package:teledoctor/shared/component/components.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 
@@ -47,6 +48,7 @@ class AddNewPatientScreen extends StatelessWidget {
                 text: 'Patient Added Successfully',
                 state: ToastStates.SUCCESS
             );
+            AppCubit.get(context).changeBottomNav(0);
 
           }
           if(state is AddNewPatientErrorState)
@@ -62,6 +64,12 @@ class AddNewPatientScreen extends StatelessWidget {
           Size size = MediaQuery
               .of(context)
               .size;
+
+          List<RoomModel> rooms=[];
+          rooms=cubit.floorNumber1+cubit.floorNumber2;
+
+
+
           return Scaffold(
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -162,7 +170,7 @@ class AddNewPatientScreen extends StatelessWidget {
                           dropdownDecoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          items: cubit.rooms
+                          items: rooms
                               .map((item) =>
                               DropdownMenuItem<String>(
                                 value: item.roomNo.toString(),
@@ -446,7 +454,12 @@ class AddNewPatientScreen extends StatelessWidget {
                           height: 60,
                             string: 'Add Patient',
                             function: () {
+
+
+
                               if (formKey.currentState!.validate()) {
+
+
                                 cubit.addNewPatient(
                                     name:patientNameController.text.trim(),
                                     age:patientAgeController.text.trim(),
@@ -455,9 +468,18 @@ class AddNewPatientScreen extends StatelessWidget {
                                     selectedNurseUID: selectNurseController.text.trim(),
                                     gender: selectGenderController.text.trim(),
                                     id: patientIdController.text.trim(),
-                                    registeredDate:DateTime.now().toString()
+                                    registeredDate:DateTime.now().toString(),
+                                    newPatient:patientIdController.text.trim()
+
                                 );
+
+
+
+
+// print('patientIdController :${patientIdController.text}');
                               }
+
+
                             }
                         )
 
@@ -470,3 +492,4 @@ class AddNewPatientScreen extends StatelessWidget {
         });
   }
 }
+

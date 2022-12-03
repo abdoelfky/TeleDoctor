@@ -49,9 +49,11 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children:
                   [
-                    HomeScreenItem(size,'add new account','Add New Account',context,AddNewAccountScreen()),
+                    HomeScreenItem(size,'add new account','Add New Account'
+                        ,context,AddNewAccountScreen(),cubit),
                     const SizedBox(width:15,),
-                    HomeScreenItem(size,'edit account','Edit Account',context,EditScreen1()),
+                    HomeScreenItem(size,'edit account','Edit Account',
+                        context,EditScreen1(),cubit),
 
 
 
@@ -70,16 +72,19 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children:
                   [
-                    HomeScreenItem(size,'add new room','Add New Room',context,AddNewRoomsScreen()),
+                    HomeScreenItem(size,'add new room','Add New Room'
+                        ,context,AddNewRoomsScreen(),cubit),
                     const SizedBox(width:15,),
-                    HomeScreenItem(size,'full rooms','Full Rooms',context,FullRoomsScreen()),
+                    HomeScreenItem(size,'full rooms','Full Rooms'
+                        ,context,FullRoomsScreen(),cubit),
 
 
 
                   ],
                 ),
                 const SizedBox(height: 10,),
-                HomeScreenItem(size,'empty rooms','Empty Rooms',context,EmptyRoomsScreen()),
+                HomeScreenItem(size,'empty rooms','Empty Rooms'
+                    ,context,EmptyRoomsScreen(),cubit),
 
 
 
@@ -95,10 +100,13 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-Widget HomeScreenItem(size,logoName,text,context,screen)=>InkWell(
+Widget HomeScreenItem(size,logoName,text,context,screen,AppCubit cubit)=>InkWell(
   onTap: ()
   {
     navigateTo(context,screen);
+    cubit.getAllUsers();
+    cubit.getAllRooms();
+
   },
   child:   Container(
     width:size.width*.4 ,

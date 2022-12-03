@@ -251,7 +251,11 @@ class AppCubit extends Cubit<AppState> {
         roomNo: roomNo,
         floorNumber: floorNumber,
         bedsNo: bedsNo,
-        pricePerNight: pricePerNight);
+        pricePerNight: pricePerNight,
+      roomType: 'EMPTY',
+      patientList: []
+
+    );
 
     try {
       final snapShot = await FirebaseFirestore.instance.collection('rooms')
@@ -281,12 +285,17 @@ class AppCubit extends Cubit<AppState> {
   List<RoomModel> rooms = [];
   List<RoomModel> floorNumber1 = [];
   List<RoomModel> floorNumber2 = [];
+  List<RoomModel> fullRooms1 = [];
+  List<RoomModel> fullRooms2 = [];
 
 
-  void getAllRooms() {
+  Future<void> getAllRooms() async {
     rooms = [];
     floorNumber1 = [];
     floorNumber2 = [];
+    fullRooms1 = [];
+    fullRooms2 = [];
+
     emit(GetAllRoomsLoadingState());
     FirebaseFirestore.instance.collection('rooms').get()
         .then((value) async {
@@ -294,19 +303,32 @@ class AppCubit extends Cubit<AppState> {
         rooms.add(RoomModel.fromJson(element.data()));
       });
       rooms.forEach((element) {
-        if (element.floorNumber.toString() == '1') {
+        if (element.floorNumber.toString() == '1'
+            &&element.roomType!.toUpperCase().toString() == 'EMPTY') {
           floorNumber1.add(element);
         }
-        else if (element.floorNumber.toString() == '2') {
+        else if (element.floorNumber.toString() == '2'
+            &&element.roomType!.toUpperCase().toString() == 'EMPTY') {
           floorNumber2.add(element);
         }
+        else if (element.floorNumber.toString() == '1'
+            &&element.roomType!.toUpperCase().toString() == 'FULL') {
+          fullRooms1.add(element);
+        }
+        else if (element.floorNumber.toString() == '2'
+            &&element.roomType!.toUpperCase().toString() == 'FULL') {
+          fullRooms2.add(element);
+        }
       });
+      print(floorNumber1[0].roomType);
       emit(GetAllRoomsSuccessState());
     })
         .catchError((onError) {
       emit(GetAllRoomsErrorState(onError.toString()));
     });
   }
+
+  List patientList=[];
 
 
   Future<void> addNewPatient({
@@ -317,10 +339,51 @@ class AppCubit extends Cubit<AppState> {
     required selectedNurseUID,
     required gender,
     required id,
-    required registeredDate
+    required registeredDate,
+    required newPatient,
 
 
   }) async {
+    patientList=[];
+    rooms.forEach((element) {
+      if (element.roomType.toString().toUpperCase() == 'EMPTY'
+          &&element.roomNo.toString() == roomNo) {
+        patientList=element.patientList!;
+
+
+
+      }
+
+    });
+    if(patientList.isNotEmpty)
+    {
+      patientList.insert(patientList.length,newPatient);
+
+
+      rooms.forEach((element) async {
+        if (element.roomType.toString().toUpperCase() == 'EMPTY'
+            &&element.roomNo.toString() == roomNo
+            &&element.bedsNo==(patientList.length).toString()) {
+
+          await FirebaseFirestore.instance.collection('rooms')
+              .doc(roomNo).update({'roomType':'FULL'});
+
+          // print('${element.bedsNo},,,,:${patientList.length}');
+
+        }
+
+      });
+
+    }
+    else
+    {
+      patientList.insert(0,newPatient);
+
+    }
+    print('patientList: ${patientList}');
+
+    await FirebaseFirestore.instance.collection('rooms')
+        .doc(roomNo).update({'patientList':patientList});
     PatientModel model = PatientModel(
         name: name,
         age: age,
@@ -330,6 +393,8 @@ class AppCubit extends Cubit<AppState> {
         gender: gender,
         id: id,
         registeredDate: registeredDate);
+
+
 
     try {
       final snapShot = await FirebaseFirestore.instance.collection('patients')
@@ -344,11 +409,27 @@ class AppCubit extends Cubit<AppState> {
             .collection('patients')
             .doc(id)
             .set(model.toMap())
-            .then((value) {
-          emit(AddNewPatientSuccessState());
+            .then((value) async {
+
+          await FirebaseFirestore.instance
+              .collection('rooms')
+              .doc(roomNo).update({'patientList':patientList}).then((value)
+          {
+            print(patientList);
+
+            getAllRooms();
+            emit(AddNewPatientSuccessState());
+
+          }).catchError((onError)
+          {
+            emit(AddNewPatientErrorState(onError.toString()));
+          });
+
         }).catchError((onError) {
           emit(AddNewPatientErrorState(onError.toString()));
         });
+
+
         isExist = true;
       }
     } catch (e) {
