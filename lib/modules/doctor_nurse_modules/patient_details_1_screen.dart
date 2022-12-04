@@ -7,6 +7,7 @@ import '../../models/patient_model.dart';
 import '../../models/user_model.dart';
 import '../../shared/component/components.dart';
 import '../../shared/constants/constants.dart';
+import '../../shared/local/shared_preference.dart';
 
 
 class PatientDetailsScreen1 extends StatelessWidget {
@@ -21,6 +22,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           Size size = MediaQuery.of(context).size;
+          String uId=CacheHelper.getData(key: 'uId');
 
           UserModel? doctor ;
           UserModel? nurse ;
