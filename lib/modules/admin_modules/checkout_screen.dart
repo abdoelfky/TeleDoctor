@@ -198,7 +198,9 @@ class CheckOutScreen extends StatelessWidget {
                               width: size.width*.15,
                             ),
                             Text(
-                              '4 Nights',
+                              '${cubit
+                                  .daysBetween
+                                (DateTime.parse('${model.registeredDate}'),DateTime.now())}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),

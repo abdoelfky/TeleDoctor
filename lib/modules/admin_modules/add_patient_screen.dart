@@ -468,7 +468,7 @@ class AddNewPatientScreen extends StatelessWidget {
                                     selectedNurseUID: selectNurseController.text.trim(),
                                     gender: selectGenderController.text.trim(),
                                     id: patientIdController.text.trim(),
-                                    registeredDate:'${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}',
+                                    registeredDate:DateTime.now(),
                                     newPatient:patientIdController.text.trim()
 
                                 );

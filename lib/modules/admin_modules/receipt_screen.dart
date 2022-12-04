@@ -422,7 +422,7 @@ Widget buildItem(context,PatientModel model,index)=>InkWell(
 
                   Text(
 
-                    model.registeredDate.toString(),
+                    '${DateTime.parse(model.registeredDate.toString())}',
 
                     style: TextStyle(
 
