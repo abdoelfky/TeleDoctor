@@ -1,22 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teledoctor/models/room_model.dart';
 import 'package:teledoctor/modules/admin_modules/add_patient_screen.dart';
 import '../../cubit/app_cubit.dart';
 import '../../cubit/app_state.dart';
+import '../../models/patient_model.dart';
 import '../../shared/component/components.dart';
 import '../../shared/constants/constants.dart';
 import 'checkout_screen.dart';
 
 class RoomInformation extends StatelessWidget {
-  const RoomInformation({Key? key}) : super(key: key);
+  final RoomModel roomModel;
+
+  const RoomInformation({super.key, required this.roomModel});
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
-        listener: (context, state) {},
+        listener: (context, state)
+        {
+
+        },
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           Size size = MediaQuery.of(context).size;
+          List<PatientModel> patientList=[];
+          AppCubit.get(context).patients.forEach((element)
+          {
+            if(element.roomNo.toString()==roomModel.roomNo)
+            {
+              patientList.add(element);
+            }
+
+          });
           return Scaffold(
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -48,7 +64,7 @@ class RoomInformation extends StatelessWidget {
                           padding:
                           EdgeInsets.only(top: 7.0, left: size.width * .12),
                           child: Text(
-                            'Room #207',
+                            'Room  #${roomModel.roomNo}',
                             style: TextStyle(
                                 color: primaryColor,
                                 fontWeight: FontWeight.w600,
@@ -102,7 +118,7 @@ class RoomInformation extends StatelessWidget {
                                     height: size.height * .06,
                                   ),
                                   Text(
-                                    '2/4 bed',
+                                    '${roomModel.patientList!.length}/${roomModel.bedsNo} beds',
                                     style:
                                     TextStyle(fontWeight: FontWeight.bold),
                                   )
@@ -131,7 +147,7 @@ class RoomInformation extends StatelessWidget {
                                     height: size.height * .06,
                                   ),
                                   Text(
-                                    '120\$',
+                                    '${roomModel.pricePerNight}\$',
                                     style:
                                     TextStyle(fontWeight: FontWeight.bold),
                                   )
@@ -160,7 +176,7 @@ class RoomInformation extends StatelessWidget {
                                     height: size.height * .06,
                                   ),
                                   Text(
-                                    '#207',
+                                    '#${roomModel.roomNo}',
                                     style:
                                     TextStyle(fontWeight: FontWeight.bold),
                                   )
@@ -199,8 +215,8 @@ class RoomInformation extends StatelessWidget {
                     child: ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: 2,
-                      itemBuilder: (context, index) => buildItem(context),
+                      itemCount: patientList.length,
+                      itemBuilder: (context, index) => buildItem(context,patientList[index],),
                       separatorBuilder: (context, index) => SizedBox(
                         height: 8,
                       ),
@@ -257,9 +273,9 @@ class RoomInformation extends StatelessWidget {
   }
 }
 
-Widget buildItem(context) => InkWell(
+Widget buildItem(context,PatientModel patientModel) => InkWell(
   onTap: () {
-    navigateTo(context, CheckOutScreen());
+    navigateTo(context, CheckOutScreen(model: patientModel,));
   },
   child: Card(
     color: Colors.grey[100],
@@ -313,14 +329,14 @@ Widget buildItem(context) => InkWell(
                     height: 5,
                   ),
                   Text(
-                    'Shefo',
+                    '${patientModel.name}',
                     style: TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.bold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    'Enter Data : 25,Nov 2022',
+                    'Enter Data :${patientModel.registeredDate}',
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 13.0,
@@ -332,14 +348,14 @@ Widget buildItem(context) => InkWell(
                   Row(
                     children: [
                       Text(
-                        'Room No: 3',
+                        'Room No: ${patientModel.roomNo}',
                         style: TextStyle(color: primaryColor),
                       ),
                       Spacer(),
                       TextButton(
                         child: Text('Check Out'),
                         onPressed: () {
-                          navigateTo(context, CheckOutScreen());
+                          navigateTo(context, CheckOutScreen(model: patientModel,));
                         },
                       ),
                     ],
@@ -353,4 +369,3 @@ Widget buildItem(context) => InkWell(
     ),
   ),
 );
-

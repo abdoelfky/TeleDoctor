@@ -207,7 +207,7 @@ class FullRoomsScreen extends StatelessWidget {
 
 Widget roomItem(size,RoomModel roomModel,context,index)=>InkWell(
   onTap: (){
-    navigateTo(context, RoomInformation());
+    navigateTo(context, RoomInformation(roomModel: roomModel,));
 
   },
   child:   Container(
@@ -244,7 +244,7 @@ Widget roomItem(size,RoomModel roomModel,context,index)=>InkWell(
 
         SizedBox(height:2,),
 
-        Text('${roomModel.bedsNo} Beds',style: TextStyle(fontSize: 15,
+        Text('${roomModel.bedsNo}/${roomModel.bedsNo} Beds',style: TextStyle(fontSize: 15,
 
             fontWeight:FontWeight.w500
 

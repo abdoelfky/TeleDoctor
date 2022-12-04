@@ -438,6 +438,38 @@ class AppCubit extends Cubit<AppState> {
   }
 
 
+  List<PatientModel> patients=[];
+
+  Future<void> getAllPatients() async {
+    patients = [];
+
+    emit(GetAllPatientsLoadingState());
+    await FirebaseFirestore.instance.collection('patients').get()
+        .then((value) async {
+
+
+      value.docs.forEach((element) {
+
+
+        patients.add(PatientModel.fromJson(element.data()));
+
+
+      });
+
+print('patients length${patients.length}');
+      emit(GetAllPatientsSuccessState());
+    })
+        .catchError((onError) {
+      emit(GetAllPatientsErrorState(onError.toString()));
+    });
+  }
+
+
+
+
+
+
+
   String? floorSelectedValue;
 
   void changeSelectedRoom({

@@ -5,10 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
+import 'package:teledoctor/models/patient_model.dart';
 import 'package:teledoctor/shared/component/components.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
+import '../../models/user_model.dart';
 
 class CheckOutScreen extends StatelessWidget {
+  final PatientModel model;
+  CheckOutScreen({required this.model});
+
+
   @override
   Widget build(BuildContext context) {
     var roomNameController = TextEditingController();
@@ -101,7 +107,7 @@ class CheckOutScreen extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'Ahmed Shiref',
+                              model.name.toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -110,7 +116,7 @@ class CheckOutScreen extends StatelessWidget {
                               width: size.width*.06,
                             ),
                             Text(
-                              '#207',
+                              model.roomNo.toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -142,7 +148,7 @@ class CheckOutScreen extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '10-Nov-22',
+                              model.registeredDate.toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -151,7 +157,7 @@ class CheckOutScreen extends StatelessWidget {
                               width: size.width*.1,
                             ),
                             Text(
-                              '11-Nov-22',
+                              '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -271,7 +277,7 @@ class CheckOutScreen extends StatelessWidget {
                       padding:
                       const EdgeInsets.only(left: 20, right: 20, top: 50),
                       child:
-                      defaultButton2(string: 'Check Out', function: () {})),
+                      defaultButton2(height: 60,string: 'Check Out', function: () {})),
                 ],
               ),
             ),

@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
 
       providers: [
-        BlocProvider(create: (BuildContext context) =>AppCubit()..getAllRooms()..getUserData()..getAllUsers(),
+        BlocProvider(create: (BuildContext context) =>AppCubit()..getAllPatients()..getAllRooms()..getUserData()..getAllUsers(),
 
         )
         ,
