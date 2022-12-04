@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
 import 'package:teledoctor/models/patient_model.dart';
@@ -77,11 +78,23 @@ class CheckOutScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Image.asset(
-                    'images/qr.png',
-                    width: size.width * .9,
-                    height: size.height * .2,
-                  ),
+            QrImage(
+              data:'Name :${model.name} , '
+                  'Room Number :${model.roomNo} , '
+                  'Nights Number :${cubit
+                  .daysBetween
+                (DateTime.parse('${model.registeredDate}')
+                  ,DateTime.now())} , '
+                  'Patient ID :${model.id} , '
+                  'Total Cash :${cubit
+                  .daysBetween
+                (DateTime
+                  .parse('${model.registeredDate}')
+                  ,DateTime.now())*int
+                  .parse('${roomModel!.pricePerNight}')}  , ',
+              version: QrVersions.auto,
+              size: 170.0,
+            ),
                   Padding(
                     padding: const EdgeInsets.only(
                       right: 110, left: 110,

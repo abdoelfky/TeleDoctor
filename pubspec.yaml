@@ -46,6 +46,8 @@ dependencies:
   iconsax:
   dropdown_button2:
   intl:
+  qr_flutter: ^4.0.0
+
   #FIREBASE
   firebase_core:
   firebase_auth:
