@@ -22,6 +22,9 @@ class PatientDetailsScreen2 extends StatelessWidget {
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           Size size = MediaQuery.of(context).size;
+
+
+
           return Scaffold(
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),

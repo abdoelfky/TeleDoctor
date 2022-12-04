@@ -2,10 +2,14 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
+import 'package:teledoctor/models/patient_model.dart';
 import 'package:teledoctor/shared/component/components.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
+
+import '../../shared/local/shared_preference.dart';
 
 class DoctorAndNurseNotificationScreen extends StatelessWidget {
   @override
@@ -15,6 +19,19 @@ class DoctorAndNurseNotificationScreen extends StatelessWidget {
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           Size size = MediaQuery.of(context).size;
+          String uId=CacheHelper.getData(key: 'uId');
+          List<PatientModel> patients=[];
+          cubit.patients.forEach((element)
+          {
+            if(uId==element.selectedNurseUID||uId==element.selectedDoctorUID)
+            {
+              patients.insert(patients.length, element);
+            }
+
+
+          });
+
+
           return Scaffold(
             backgroundColor: Colors.white,
             body: SingleChildScrollView(
@@ -37,14 +54,19 @@ class DoctorAndNurseNotificationScreen extends StatelessWidget {
                         InkWell(
                           onTap: (){},
                           child: Container(
-                              width:30 ,
-                              height:30 ,
+                              width:40 ,
+                              height:40 ,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
                                 color: primaryColor,
 
                               ),
-                              child: Icon(Icons.refresh,color: Colors.white,)),
+                              child: IconButton(onPressed:()
+                              {
+                                cubit.getAllPatients();
+                              },
+
+                                  icon: Icon(Icons.refresh,color: Colors.white,))),
                         )
 
                       ],
@@ -53,11 +75,11 @@ class DoctorAndNurseNotificationScreen extends StatelessWidget {
                   ListView.separated(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount:3,
+                      itemCount:1,
                       separatorBuilder: (context, index) => SizedBox(
                         height: 10,
                       ),
-                      itemBuilder: (context, index) => buildItem()
+                      itemBuilder: (context, index) => buildItem(patients,index)
                   ),
                 ],
               ),
@@ -67,8 +89,7 @@ class DoctorAndNurseNotificationScreen extends StatelessWidget {
   }
 }
 
-Widget buildItem(){
-  String notificationDate='TODAY';
+Widget buildItem(List<PatientModel>patients,index){
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,14 +97,17 @@ Widget buildItem(){
       Padding(
         padding: const EdgeInsets.only(left: 20,right: 20),
         child: Text(
-          'Today',
+          '${DateFormat("yyyy-MM-dd")
+            .format(DateTime
+            .parse(patients[index]
+            .registeredDate.toString()))}',
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
         ),
       ),
       ListView.separated(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: 2,
+          itemCount:patients.length,
           separatorBuilder: (context, index) => SizedBox(
             height: 10,
           ),
@@ -99,7 +123,6 @@ Widget buildItem(){
                   children: [
                     Row(
                       children: [
-                        notificationDate=='TODAY'?
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Container(
@@ -110,7 +133,7 @@ Widget buildItem(){
                                 borderRadius: BorderRadius.circular(50)
                             ),
                           ),
-                        ):SizedBox(),
+                        ),
                         //image
                         Container(
                           width: 75,
@@ -147,7 +170,7 @@ Widget buildItem(){
                                   height: 5,
                                 ),
                                 Text(
-                                  'Nurse, Reem',
+                                  'New Patient',
                                   style: TextStyle(
                                       color: primaryColor,
                                       fontSize: 18.0,
@@ -156,7 +179,7 @@ Widget buildItem(){
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  'Has updated islam magdy record',
+                                  'Admin has added new Patient for You',
                                   style: TextStyle(
                                     color: Colors.grey[700],
                                     fontSize: 13.0,
@@ -177,7 +200,10 @@ Widget buildItem(){
                                         color: Colors.grey[500],
                                       ),
                                       Text(
-                                        '5mins ago',
+                                        '${DateFormat("hh:mm")
+                                            .format(DateTime
+                                            .parse(patients[index]
+                                            .registeredDate.toString()))}',
                                         style: TextStyle(
                                             color: Colors.grey[600]),
                                       ),
