@@ -1,11 +1,14 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
 import 'package:teledoctor/models/patient_model.dart';
+import 'package:teledoctor/models/room_model.dart';
 import 'package:teledoctor/shared/component/components.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 import '../../models/user_model.dart';
@@ -21,7 +24,15 @@ class CheckOutScreen extends StatelessWidget {
     var roomNo = TextEditingController();
     var enterBedNo = TextEditingController();
     var enterPricePerNight = TextEditingController();
+    RoomModel? roomModel;
+    AppCubit.get(context).rooms.forEach((element)
+    {
+      if(element.roomNo.toString()==model.roomNo)
+      {
+        roomModel=element;
+      }
 
+    });
     return BlocConsumer<AppCubit, AppState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -148,7 +159,8 @@ class CheckOutScreen extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              model.registeredDate.toString(),
+                              '${DateFormat("yyyy-MM-dd").format(DateTime.parse(model.registeredDate.toString()))}',
+
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -157,7 +169,8 @@ class CheckOutScreen extends StatelessWidget {
                               width: size.width*.1,
                             ),
                             Text(
-                              '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}',
+                              '${DateFormat("yyyy-MM-dd").format(DateTime.parse(DateTime.now().toString()))}',
+
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -200,7 +213,8 @@ class CheckOutScreen extends StatelessWidget {
                             Text(
                               '${cubit
                                   .daysBetween
-                                (DateTime.parse('${model.registeredDate}'),DateTime.now())}',
+                                (DateTime.parse('${model.registeredDate}')
+                                  ,DateTime.now())}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -232,7 +246,7 @@ class CheckOutScreen extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '#42145',
+                              '#${model.id}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -241,7 +255,12 @@ class CheckOutScreen extends StatelessWidget {
                               width: size.width*.15,
                             ),
                             Text(
-                              '5505LE',
+                              '${cubit
+                                  .daysBetween
+                                (DateTime
+                                  .parse('${model.registeredDate}')
+                                  ,DateTime.now())*int
+                                  .parse('${roomModel!.pricePerNight}')} \$',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -265,7 +284,7 @@ class CheckOutScreen extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '#1554151',
+                              '#${Random().nextInt(9999999)}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),

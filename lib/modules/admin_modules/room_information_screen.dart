@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:teledoctor/models/room_model.dart';
 import 'package:teledoctor/modules/admin_modules/add_patient_screen.dart';
 import '../../cubit/app_cubit.dart';
@@ -336,7 +337,8 @@ Widget buildItem(context,PatientModel patientModel) => InkWell(
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    'Enter Data :${patientModel.registeredDate}',
+
+                    'Enter Date :${DateFormat("yyyy-MM-dd").format(DateTime.parse(patientModel.registeredDate.toString()))}',
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 13.0,

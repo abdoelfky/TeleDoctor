@@ -45,7 +45,7 @@ dependencies:
   salomon_bottom_bar:
   iconsax:
   dropdown_button2:
-
+  intl:
   #FIREBASE
   firebase_core:
   firebase_auth:

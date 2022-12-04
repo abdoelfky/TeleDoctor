@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/models/patient_model.dart';
 import 'package:teledoctor/models/user_model.dart';
@@ -422,7 +423,7 @@ Widget buildItem(context,PatientModel model,index)=>InkWell(
 
                   Text(
 
-                    '${DateTime.parse(model.registeredDate.toString())}',
+                    '${DateFormat("yyyy-MM-dd").format(DateTime.parse(model.registeredDate.toString()))}',
 
                     style: TextStyle(
 
