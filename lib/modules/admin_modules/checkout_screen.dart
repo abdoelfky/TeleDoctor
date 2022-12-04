@@ -172,7 +172,9 @@ class CheckOutScreen extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '${DateFormat("yyyy-MM-dd").format(DateTime.parse(model.registeredDate.toString()))}',
+                              '${DateFormat("yyyy-MM-dd")
+                                  .format(DateTime
+                                  .parse(model.registeredDate.toString()))}',
 
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,

@@ -3,12 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/modules/doctor_nurse_modules/patient_details_2_screen.dart';
 import '../../cubit/app_cubit.dart';
 import '../../cubit/app_state.dart';
+import '../../models/patient_model.dart';
+import '../../models/user_model.dart';
 import '../../shared/component/components.dart';
 import '../../shared/constants/constants.dart';
 
 
 class PatientDetailsScreen1 extends StatelessWidget {
-  const PatientDetailsScreen1({Key? key}) : super(key: key);
+  final PatientModel  patientModel;
+
+  const PatientDetailsScreen1({super.key, required this.patientModel});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +21,19 @@ class PatientDetailsScreen1 extends StatelessWidget {
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           Size size = MediaQuery.of(context).size;
+
+          UserModel? doctor ;
+          UserModel? nurse ;
+          cubit.users.forEach((element) {
+            if(element.uId.toString()==patientModel.selectedDoctorUID)
+            {
+              doctor=element;
+            }
+            else if(element.uId.toString()==patientModel.selectedNurseUID)
+            {
+              nurse=element;
+            }
+          });
           return Scaffold(
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -112,8 +129,9 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                       height: 5,
                                     ),
                                     Text(
-                                      'Ahmed Mohamed Shiref Maher',
+                                      '${patientModel.name}',
                                       style: TextStyle(
+                                        color: primaryColor,
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold),
                                       maxLines: 1,
@@ -124,15 +142,22 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     ),
                                     Row(
                                       children: [
+                                        userModel!.type=="DOCTOR"?
                                         Text(
-                                          'Dr Reem',
+                                          'Dr. ${userModel!.name}',
+                                          style: TextStyle(color: Colors.grey,
+                                          fontWeight: FontWeight.w600,
+                                          ),
+                                        ):Text(
+                                          'Mrs. ${userModel!.name}',
                                           style: TextStyle(color: Colors.grey),
                                         ),
+
                                         SizedBox(
-                                          width: 80,
+                                          width: 15,
                                         ),
                                         Text(
-                                          '#21485',
+                                          '#${patientModel.id}',
                                           style: TextStyle(color: Colors.blue),
                                         ),
                                       ],
@@ -196,7 +221,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     height: size.height * .06,
                                   ),
                                   Text(
-                                    '21 Years',
+                                    '${patientModel.age} Years',
                                     style:
                                     TextStyle(fontWeight: FontWeight.bold),
                                   )
@@ -230,7 +255,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                   ),
                                   Text(
 
-                                    'Male',
+                                    '${patientModel.gender}',
                                     style:
                                     TextStyle(fontWeight: FontWeight.bold),
                                   )
@@ -358,7 +383,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         right: 8, left: 8),
                                     child: Text(
-                                      'Dr Ahmed Shiref',
+                                      'Dr ${doctor!.name}',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -377,7 +402,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         right: 8, left: 8),
                                     child: Text(
-                                      'Bed No. 207',
+                                      'Room No. ${patientModel.roomNo}',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -400,7 +425,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         right: 8, left: 8),
                                     child: Text(
-                                      'Mrs Reem',
+                                        'Mrs ${nurse!.name}',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -410,7 +435,17 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         right: 8, left: 50),
                                     child: TextButton(
-                                      child: Text('Chat with Reem'),
+                                      child:
+                                      doctor!.uId==uId?
+                                      Text('Chat with Mrs. ${nurse!.name}'
+                                      ,style: TextStyle(fontWeight: FontWeight.w600
+
+                                        ,fontSize: 15),
+                                      ):Text('Chat with Dr. ${doctor!.name}'
+                                        ,style: TextStyle(fontWeight: FontWeight.w600
+
+                                            ,fontSize: 15),
+                                      ),
                                       onPressed: ()
                                       {
 
@@ -425,25 +460,39 @@ class PatientDetailsScreen1 extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 20, bottom: 20, left: 20, right: 10),
-                        child: Image.asset(
-                          'images/normal rates.png',
-                          width: size.width * .05,
-                          height: size.height * .08,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal:15),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20, bottom: 20, left: 20, right: 10),
+                          child: Image.asset(
+                            'images/normal rates.png',
+                            width: size.width * .05,
+                            height: size.height * .08,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Normal Rates',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: blue3),
-                      )
-                    ],
+                        Text(
+                          'Normal Rates',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: blue3),
+                        ),
+                        Spacer(),
+                        uId==patientModel.selectedNurseUID?
+                        TextButton(onPressed: ()
+                        {
+
+                        },
+                            child:Text('Edit',style: TextStyle
+                              (
+                              color: primaryColor,
+                              fontSize:16
+                            ),)):SizedBox()
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -571,14 +620,17 @@ class PatientDetailsScreen1 extends StatelessWidget {
                       )
                     ],
                   ),
+                  uId==patientModel.selectedNurseUID?
                   Padding(
                       padding:
                       const EdgeInsets.only(left: 20, right: 20, top: 20),
                       child: defaultButton2(
+                        width: size.width*.7,
+                          height: 60,
                           string: 'ADD New Recored',
                           function: () {
                             navigateTo(context, PatientDetailsScreen2());
-                          })),
+                          })):SizedBox(),
 
                   //recored
                   Padding(

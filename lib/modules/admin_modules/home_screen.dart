@@ -18,121 +18,133 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit,AppState>(
-      listener:(context,state)
-      {
-
-
-      } ,
-      builder:(context,state)
-      {
-        var cubit=AppCubit.get(context);
-        Size size=MediaQuery.of(context).size;
+    return BlocConsumer<AppCubit, AppState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        var cubit = AppCubit.get(context);
+        Size size = MediaQuery.of(context).size;
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Padding(
-            padding:  EdgeInsets.only(top:size.height*.065,left:size.width*.08,right:size.width*.08 ),
+            padding: EdgeInsets.only(
+                top: size.height * .065,
+                left: size.width * .08,
+                right: size.width * .08),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-
-              children:
-              [
-                const Text('Manage User',style: TextStyle(fontSize: 18,
-                fontWeight:FontWeight.w600
-                ),
-                ),
-                const Text('Accounts',style: TextStyle(fontSize: 18,
-                    fontWeight:FontWeight.w600
-                ),),
-                const SizedBox(height: 10,),
+              children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children:
-                  [
-                    HomeScreenItem(size,'add new account','Add New Account'
-                        ,context,AddNewAccountScreen(),cubit),
-                    const SizedBox(width:15,),
-                    HomeScreenItem(size,'edit account','Edit Account',
-                        context,EditScreen1(),cubit),
-
-
-
+                  children: [
+                    const Text(
+                      'Manage User',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
+                    Spacer(),
+                    IconButton(
+                        onPressed: ()
+                        {
+                          cubit.logOut(context);
+                        },
+                        icon: Icon(
+                          Icons.logout,
+                          color: Colors.red[600],
+                        ))
                   ],
                 ),
-                const SizedBox(height: 20,),
-                const Text('Manage Hospital',style: TextStyle(fontSize: 18,
-                    fontWeight:FontWeight.w600
+                const Text(
+                  'Accounts',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
+                const SizedBox(
+                  height: 10,
                 ),
-                const Text('Rooms',style: TextStyle(fontSize: 18,
-                    fontWeight:FontWeight.w600
-                ),),
-                const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children:
-                  [
-                    HomeScreenItem(size,'add new room','Add New Room'
-                        ,context,AddNewRoomsScreen(),cubit),
-                    const SizedBox(width:15,),
-                    HomeScreenItem(size,'full rooms','Full Rooms'
-                        ,context,FullRoomsScreen(),cubit),
-
-
-
+                  children: [
+                    HomeScreenItem(size, 'add new account', 'Add New Account',
+                        context, AddNewAccountScreen(), cubit),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    HomeScreenItem(size, 'edit account', 'Edit Account',
+                        context, EditScreen1(), cubit),
                   ],
                 ),
-                const SizedBox(height: 10,),
-                HomeScreenItem(size,'empty rooms','Empty Rooms'
-                    ,context,EmptyRoomsScreen(),cubit),
-
-
-
-
-
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  'Manage Hospital',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                const Text(
+                  'Rooms',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    HomeScreenItem(size, 'add new room', 'Add New Room',
+                        context, AddNewRoomsScreen(), cubit),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    HomeScreenItem(size, 'full rooms', 'Full Rooms', context,
+                        FullRoomsScreen(), cubit),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                HomeScreenItem(size, 'empty rooms', 'Empty Rooms', context,
+                    EmptyRoomsScreen(), cubit),
               ],
             ),
           ),
         );
-      } ,
-
+      },
     );
   }
 }
 
-Widget HomeScreenItem(size,logoName,text,context,screen,AppCubit cubit)=>InkWell(
-  onTap: ()
-  {
-    navigateTo(context,screen);
-    cubit.getAllUsers();
-    cubit.getAllRooms();
-    cubit.getAllPatients();
-
-  },
-  child:   Container(
-    width:size.width*.4 ,
-    height:size.height*.2 ,
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color:blue5,
-        )
-    ),
-    child:Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children:
-      [
-        Image(image: AssetImage('images/${logoName}.png',),
-          width:size.width*.27 ,
-          height:size.height*.1 ,
+Widget HomeScreenItem(size, logoName, text, context, screen, AppCubit cubit) =>
+    InkWell(
+      onTap: () {
+        navigateTo(context, screen);
+        cubit.getAllUsers();
+        cubit.getAllRooms();
+        cubit.getAllPatients();
+      },
+      child: Container(
+        width: size.width * .4,
+        height: size.height * .2,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: blue5,
+            )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image(
+              image: AssetImage(
+                'images/${logoName}.png',
+              ),
+              width: size.width * .27,
+              height: size.height * .1,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              '${text}',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
+          ],
         ),
-        SizedBox(height: 10,),
-        Text('${text}',style: TextStyle(fontSize: 15,
-            fontWeight:FontWeight.w600
-        ),
-        ),
-
-      ],
-    ),
-  ),
-);
+      ),
+    );

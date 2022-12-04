@@ -1,259 +1,239 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
+import 'package:teledoctor/models/patient_model.dart';
 import 'package:teledoctor/modules/doctor_nurse_modules/patient_details_1_screen.dart';
 import 'package:teledoctor/modules/doctor_nurse_modules/patient_details_2_screen.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 
 import '../../shared/component/components.dart';
+import '../../shared/local/shared_preference.dart';
 
 class DoctorAndNurseHomeScreen extends StatelessWidget {
   const DoctorAndNurseHomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit,AppState>(
-        listener:(context,state)
-        {
+    return BlocConsumer<AppCubit, AppState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = AppCubit.get(context);
+          Size size = MediaQuery.of(context).size;
+          String uId=CacheHelper.getData(key: 'uId');
+          List<PatientModel> patients = [];
+          cubit.patients.forEach((element) {
+            if(element.selectedDoctorUID.toString()==uId||element.selectedNurseUID.toString()==uId)
+            {
+            patients.insert(patients.length, element);
 
-        },
-         builder:(context,state)
-         {
-           var cubit=AppCubit.get(context);
-           Size size=MediaQuery.of(context).size;
-           return SingleChildScrollView(
-             physics: BouncingScrollPhysics(),
-             child: Padding(
-               padding:  EdgeInsets.only(top:size.height*.07,left:size.width*.08,right:size.width*.08 ),
-               child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
-                 children:
-                 [
-                   const Text('Good evening,',style: TextStyle(fontSize:22,
-                       fontWeight:FontWeight.w600
-                   ),),
-                   Row(
-                     children: [
-                       Text('Mrs. ${userModel!.name}',style: TextStyle(fontSize: 22,
-                           fontWeight:FontWeight.w600
-                       ),),
-                       SizedBox(width: 8,),
-                       Icon(Icons.front_hand_rounded,color: Colors.yellow[700],)
-                     ],
-                   ),
-                   SizedBox(height: 22  ,),
-                   Row(
-                     children: [
-                       Text('Patient\'s List',style: TextStyle(fontSize:18,
-                           fontWeight:FontWeight.w600
-                       ),),
-                       Spacer(),
-                       Container(
-                         width:87 ,
-                         height:30,
-                         decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(5),
-                           border: Border.all(color: Colors.grey.shade400,width: 2),
+            }
+          });
 
-                         ),
-                         child: Row(
-                           children:
-                           [
-                             Icon((Icons.sort),color: Colors.grey.shade500),
-                             Spacer(),
-                             Text('A-Z',style: TextStyle(color: Colors.grey.shade500),),
-                             Spacer(),
-                             Icon(Icons.keyboard_arrow_up_outlined,color: Colors.grey.shade500)
-                           ],
-                         ),
-                       )
-                     ],
-                   ),
-                   SizedBox(height: 10,),
-                   ListView.separated(
-                     physics: const NeverScrollableScrollPhysics(),
-                     shrinkWrap: true,
-                     itemCount: 9,
-                     itemBuilder:(context,index)=>buildItem(context),
-                     separatorBuilder:(context,index)=>SizedBox(height:12,) ,
-                   )
-
-                 ],
-               ),
-             ),
-           );
-         }
-
-    );
+          return SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: size.height * .07,
+                  left: size.width * .08,
+                  right: size.width * .08),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        'Good evening,',
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                      ),
+                      Spacer(),
+                      IconButton(onPressed:()
+                      {
+                        cubit.logOut(context);
+                      },
+                          icon:Icon(Icons.logout,color: Colors.red[600],))
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      userModel!.type=="DOCTOR"?
+                      Text(
+                        'Dr. ${userModel!.name}',
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.w600),
+                      ):Text(
+                        'Mrs. ${userModel!.name}',
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Icon(
+                        Icons.front_hand_rounded,
+                        color: Colors.yellow[700],
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 22,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Patient\'s List',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                      Spacer(),
+                      Container(
+                        width: 87,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border:
+                              Border.all(color: Colors.grey.shade400, width: 2),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon((Icons.sort), color: Colors.grey.shade500),
+                            Spacer(),
+                            Text(
+                              'A-Z',
+                              style: TextStyle(color: Colors.grey.shade500),
+                            ),
+                            Spacer(),
+                            Icon(Icons.keyboard_arrow_up_outlined,
+                                color: Colors.grey.shade500)
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  patients.isNotEmpty?
+                  ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: patients.length,
+                    itemBuilder: (context, index) =>
+                        buildItem(context, patients[index]),
+                    separatorBuilder: (context, index) => SizedBox(
+                      height: 12,
+                    ),
+                  ):
+                  Padding(
+                    padding:  EdgeInsets.symmetric(vertical: size.height*.2),
+                    child: Center(child:
+                      Text('No Patients Add Yet',style: TextStyle
+                        (
+                        fontSize: 25,
+                        fontWeight: FontWeight.w500
+                      ),)
+                      ,),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
-Widget buildItem(context)=>InkWell(
-  onTap: (){
-    navigateTo(context,PatientDetailsScreen1());
 
-  },
-  child:   Card(
-    color: Colors.grey[100],
+Widget buildItem(context, PatientModel patient) => InkWell(
+      onTap: () {
+        navigateTo(context, PatientDetailsScreen1(patientModel: patient,));
+      },
+      child: Card(
+        color: Colors.grey[100],
 
-    elevation: 5,
+        elevation: 5,
 
-    shape: RoundedRectangleBorder(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15))),
 
-        borderRadius: BorderRadius.all(
+        //  color: Colors.blue,
 
-            Radius.circular(15))),
-
-    //  color: Colors.blue,
-
-    child: Padding(
-
-      padding: const EdgeInsets.only(
-
-        right: 12, left:12,top:12,bottom:12),
-
-      child: Container(
-
-        child: Row(
-
-          children: [
-            //image
-            Container(
-
-              width:80 ,
-
-              height:85 ,
-
-              decoration: BoxDecoration(
-
-                  borderRadius: BorderRadius.circular(6),
-
-                  border: Border.all(
-
-                    width: 6,
-
-                    color:Colors.white,
-
-                  )
-
-              ),
-
-              child:Center(
-
-                child: Image(image: AssetImage('images/profile.jpeg',),
-                  fit: BoxFit.fill,
-
-                  width:100 ,
-
-                  height:100 ,
-
+        child: Padding(
+          padding:
+              const EdgeInsets.only(right: 12, left: 12, top: 12, bottom: 12),
+          child: Container(
+            child: Row(
+              children: [
+                //image
+                Container(
+                  width: 80,
+                  height: 85,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        width: 6,
+                        color: Colors.white,
+                      )),
+                  child: Center(
+                    child: Image(
+                      image: AssetImage(
+                        'images/profile.jpeg',
+                      ),
+                      fit: BoxFit.fill,
+                      width: 100,
+                      height: 100,
+                    ),
+                  ),
                 ),
 
-              ),
+                SizedBox(
+                  width: 10.0,
+                ),
 
-            ),
-
-            SizedBox(
-
-              width: 10.0,
-
-            ),
-
-            Expanded(
-
-              child: Column(
-
-                crossAxisAlignment:
-
-                CrossAxisAlignment.start,
-
-                children: [
-
-                  SizedBox(
-
-                    height: 5,
-
-                  ),
-
-                  Text(
-
-                    'Islam Magdi Abdelsattar',
-
-                    style: TextStyle(
-
-                        fontSize: 16.0,
-
-                        fontWeight:
-
-                        FontWeight
-
-                            .bold),
-
-                    maxLines: 1,
-
-                    overflow: TextOverflow
-
-                        .ellipsis,
-
-                  ),
-
-                  Text(
-
-                    'Enter Data : 25,Nov 2022',
-
-                    style: TextStyle(
-
-                      color: Colors.grey,
-
-                      fontSize: 13.0,
-
-                      fontWeight:
-
-                      FontWeight.w200,
-
-                    ),
-
-                    maxLines: 1,
-
-                    overflow: TextOverflow
-
-                        .ellipsis,
-
-                  ),
-
-                  Row(
-
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
-                      Text(
-
-                        'Room No: 3',
-
-                        style: TextStyle(color:primaryColor),
-
+                      SizedBox(
+                        height: 5,
                       ),
-
-                      Spacer(),
-
-                      Text('Active',style:TextStyle(color: Colors.red[800]),),
-
+                      Text(
+                        '${patient.name}',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        'Registered Date: ${DateFormat("yyyy-MM-dd")
+                            .format(DateTime
+                            .parse(patient.registeredDate.toString()))}',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w200,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '${patient.roomNo}',
+                            style: TextStyle(color: primaryColor),
+                          ),
+                          Spacer(),
+                          Text(
+                            'Active',
+                            style: TextStyle(color: Colors.red[800]),
+                          ),
+                        ],
+                      ),
                     ],
-
                   ),
-
-                ],
-
-              ),
-
+                ),
+              ],
             ),
-
-          ],
-
+          ),
         ),
-
       ),
-
-    ),
-
-  ),
-);
+    );
