@@ -78,23 +78,23 @@ class CheckOutScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-            QrImage(
-              data:'Name :${model.name} , '
-                  'Room Number :${model.roomNo} , '
-                  'Nights Number :${cubit
-                  .daysBetween
-                (DateTime.parse('${model.registeredDate}')
-                  ,DateTime.now())} , '
-                  'Patient ID :${model.id} , '
-                  'Total Cash :${cubit
-                  .daysBetween
-                (DateTime
-                  .parse('${model.registeredDate}')
-                  ,DateTime.now())*int
-                  .parse('${roomModel!.pricePerNight}')}  , ',
-              version: QrVersions.auto,
-              size: 170.0,
-            ),
+                  QrImage(
+                    data:'Name :${model.name} , '
+                        'Room Number :${model.roomNo} , '
+                        'Nights Number :${cubit
+                        .daysBetween
+                      (DateTime.parse('${model.registeredDate}')
+                        ,DateTime.now())}  '
+                        'Patient ID :${model.id} , '
+                        'Total Cash :${cubit
+                        .daysBetween
+                      (DateTime
+                        .parse('${model.registeredDate}')
+                        ,DateTime.now())*int
+                        .parse('${roomModel!.pricePerNight}')}  , ',
+                    version: QrVersions.auto,
+                    size: 170.0,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(
                       right: 110, left: 110,
@@ -137,7 +137,7 @@ class CheckOutScreen extends StatelessWidget {
                                   color: Colors.black),
                             ),
                             SizedBox(
-                              width: size.width*.06,
+                              width: size.width*.26,
                             ),
                             Text(
                               model.roomNo.toString(),
@@ -179,55 +179,11 @@ class CheckOutScreen extends StatelessWidget {
                                   color: Colors.black),
                             ),
                             SizedBox(
-                              width: size.width*.1,
+                              width: size.width*.08,
                             ),
                             Text(
                               '${DateFormat("yyyy-MM-dd").format(DateTime.parse(DateTime.now().toString()))}',
 
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Add ons',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey),
-                            ),
-                            SizedBox(
-                              width: 55,
-                            ),
-                            Text(
-                              'Nights No',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '3500LE',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                            SizedBox(
-                              width: size.width*.15,
-                            ),
-                            Text(
-                              '${cubit
-                                  .daysBetween
-                                (DateTime.parse('${model.registeredDate}')
-                                  ,DateTime.now())}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -246,10 +202,11 @@ class CheckOutScreen extends StatelessWidget {
                                   color: Colors.grey),
                             ),
                             SizedBox(
-                              width: 40,
+
+                              width: 45,
                             ),
                             Text(
-                              'Total Cash',
+                              'Nights No',
                               style: TextStyle(
                                   fontWeight: FontWeight.normal,
                                   color: Colors.grey),
@@ -265,15 +222,13 @@ class CheckOutScreen extends StatelessWidget {
                                   color: Colors.black),
                             ),
                             SizedBox(
-                              width: size.width*.15,
+                              width: size.width*.25,
                             ),
                             Text(
                               '${cubit
                                   .daysBetween
-                                (DateTime
-                                  .parse('${model.registeredDate}')
-                                  ,DateTime.now())*int
-                                  .parse('${roomModel!.pricePerNight}')} \$',
+                                (DateTime.parse('${model.registeredDate}')
+                                  ,DateTime.now())} Nights',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -291,7 +246,15 @@ class CheckOutScreen extends StatelessWidget {
                                   fontWeight: FontWeight.normal,
                                   color: Colors.grey),
                             ),
-
+                            SizedBox(
+                              width: 40,
+                            ),
+                            Text(
+                              'Total Cash',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.grey),
+                            ),
                           ],
                         ),
                         Row(
@@ -302,8 +265,27 @@ class CheckOutScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
                             ),
+                            SizedBox(
+                              width: size.width*.14,
+                            ),
+                            Text(
+                              '${cubit
+                                  .daysBetween
+                                (DateTime
+                                  .parse('${model.registeredDate}')
+                                  ,DateTime.now())*int
+                                  .parse('${roomModel!.pricePerNight}')} \$',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
                           ],
                         ),
+                        SizedBox(
+                          height: 10,
+                        ),
+
+
                       ],
                     ),
                   ),
