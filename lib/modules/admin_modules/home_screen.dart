@@ -106,6 +106,7 @@ Widget HomeScreenItem(size,logoName,text,context,screen,AppCubit cubit)=>InkWell
     navigateTo(context,screen);
     cubit.getAllUsers();
     cubit.getAllRooms();
+    cubit.getAllPatients();
 
   },
   child:   Container(

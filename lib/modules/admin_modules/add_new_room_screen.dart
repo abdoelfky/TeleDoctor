@@ -9,7 +9,10 @@ import 'package:teledoctor/shared/component/components.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 
 class AddNewRoomsScreen extends StatelessWidget {
-
+  final List<String> floors = [
+    '1',
+    '2',
+  ];
   var formKey = GlobalKey<FormState>();
 
   @override
@@ -98,7 +101,7 @@ class AddNewRoomsScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 20, right: 20),
                       child: defaultFormFeild1(
-                          inputType: TextInputType.text,
+                          inputType: TextInputType.number,
                           validatorText: 'Rome Number must not be empty',
                           controller: roomNoController, labelText: 'Room No'),
                     ),
@@ -107,11 +110,76 @@ class AddNewRoomsScreen extends StatelessWidget {
                     Padding(
                       padding:
                       const EdgeInsets.only(left: 20, right: 20, top: 20),
-                      child: defaultFormFeild1(
-                          inputType: TextInputType.text,
-                          validatorText: 'Floor number must not be empty',
-                          controller: floorNumberController,
-                          labelText: 'Floor Number'),
+                      child:DropdownButtonFormField2(
+                        focusColor: primaryColor,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: BorderSide(
+                              color: primaryColor,
+                              width: 2,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: BorderSide(
+                              color: primaryColor,
+                              width: 3,
+                            ),
+                          ),
+                          //Add isDense true and zero Padding.
+                          //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                          isDense: true,
+                          contentPadding: EdgeInsets.zero,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          //Add more decoration as you want here
+                          //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                        ),
+                        isExpanded: true,
+                        hint: Text(
+                          'Select Floor',
+                          style: TextStyle(
+                            fontSize: 22,
+                            color: primaryColor,
+                          ),
+                        ),
+                        icon: Icon(
+                          Icons.arrow_drop_down,
+                          color: primaryColor,
+                        ),
+                        iconSize: 30,
+                        buttonHeight: 60,
+                        buttonPadding:
+                        const EdgeInsets.only(left: 20, right: 10),
+                        dropdownDecoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        items: floors
+                            .map((item) => DropdownMenuItem<String>(
+                          value: '${item}',
+                          child: Text(
+                            'Floor Number ${item}',
+                            style: TextStyle(
+                                fontSize: 20, color: primaryColor),
+                          ),
+                        ))
+                            .toList(),
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select Floor';
+                          }
+                        },
+                        onChanged: (value) {
+                          cubit.changeSelectedRoom(
+                              floorSelectedVal: value.toString());
+                          floorNumberController.text=value.toString();
+                          // floorSelectedValue=value.toString();
+                        },
+                        onSaved: (value) {},
+                      ),
+
                     ),
 
 

@@ -360,26 +360,27 @@ class AppCubit extends Cubit<AppState> {
       patientList.insert(patientList.length,newPatient);
 
 
-      rooms.forEach((element) async {
-        if (element.roomType.toString().toUpperCase() == 'EMPTY'
-            &&element.roomNo.toString() == roomNo
-            &&element.bedsNo==(patientList.length).toString()) {
-
-          await FirebaseFirestore.instance.collection('rooms')
-              .doc(roomNo).update({'roomType':'FULL'});
-
-          // print('${element.bedsNo},,,,:${patientList.length}');
-
-        }
-
-      });
-
     }
     else
     {
       patientList.insert(0,newPatient);
 
     }
+
+
+    rooms.forEach((element) async {
+      if (element.roomType.toString().toUpperCase() == 'EMPTY'
+          &&element.roomNo.toString() == roomNo
+          &&element.bedsNo.toString()==(patientList.length).toString()) {
+
+        await FirebaseFirestore.instance.collection('rooms')
+            .doc(roomNo).update({'roomType':'FULL'});
+
+        print('${element.bedsNo},,,,:${patientList.length}');
+
+      }
+
+    });
     print('patientList: ${patientList}');
 
     await FirebaseFirestore.instance.collection('rooms')
