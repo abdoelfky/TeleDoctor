@@ -94,4 +94,20 @@ class GetAllPatientsSuccessState extends AppState{}
 class GetAllPatientsErrorState extends AppState{
   final error;
   GetAllPatientsErrorState(this.error);
+
+
+}class GetRecordLoadingState extends AppState{}
+
+class GetRecordSuccessState extends AppState{}
+
+class GetRecordErrorState extends AppState{
+  final error;
+  GetRecordErrorState(this.error);
+}
+
+class AddNewRecordSuccessState extends AppState{}
+
+class AddNewRecordErrorState extends AppState{
+  final error;
+  AddNewRecordErrorState(this.error);
 }

@@ -26,7 +26,7 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
           cubit.patients.forEach((element) {
             if(element.selectedDoctorUID.toString()==uId||element.selectedNurseUID.toString()==uId)
             {
-            patients.insert(patients.length, element);
+              patients.insert(patients.length, element);
 
             }
           });
@@ -93,7 +93,7 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           border:
-                              Border.all(color: Colors.grey.shade400, width: 2),
+                          Border.all(color: Colors.grey.shade400, width: 2),
                         ),
                         child: Row(
                           children: [
@@ -128,11 +128,11 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
                   Padding(
                     padding:  EdgeInsets.symmetric(vertical: size.height*.2),
                     child: Center(child:
-                      Text('No Patients Add Yet',style: TextStyle
-                        (
+                    Text('No Patients Add Yet',style: TextStyle
+                      (
                         fontSize: 25,
                         fontWeight: FontWeight.w500
-                      ),)
+                    ),)
                       ,),
                   )
                 ],
@@ -144,96 +144,96 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
 }
 
 Widget buildItem(context, PatientModel patient) => InkWell(
-      onTap: () {
-        navigateTo(context, PatientDetailsScreen1(patientModel: patient,));
-      },
-      child: Card(
-        color: Colors.grey[100],
+  onTap: () {
+    navigateTo(context, PatientDetailsScreen1(patientModel: patient,));
+  },
+  child: Card(
+    color: Colors.grey[100],
 
-        elevation: 5,
+    elevation: 5,
 
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15))),
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(15))),
 
-        //  color: Colors.blue,
+    //  color: Colors.blue,
 
-        child: Padding(
-          padding:
-              const EdgeInsets.only(right: 12, left: 12, top: 12, bottom: 12),
-          child: Container(
-            child: Row(
-              children: [
-                //image
-                Container(
-                  width: 80,
-                  height: 85,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(
-                        width: 6,
-                        color: Colors.white,
-                      )),
-                  child: Center(
-                    child: Image(
-                      image: AssetImage(
-                        'images/profile.jpeg',
-                      ),
-                      fit: BoxFit.fill,
-                      width: 100,
-                      height: 100,
-                    ),
+    child: Padding(
+      padding:
+      const EdgeInsets.only(right: 12, left: 12, top: 12, bottom: 12),
+      child: Container(
+        child: Row(
+          children: [
+            //image
+            Container(
+              width: 80,
+              height: 85,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                    width: 6,
+                    color: Colors.white,
+                  )),
+              child: Center(
+                child: Image(
+                  image: AssetImage(
+                    'images/profile.jpeg',
                   ),
+                  fit: BoxFit.fill,
+                  width: 100,
+                  height: 100,
                 ),
+              ),
+            ),
 
-                SizedBox(
-                  width: 10.0,
-                ),
+            SizedBox(
+              width: 10.0,
+            ),
 
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    '${patient.name}',
+                    style: TextStyle(
+                        fontSize: 16.0, fontWeight: FontWeight.bold),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    'Registered Date: ${DateFormat("yyyy-MM-dd")
+                        .format(DateTime
+                        .parse(patient.registeredDate.toString()))}',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13.0,
+                      fontWeight: FontWeight.w200,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Row(
                     children: [
-                      SizedBox(
-                        height: 5,
-                      ),
                       Text(
-                        '${patient.name}',
-                        style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.bold),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        'Room No : ${patient.roomNo}',
+                        style: TextStyle(color: primaryColor),
                       ),
+                      Spacer(),
                       Text(
-                        'Registered Date: ${DateFormat("yyyy-MM-dd")
-                            .format(DateTime
-                            .parse(patient.registeredDate.toString()))}',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w200,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            '${patient.roomNo}',
-                            style: TextStyle(color: primaryColor),
-                          ),
-                          Spacer(),
-                          Text(
-                            'Active',
-                            style: TextStyle(color: Colors.red[800]),
-                          ),
-                        ],
+                        'Active',
+                        style: TextStyle(color: Colors.red[800]),
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
-    );
+    ),
+  ),
+);

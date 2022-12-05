@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:teledoctor/models/user_model.dart';
+import 'package:teledoctor/models/user_model.dart';
 import 'package:teledoctor/modules/doctor_nurse_modules/patient_details_2_screen.dart';
 import '../../cubit/app_cubit.dart';
 import '../../cubit/app_state.dart';
 import '../../models/patient_model.dart';
+import '../../models/record_model.dart';
+import '../../models/user_model.dart';
+import '../../models/user_model.dart';
 import '../../models/user_model.dart';
 import '../../shared/component/components.dart';
 import '../../shared/constants/constants.dart';
@@ -13,7 +19,9 @@ import '../../shared/local/shared_preference.dart';
 class PatientDetailsScreen1 extends StatelessWidget {
   final PatientModel  patientModel;
 
-  const PatientDetailsScreen1({super.key, required this.patientModel});
+
+
+  const PatientDetailsScreen1({super.key, required this.patientModel, });
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +44,22 @@ class PatientDetailsScreen1 extends StatelessWidget {
               nurse=element;
             }
           });
+
+          List<RecoredModel> records=cubit.records;
+          List <RecoredModel> patientRecords=[];
+
+          records.forEach((recordElement)
+          {
+            if(patientModel.id==recordElement.patientId.toString())
+            {
+              patientRecords.insert(patientRecords.length,recordElement);
+            }
+
+          });
+
+
+
+
           return Scaffold(
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -133,7 +157,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     Text(
                                       '${patientModel.name}',
                                       style: TextStyle(
-                                        color: primaryColor,
+                                          color: primaryColor,
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold),
                                       maxLines: 1,
@@ -148,19 +172,20 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                         Text(
                                           'Dr. ${userModel!.name}',
                                           style: TextStyle(color: Colors.grey,
-                                          fontWeight: FontWeight.w600,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ):Text(
                                           'Mrs. ${userModel!.name}',
                                           style: TextStyle(color: Colors.grey),
                                         ),
 
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          '#${patientModel.id}',
-                                          style: TextStyle(color: Colors.blue),
+                                        Spacer(),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            '#${patientModel.id}',
+                                            style: TextStyle(color: Colors.blue),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -290,10 +315,14 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     height: size.height * .06,
                                   ),
                                   Text(
-                                    '25, Nov 22',
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                  )
+                                    '${DateFormat("yy-MM-dd")
+                                        .format(DateTime
+                                        .parse(patientModel.registeredDate.toString()))}',
+
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
                                 ],
                               ),
                             )
@@ -393,7 +422,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        right: 8, left: 8),
+                                        right: 15, left: 60),
                                     child: Image.asset(
                                       'images/bed.png',
                                       width: size.width * .09,
@@ -427,7 +456,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         right: 8, left: 8),
                                     child: Text(
-                                        'Mrs ${nurse!.name}',
+                                      'Mrs ${nurse!.name}',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -440,9 +469,9 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                       child:
                                       doctor!.uId==uId?
                                       Text('Chat with Mrs. ${nurse!.name}'
-                                      ,style: TextStyle(fontWeight: FontWeight.w600
+                                        ,style: TextStyle(fontWeight: FontWeight.w600
 
-                                        ,fontSize: 15),
+                                            ,fontSize: 15),
                                       ):Text('Chat with Dr. ${doctor!.name}'
                                         ,style: TextStyle(fontWeight: FontWeight.w600
 
@@ -490,8 +519,8 @@ class PatientDetailsScreen1 extends StatelessWidget {
                         },
                             child:Text('Edit',style: TextStyle
                               (
-                              color: primaryColor,
-                              fontSize:16
+                                color: primaryColor,
+                                fontSize:16
                             ),)):SizedBox()
                       ],
                     ),
@@ -627,11 +656,13 @@ class PatientDetailsScreen1 extends StatelessWidget {
                       padding:
                       const EdgeInsets.only(left: 20, right: 20, top: 20),
                       child: defaultButton2(
-                        width: size.width*.7,
+                          width: size.width*.7,
                           height: 60,
                           string: 'ADD New Recored',
                           function: () {
-                            navigateTo(context, PatientDetailsScreen2());
+                            navigateTo(context,
+                                PatientDetailsScreen2(patientModel: patientModel,));
+
                           })):SizedBox(),
 
                   //recored
@@ -640,8 +671,8 @@ class PatientDetailsScreen1 extends StatelessWidget {
                     child: ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: 4,
-                      itemBuilder: (context, index) => buildItem(context, size),
+                      itemCount: patientRecords.length,
+                      itemBuilder: (context, index) => buildItem(context, size,patientRecords[index],nurse!),
                       separatorBuilder: (context, index) => SizedBox(
                         height: 8,
                       ),
@@ -655,59 +686,63 @@ class PatientDetailsScreen1 extends StatelessWidget {
   }
 }
 
-Widget buildItem(context, size) => Padding(
-  padding: EdgeInsets.symmetric(horizontal: size.width * .03),
-  child: Row(
-    children: [
-      Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.grey.shade300,
-        ),
-        width: size.width * .93,
-        height: size.height * .2,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    'Dr Ahmed Shiref',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+Widget buildItem(context, size,RecoredModel recordModel,UserModel nurse) {
+
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: size.width * .03),
+    child: Row(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.grey.shade300,
+          ),
+          width: size.width * .93,
+          height: size.height * .2,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text('Mrs. ${nurse.name}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.watch_later,
-                        color: Colors.blue,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        '5min ago',
-                        style: TextStyle(color: Colors.blue),
-                      )
-                    ],
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.watch_later,
+                          color: Colors.blue,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          '${DateFormat("MM-dd hh:mm").format(DateTime.parse(recordModel.registeredDate.toString()))}',
+                          style: TextStyle(color: Colors.blue),
+                        )
+                      ],
+                    ),
                   ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  '${recordModel.data}',
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                  'kjdchsxzbukjhbkjhzxnckjnx o nosdihzoascilz iwoqocahsnxzouilcsah n '),
-            ),
-          ],
-        ),
-      )
-    ],
-  ),
-);
+              ),
+            ],
+          ),
+        )
+      ],
+    ),
+  );}

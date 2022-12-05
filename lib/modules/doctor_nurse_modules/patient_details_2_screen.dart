@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../cubit/app_cubit.dart';
 import '../../cubit/app_state.dart';
-
+import '../../models/patient_model.dart';
 import '../../shared/component/components.dart';
 import '../../shared/constants/constants.dart';
+import '../../shared/local/shared_preference.dart';
 
 
 
 class PatientDetailsScreen2 extends StatelessWidget {
-  const PatientDetailsScreen2({Key? key}) : super(key: key);
+  const PatientDetailsScreen2({required this.patientModel,});
+  final PatientModel patientModel;
+
+
 
 
 
@@ -18,11 +21,27 @@ class PatientDetailsScreen2 extends StatelessWidget {
   Widget build(BuildContext context) {
     var recordController =TextEditingController();
     return BlocConsumer<AppCubit, AppState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is AddNewRecordSuccessState)
+          {
+            showToast(text:'Record Added Successfully'
+                , state: ToastStates.SUCCESS
+            );
+            Navigator.pop(context);
+            AppCubit.get(context).getAllRecords();
+          }
+          else if (state is AddNewRecordErrorState)
+          {
+            showToast(text:'${state.error.toString()}'
+                , state: ToastStates.ERROR
+            );
+            Navigator.pop(context);
+          }
+        },
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           Size size = MediaQuery.of(context).size;
-
+          String uId=CacheHelper.getData(key: 'uId');
 
 
           return Scaffold(
@@ -69,7 +88,7 @@ class PatientDetailsScreen2 extends StatelessWidget {
                   ),
                   //Patient Card
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    padding: const EdgeInsets.all(8.0),
                     child: Card(
                       color: Colors.grey[100],
 
@@ -118,30 +137,41 @@ class PatientDetailsScreen2 extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     Text(
-                                      'Ahmed Mohamed Shiref',
+                                      '${patientModel.name}',
                                       style: TextStyle(
-                                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                                          color: primaryColor,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     SizedBox(
-                                      height: 12,
+                                      height: 10,
                                     ),
-
                                     Row(
                                       children: [
+                                        userModel!.type=="DOCTOR"?
                                         Text(
-                                          'Dr Shiref',
-                                          style: TextStyle(color: primaryColor),
+                                          'Dr. ${userModel!.name}',
+                                          style: TextStyle(color: Colors.grey,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ):Text(
+                                          'Mrs. ${userModel!.name}',
+                                          style: TextStyle(color: Colors.grey),
                                         ),
-                                        SizedBox(
-                                          width: size.width*.2,
-                                        ),
-                                        Text(
-                                          '#1545145',
-                                          style: TextStyle(color: primaryColor),
+
+                                        Spacer(),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            '#${patientModel.id}',
+                                            style: TextStyle(color: Colors.blue),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -172,9 +202,21 @@ class PatientDetailsScreen2 extends StatelessWidget {
                       padding:
                       const EdgeInsets.only(left: 20, right: 20, top: 20),
                       child:defaultButton2(
+                          height: 60,
                           string: 'ADD Record',
                           function: ()
                           {
+
+                            cubit.addNewRecord(
+
+                                registeredDate:DateTime.now().toString(),
+                                selectedDoctorUID: patientModel.selectedDoctorUID,
+                                selectedNurseUID: patientModel.selectedNurseUID,
+                                patientId: patientModel.id,
+                                data: recordController.text.trim()
+
+                            );
+                            cubit.getAllRecords();
 
                           }
                       )
@@ -193,7 +235,5 @@ class PatientDetailsScreen2 extends StatelessWidget {
         });
   }
 }
-
-
 
 
