@@ -78,6 +78,13 @@ class AddNewPatientErrorState extends AppState{
   AddNewPatientErrorState(this.error);
 }
 
+class UpdatePatientRecordSuccessState extends AppState{}
+
+class UpdatePatientRecordErrorState extends AppState{
+  final error;
+  UpdatePatientRecordErrorState(this.error);
+}
+
 class GetAllUsersLoadingState extends AppState{}
 
 class GetAllUsersSuccessState extends AppState{}
@@ -111,3 +118,19 @@ class AddNewRecordErrorState extends AppState{
   final error;
   AddNewRecordErrorState(this.error);
 }
+
+class SendNotificationSuccessState extends AppState{}
+
+class SendNotificationErrorState extends AppState{
+  final error;
+  SendNotificationErrorState(this.error);
+}
+
+class GetAllNotificationsSuccessState extends AppState{}
+
+class GetAllNotificationsErrorState extends AppState{
+  final error;
+  GetAllNotificationsErrorState(this.error);
+}
+
+class ChangeNotificationIsOpenedState extends AppState{}

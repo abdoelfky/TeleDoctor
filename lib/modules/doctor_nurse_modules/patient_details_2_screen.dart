@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/app_cubit.dart';
 import '../../cubit/app_state.dart';
 import '../../models/patient_model.dart';
+import '../../models/user_model.dart';
 import '../../shared/component/components.dart';
 import '../../shared/constants/constants.dart';
 import '../../shared/local/shared_preference.dart';
@@ -42,7 +43,18 @@ class PatientDetailsScreen2 extends StatelessWidget {
           var cubit = AppCubit.get(context);
           Size size = MediaQuery.of(context).size;
           String uId=CacheHelper.getData(key: 'uId');
-
+          UserModel? doctor ;
+          UserModel? nurse ;
+          cubit.users.forEach((element) {
+            if(element.uId.toString()==patientModel.selectedDoctorUID)
+            {
+              doctor=element;
+            }
+            else if(element.uId.toString()==patientModel.selectedNurseUID)
+            {
+              nurse=element;
+            }
+          });
 
           return Scaffold(
             body: SingleChildScrollView(
@@ -209,11 +221,14 @@ class PatientDetailsScreen2 extends StatelessWidget {
 
                             cubit.addNewRecord(
 
+
                                 registeredDate:DateTime.now().toString(),
                                 selectedDoctorUID: patientModel.selectedDoctorUID,
                                 selectedNurseUID: patientModel.selectedNurseUID,
                                 patientId: patientModel.id,
-                                data: recordController.text.trim()
+                                data: recordController.text.trim(),
+                                nurseName: nurse!.name,
+                                patientName: patientModel.name
 
                             );
                             cubit.getAllRecords();
