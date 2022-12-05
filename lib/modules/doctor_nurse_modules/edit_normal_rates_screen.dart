@@ -26,8 +26,7 @@ class EditNormalRatesScreen extends StatelessWidget {
       if (state is UpdatePatientRecordSuccessState) {
         showToast(
             text: 'Rates Updated Successfully', state: ToastStates.SUCCESS);
-        AppCubit.get(context).getAllPatients();
-        AppCubit.get(context).getAllRecords();
+
         AppCubit.get(context).changeBottomNav(0);
         navigateTo(context,HomeLayoutScreen());
 
@@ -133,7 +132,12 @@ class EditNormalRatesScreen extends StatelessWidget {
                                 id: patient.id,
                                   suger: sugerController.text,
                                   temp: tempController.text,
-                                  pressure: pressureController.text);
+                                  pressure: pressureController.text,
+                                selectedDoctorUID:patient.selectedDoctorUID ,
+                                selectedNurseUID:patient.selectedNurseUID,
+                                patientName: patient.name
+
+                              );
 
                             }
                           }),

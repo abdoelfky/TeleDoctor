@@ -414,7 +414,10 @@ class AppCubit extends Cubit<AppState> {
     required id,
     required temp,
     required suger,
-    required pressure
+    required pressure,
+    selectedDoctorUID,
+    selectedNurseUID,
+    patientName
 })
 async {
   await FirebaseFirestore.instance
@@ -422,13 +425,13 @@ async {
       .doc(id)
       .update({'suger':suger.toString(),'temp':temp.toString(),'pressure':pressure.toString()})
       .then((value) async {
-      //
-      // sendNotification(
-      //     text: 'Admin Has Added New Patient For You',
-      //     doctorUID: selectedDoctorUID,
-      //     nurseUID: selectedNurseUID,
-      //     patientId: id,
-      //     sendDate: DateTime.now().toString());
+
+    sendNotification(
+        text: 'Has updated ${patientName} Rates',
+        doctorUID: selectedDoctorUID,
+        nurseUID: selectedNurseUID,
+        patientId: id,
+        sendDate: DateTime.now().toString());
     getAllPatients();
         emit(UpdatePatientRecordSuccessState());
     }).catchError((onError) {
