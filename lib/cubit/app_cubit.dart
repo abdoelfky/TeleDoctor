@@ -15,7 +15,7 @@ import '../modules/admin_modules/add_patient_screen.dart';
 import '../modules/admin_modules/home_screen.dart';
 import '../modules/admin_modules/profile_screen.dart';
 import '../modules/admin_modules/receipt_screen.dart';
-import '../modules/doctor_nurse_modules/chat_model.dart';
+import '../models/chat_model.dart';
 import '../modules/doctor_nurse_modules/doctor_nurse_notification_screen.dart';
 import '../modules/doctor_nurse_modules/doctor_nurse_profile_screen.dart';
 import '../modules/doctor_nurse_modules/search_for_petient_screen.dart';

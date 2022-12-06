@@ -7,7 +7,7 @@ import 'package:teledoctor/cubit/app_state.dart';
 import 'package:teledoctor/models/patient_model.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 import '../../models/user_model.dart';
-import 'chat_model.dart';
+import '../../models/chat_model.dart';
 
 class ChatScreen extends StatelessWidget {
   final PatientModel patientModel;
@@ -33,7 +33,7 @@ class ChatScreen extends StatelessWidget {
         return BlocConsumer<AppCubit, AppState>(
           listener: (context, state) {},
           builder: (context, state) {
-            String? receiverUID;
+            String receiverUID='';
             if(userModel!.type=='DOCTOR')
             {
               receiverUID=nurse!.uId!;
@@ -192,13 +192,13 @@ class ChatScreen extends StatelessWidget {
                                 itemBuilder: (context, index) {
                                   var message = AppCubit.get(context).messages[index];
 
-                                  if (receiverUID == message.receiverId)
+                                  if (userModel!.uId.toString() == message.receiverId)
                                   {
-                                    return buildMyMessage(message,context, size);
+                                    return buildMessage(message,context, size);
                                   }
                                   else if (userModel!.uId.toString() == message.senderId)
                                   {
-                                    return buildMessage(message,context,size);
+                                    return buildMyMessage(message,context,size);
                                   }
                                   return Container();
                                 },
