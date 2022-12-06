@@ -134,3 +134,13 @@ class GetAllNotificationsErrorState extends AppState{
 }
 
 class ChangeNotificationIsOpenedState extends AppState{}
+
+
+class SendMessageSuccessState extends AppState {}
+
+class SendMessageErrorState extends AppState {
+  final error;
+  SendMessageErrorState(this.error);
+}
+
+class GetMessagesSuccessState extends AppState {}

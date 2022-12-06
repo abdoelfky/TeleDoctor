@@ -15,6 +15,7 @@ import '../modules/admin_modules/add_patient_screen.dart';
 import '../modules/admin_modules/home_screen.dart';
 import '../modules/admin_modules/profile_screen.dart';
 import '../modules/admin_modules/receipt_screen.dart';
+import '../modules/doctor_nurse_modules/chat_model.dart';
 import '../modules/doctor_nurse_modules/doctor_nurse_notification_screen.dart';
 import '../modules/doctor_nurse_modules/doctor_nurse_profile_screen.dart';
 import '../modules/doctor_nurse_modules/search_for_petient_screen.dart';
@@ -644,5 +645,75 @@ void changeNotificationIsOpened(index) {
 
   emit(ChangeNotificationIsOpenedState());
 }
+
+
+  void sendMessage({
+    required String receiverId,
+    required String dateTime,
+    required String text,
+    required String senderId,
+  }) {
+    MessageModel model = MessageModel(
+      text: text,
+      senderId:senderId,
+      receiverId: receiverId,
+      dateTime: dateTime,
+    );
+
+    // set my chats
+    FirebaseFirestore.instance
+        .collection('admins')
+        .doc(senderId)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages')
+        .add(model.toMap())
+        .then((value) {
+      emit(SendMessageSuccessState());
+    }).catchError((error) {
+      emit(SendMessageErrorState(error));
+    });
+
+    // set receiver chats
+    FirebaseFirestore.instance
+        .collection('admins')
+        .doc(receiverId)
+        .collection('chats')
+        .doc(senderId)
+        .collection('messages')
+        .add(model.toMap())
+        .then((value) {
+      emit(SendMessageSuccessState());
+    }).catchError((error) {
+      emit(SendMessageErrorState(error));
+    });
+  }
+
+
+  List<MessageModel> messages = [];
+
+  void getMessages({
+    required String receiverId,
+    required String senderId,
+
+  }) {
+    FirebaseFirestore.instance
+        .collection('admins')
+        .doc(senderId)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages')
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+      messages = [];
+
+      event.docs.forEach((element) {
+        messages.add(MessageModel.fromJson(element.data()));
+      });
+
+      emit(GetMessagesSuccessState());
+    });
+  }
 
 }

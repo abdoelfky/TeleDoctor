@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:teledoctor/models/user_model.dart';
 import 'package:teledoctor/models/user_model.dart';
+import 'package:teledoctor/modules/doctor_nurse_modules/chat_screen.dart';
 import 'package:teledoctor/modules/doctor_nurse_modules/edit_normal_rates_screen.dart';
 import 'package:teledoctor/modules/doctor_nurse_modules/patient_details_2_screen.dart';
 import '../../cubit/app_cubit.dart';
@@ -81,8 +82,8 @@ class PatientDetailsScreen1 extends StatelessWidget {
                               )),
                         ),
                         Padding(
-                          padding:
-                              EdgeInsets.only(top: 7.0, left: size.width * .12,right:20),
+                          padding: EdgeInsets.only(
+                              top: 7.0, left: size.width * .12, right: 20),
                           child: Text(
                             'Patient Details',
                             style: TextStyle(
@@ -91,7 +92,6 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                 fontSize: 22),
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -472,7 +472,14 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 15),
                                             ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        navigateTo(
+                                            context,
+                                            ChatScreen(
+                                                patientModel: patientModel,
+                                                doctor: doctor,
+                                                nurse: nurse));
+                                      },
                                     ),
                                   ),
                                 ],
@@ -506,11 +513,11 @@ class PatientDetailsScreen1 extends StatelessWidget {
                         Spacer(),
                         uId == patientModel.selectedNurseUID
                             ? TextButton(
-                                onPressed: ()
-                                {
-                                  navigateTo(context
-                                      ,EditNormalRatesScreen(patient:patientModel)
-                                  );
+                                onPressed: () {
+                                  navigateTo(
+                                      context,
+                                      EditNormalRatesScreen(
+                                          patient: patientModel));
                                 },
                                 child: Text(
                                   'Edit',
