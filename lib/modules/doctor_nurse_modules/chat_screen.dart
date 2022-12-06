@@ -14,11 +14,13 @@ class ChatScreen extends StatelessWidget {
   final UserModel? doctor;
   final UserModel? nurse;
   var messageController = TextEditingController();
+  ScrollController scrollController = new ScrollController();
 
-  ChatScreen({super.key, required this.patientModel,
-    required this.doctor,
-    required this.nurse});
-
+  ChatScreen(
+      {super.key,
+      required this.patientModel,
+      required this.doctor,
+      required this.nurse});
 
   @override
   Widget build(BuildContext context) {
@@ -31,25 +33,20 @@ class ChatScreen extends StatelessWidget {
         );
 
         return BlocConsumer<AppCubit, AppState>(
-          listener: (context, state)
-          {
-            if(state is SendMessageSuccessState)
-            {
-              messageController.text='';
+          listener: (context, state) {
+            if (state is SendMessageSuccessState) {
+              messageController.text = '';
             }
           },
           builder: (context, state) {
-            String receiverUID='';
-            if(userModel!.type=='DOCTOR')
-            {
-              receiverUID=nurse!.uId!;
+            String receiverUID = '';
+            if (userModel!.type == 'DOCTOR') {
+              receiverUID = nurse!.uId!;
             }
-            if(userModel!.type=='NURSE')
-            {
-              receiverUID=doctor!.uId!;
+            if (userModel!.type == 'NURSE') {
+              receiverUID = doctor!.uId!;
             }
             return Scaffold(
-
               body: Column(
                 children: [
                   Padding(
@@ -75,8 +72,8 @@ class ChatScreen extends StatelessWidget {
                               )),
                         ),
                         Padding(
-                          padding:
-                          EdgeInsets.only(top: 7.0, left: size.width * .1,right:20),
+                          padding: EdgeInsets.only(
+                              top: 7.0, left: size.width * .1, right: 20),
                           child: Text(
                             'Chatting Room',
                             style: TextStyle(
@@ -85,7 +82,6 @@ class ChatScreen extends StatelessWidget {
                                 fontSize: 22),
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -119,25 +115,27 @@ class ChatScreen extends StatelessWidget {
                                       width: 6,
                                       color: Colors.white,
                                     )),
-                                child: userModel!.type=='Doctor'? Center(
-                                  child: Image(
-                                    image: AssetImage(
-                                      'images/nurse.jpg',
-                                    ),
-                                    fit: BoxFit.fill,
-                                    width: 100,
-                                    height: 100,
-                                  ),
-                                ):Center(
-                                  child: Image(
-                                    image: AssetImage(
-                                      'images/doctor.jpg',
-                                    ),
-                                    fit: BoxFit.fill,
-                                    width: 100,
-                                    height: 100,
-                                  ),
-                                ),
+                                child: userModel!.type == 'Doctor'
+                                    ? Center(
+                                        child: Image(
+                                          image: AssetImage(
+                                            'images/nurse.jpg',
+                                          ),
+                                          fit: BoxFit.fill,
+                                          width: 100,
+                                          height: 100,
+                                        ),
+                                      )
+                                    : Center(
+                                        child: Image(
+                                          image: AssetImage(
+                                            'images/doctor.jpg',
+                                          ),
+                                          fit: BoxFit.fill,
+                                          width: 100,
+                                          height: 100,
+                                        ),
+                                      ),
                               ),
 
                               SizedBox(
@@ -153,20 +151,20 @@ class ChatScreen extends StatelessWidget {
                                     ),
                                     userModel!.type == "NURSE"
                                         ? Text(
-                                      'Dr. ${doctor!.name}',
-                                      style: TextStyle(
-                                        color:primaryColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    )
+                                            'Dr. ${doctor!.name}',
+                                            style: TextStyle(
+                                              color: primaryColor,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )
                                         : Text(
-                                      'Mrs. ${nurse?.name}',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                          color:primaryColor),
-                                    ),
+                                            'Mrs. ${nurse?.name}',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                                color: primaryColor),
+                                          ),
                                     Text(
                                       'Patient: ${patientModel.name}',
                                       style: TextStyle(
@@ -194,24 +192,27 @@ class ChatScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               child: ListView.separated(
+                                controller: scrollController,
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
-                                  var message = AppCubit.get(context).messages[index];
+                                  var message =
+                                      AppCubit.get(context).messages[index];
 
-                                  if (userModel!.uId.toString() == message.receiverId)
-                                  {
-                                    return buildMessage(message,context, size);
-                                  }
-                                  else if (userModel!.uId.toString() == message.senderId)
-                                  {
-                                    return buildMyMessage(message,context,size);
+                                  if (userModel!.uId.toString() ==
+                                      message.receiverId) {
+                                    return buildMessage(message, context, size);
+                                  } else if (userModel!.uId.toString() ==
+                                      message.senderId) {
+                                    return buildMyMessage(
+                                        message, context, size);
                                   }
                                   return Container();
                                 },
                                 separatorBuilder: (context, index) => SizedBox(
                                   height: 15.0,
                                 ),
-                                itemCount: AppCubit.get(context).messages.length,
+                                itemCount:
+                                    AppCubit.get(context).messages.length,
                               ),
                             ),
                             Container(
@@ -236,7 +237,8 @@ class ChatScreen extends StatelessWidget {
                                         controller: messageController,
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
-                                          hintText: 'type your message here ...',
+                                          hintText:
+                                              'type your message here ...',
                                         ),
                                       ),
                                     ),
@@ -246,14 +248,21 @@ class ChatScreen extends StatelessWidget {
                                     color: primaryColor,
                                     child: MaterialButton(
                                       onPressed: () {
-                                        AppCubit.get(context).sendMessage(
-                                          senderId: userModel!.uId!
-                                              .toString(),
-                                          receiverId:receiverUID
-                                              .toString(),
-                                          dateTime: DateTime.now().toString(),
-                                          text: messageController.text,
-                                        );
+                                        if (messageController.text != '') {
+                                          AppCubit.get(context).sendMessage(
+                                            senderId:
+                                                userModel!.uId!.toString(),
+                                            receiverId: receiverUID.toString(),
+                                            dateTime: DateTime.now().toString(),
+                                            text: messageController.text,
+                                          );
+                                          scrollController.animateTo(
+                                            scrollController.position.maxScrollExtent,
+                                            curve: Curves.easeOut,
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                          );
+                                        }
                                       },
                                       minWidth: 1.0,
                                       child: Icon(
@@ -284,124 +293,124 @@ class ChatScreen extends StatelessWidget {
   }
 }
 
-Widget buildMessage(MessageModel model,context,Size size) => Align(
-  alignment: AlignmentDirectional.centerStart,
-  child: Padding(
-    padding: const EdgeInsets.only(right: 80.0),
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          width: 2,
-          color: blue5,
-        ),
-      ),
-      padding: EdgeInsets.symmetric(
-        vertical: 5.0,
-        horizontal: 10.0,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Flexible(
-            child: Container(
-              width: size.width*3,
-              child: Padding(
-                padding:  EdgeInsets.all(8.0),
-                child: Text(
-                  '${model.text}',
-                  style: Theme.of(context).textTheme.bodyText1,
-                  //overflow: TextOverflow.ellipsis,
-                ),
-              ),
+Widget buildMessage(MessageModel model, context, Size size) => Align(
+      alignment: AlignmentDirectional.centerStart,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 80.0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              width: 2,
+              color: blue5,
             ),
           ),
-
-
-          Column(
+          padding: EdgeInsets.symmetric(
+            vertical: 5.0,
+            horizontal: 10.0,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const SizedBox(
-                height: 25,
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Icon(Icons.watch_later,size: 11,color: Colors.grey,),
-                  ),
-                  Text(
-                    '${DateFormat("MM-dd hh:mm").format(DateTime.parse(model.dateTime.toString()))}',
-                    style: TextStyle(
-                        fontSize: 10
+              Flexible(
+                child: Container(
+                  width: size.width * 3,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      '${model.text}',
+                      style: Theme.of(context).textTheme.bodyText1,
+                      //overflow: TextOverflow.ellipsis,
                     ),
+                  ),
+                ),
+              ),
+              Column(
+                children: [
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Icon(
+                          Icons.watch_later,
+                          size: 11,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Text(
+                        '${DateFormat("MM-dd hh:mm").format(DateTime.parse(model.dateTime.toString()))}',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ],
           ),
-        ],
-      ),
-    ),
-  ),
-);
-
-Widget buildMyMessage(MessageModel model,context,Size size) => Align(
-  alignment: AlignmentDirectional.centerEnd,
-  child: Padding(
-    padding: const EdgeInsets.only(left: 80.0),
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          width: 2,
-          color: blue5,
         ),
       ),
-      padding: EdgeInsets.symmetric(
-        vertical: 5.0,
-        horizontal: 10.0,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Flexible(
-            child: Container(
-              width: size.width*3,
-              child: Padding(
-                padding:  EdgeInsets.all(8.0),
-                child: Text(
-                  '${model.text}',
-                  style: Theme.of(context).textTheme.bodyText1,
-                  //overflow: TextOverflow.ellipsis,
-                ),
-              ),
+    );
+
+Widget buildMyMessage(MessageModel model, context, Size size) => Align(
+      alignment: AlignmentDirectional.centerEnd,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 80.0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              width: 2,
+              color: blue5,
             ),
           ),
-
-
-          Column(
+          padding: EdgeInsets.symmetric(
+            vertical: 5.0,
+            horizontal: 10.0,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const SizedBox(
-                height: 25,
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Icon(Icons.watch_later,size: 11,color: Colors.grey,),
-                  ),
-                  Text(
-                    '${DateFormat("MM-dd hh:mm").format(DateTime.parse(model.dateTime.toString()))}',
-                    style: TextStyle(
-                        fontSize: 10
+              Flexible(
+                child: Container(
+                  width: size.width * 3,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      '${model.text}',
+                      style: Theme.of(context).textTheme.bodyText1,
+                      //overflow: TextOverflow.ellipsis,
                     ),
+                  ),
+                ),
+              ),
+              Column(
+                children: [
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Icon(
+                          Icons.watch_later,
+                          size: 11,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Text(
+                        '${DateFormat("MM-dd hh:mm").format(DateTime.parse(model.dateTime.toString()))}',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ],
           ),
-        ],
+        ),
       ),
-    ),
-  ),
-);
+    );

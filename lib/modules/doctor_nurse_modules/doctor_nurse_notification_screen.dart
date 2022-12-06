@@ -24,7 +24,6 @@ class DoctorAndNurseNotificationScreen extends StatelessWidget {
           var cubit = AppCubit.get(context);
           Size size = MediaQuery.of(context).size;
           String uId = CacheHelper.getData(key: 'uId');
-
           List<NotificationModel> notifications =[];
           UserModel? doctor;
 

@@ -163,8 +163,10 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
 Widget buildItem(context, PatientModel patient) => InkWell(
   onTap: () {
     AppCubit.get(context).getAllRecords();
+    if(patient!=null){
     navigateTo(context, PatientDetailsScreen1(patientModel: patient,));
-  },
+  }
+    },
   child: Card(
     color: Colors.grey[100],
 

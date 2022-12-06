@@ -85,6 +85,7 @@ class AppCubit extends Cubit<AppState> {
         .doc(uId)
         .set(model.toMap())
         .then((value) {
+          getAllUsers();
       emit(CreateUserSuccessState());
     }).catchError((onError) {
       emit(CreateUserErrorState(onError.toString()));
@@ -456,6 +457,7 @@ async {
       });
 
       print('patients length${patients.length}');
+      getAllRecords();
       emit(GetAllPatientsSuccessState());
     }).catchError((onError) {
       emit(GetAllPatientsErrorState(onError.toString()));
