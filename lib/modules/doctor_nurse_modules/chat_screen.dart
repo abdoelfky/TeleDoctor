@@ -31,7 +31,13 @@ class ChatScreen extends StatelessWidget {
         );
 
         return BlocConsumer<AppCubit, AppState>(
-          listener: (context, state) {},
+          listener: (context, state)
+          {
+            if(state is SendMessageSuccessState)
+            {
+              messageController.text='';
+            }
+          },
           builder: (context, state) {
             String receiverUID='';
             if(userModel!.type=='DOCTOR')
