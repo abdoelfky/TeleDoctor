@@ -620,12 +620,10 @@ async {
     notifications = [];
     FirebaseFirestore.instance.collection('notifications')
         .orderBy('sendDate',descending:true)
-        .get().then((value) {
+        .snapshots().listen((value) {
       value.docs.forEach((element) {
         notifications.add(NotificationModel.fromJson(element.data()));
       });
-      emit(GetAllNotificationsSuccessState());
-    }).catchError((onError) {
       emit(GetAllNotificationsSuccessState());
     });
   }
