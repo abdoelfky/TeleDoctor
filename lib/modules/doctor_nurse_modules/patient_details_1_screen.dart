@@ -381,113 +381,121 @@ class PatientDetailsScreen1 extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: size.width * .03),
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.grey.shade300,
-                          ),
-                          width: size.width * .93,
-                          height: size.height * .12,
-                          child: Column(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.grey.shade300,
+                      ),
+                      width: size.width * .93,
+                      height: size.height * .2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8, left: 8),
-                                    child: Image.asset(
-                                      'images/doctor.png',
-                                      width: size.width * .09,
-                                      height: size.height * .06,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8, left: 8),
-                                    child: Text(
-                                      'Dr ${doctor!.name}',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 15, left: 60),
-                                    child: Image.asset(
-                                      'images/bed.png',
-                                      width: size.width * .09,
-                                      height: size.height * .06,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8, left: 8),
-                                    child: Text(
-                                      'Room No. ${patientModel.roomNo}',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8, left: 8),
+                                child: Image.asset(
+                                  'images/doctor.png',
+                                  width: size.width * .09,
+                                  height: size.height * .06,
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8, left: 8),
-                                    child: Image.asset(
-                                      'images/nurse.png',
-                                      width: size.width * .09,
-                                      height: size.height * .06,
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8, left: 8),
+                                child: Container(
+                                  width:80,
+
+                                  child: Text(
+                                    'Dr ${doctor!.name}',
+                                    overflow: TextOverflow.fade,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8, left: 8),
-                                    child: Text(
-                                      'Mrs ${nurse!.name}',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 15, left: 60),
+                                child: Image.asset(
+                                  'images/bed.png',
+                                  width: size.width * .09,
+                                  height: size.height * .06,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8, left: 8),
+                                child: Text(
+
+                                  'Room No. ${patientModel.roomNo}',
+
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8, left: 50),
-                                    child: TextButton(
-                                      child: doctor!.uId == uId
-                                          ? Text(
-                                              'Chat with Nurse.',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 15),
-                                            )
-                                          : Text(
-                                              'Chat with Doctor.',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 15),
-                                            ),
-                                      onPressed: () {
-                                        navigateTo(
-                                            context,
-                                            ChatScreen(
-                                                patientModel: patientModel,
-                                                doctor: doctor,
-                                                nurse: nurse));
-                                      },
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ],
                           ),
-                        )
-                      ],
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8, left: 8),
+                                child: Image.asset(
+                                  'images/nurse.png',
+                                  width: size.width * .09,
+                                  height: size.height * .06,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8, left: 8),
+                                child: Container(
+                                  width: 80,
+                                  child: Text(
+                                    'Mrs ${nurse!.name}',
+                                    overflow: TextOverflow.fade,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8, left: 50),
+                                child: TextButton(
+                                  child: doctor!.uId == uId
+                                      ? Text(
+                                          'Chat with Nurse.',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15),
+                                        )
+                                      : Text(
+                                          'Chat with Doctor.',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15),
+                                        ),
+                                  onPressed: () {
+                                    navigateTo(
+                                        context,
+                                        ChatScreen(
+                                            patientModel: patientModel,
+                                            doctor: doctor,
+                                            nurse: nurse));
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
