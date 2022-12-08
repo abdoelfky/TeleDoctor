@@ -32,7 +32,6 @@ class DoctorAndNurseNotificationScreen extends StatelessWidget {
             {
               if(element1.uId==element2.doctorUID)
               {
-                cubit.addToIsOpened(notifications.length,false);
 
                 notifications.insert(notifications.length,element2);
 
@@ -133,10 +132,12 @@ Widget buildItem(AppCubit cubit, List<NotificationModel> notifications,
           });
 
           return InkWell(
-            onTap: () {
+            onTap: () async {
+              await CacheHelper.saveData(key:'${index}', value: true);
+
               navigateTo(
                   context, PatientDetailsScreen1(patientModel: patient!));
-              cubit.changeNotificationIsOpened(index);
+
             },
             child: Card(
               elevation: 0,
@@ -150,8 +151,10 @@ Widget buildItem(AppCubit cubit, List<NotificationModel> notifications,
                     children: [
                       Row(
                         children: [
-                          CacheHelper.getData(key:'${index}')==false
-                              ? Padding(
+
+                          CacheHelper.getData(key:'${index}')!=true
+
+                     ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8.0),
                                   child: Container(

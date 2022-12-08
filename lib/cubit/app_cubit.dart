@@ -627,24 +627,6 @@ async {
       emit(GetAllNotificationsSuccessState());
     });
   }
-  List<bool> isOpened=[];
-  Future<void> addToIsOpened(length,value)
-  async {
-    isOpened.insert(isOpened.length,value);
-    if(await CacheHelper.getData(key:'${isOpened.length}')!=null)
-    {
-      CacheHelper.saveData(key:'${isOpened.length}', value: value);
-    }
-    print(isOpened.length);
-
-  }
-
-void changeNotificationIsOpened(index) {
-  isOpened[index] =true;
-  CacheHelper.saveData(key:'${index}', value: true);
-
-  emit(ChangeNotificationIsOpenedState());
-}
 
 
   void sendMessage({
