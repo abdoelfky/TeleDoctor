@@ -45,22 +45,20 @@ class ProfileScreen extends StatelessWidget {
                           children:
                           [
 //background
-                            Expanded(
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  Image.asset('images/profile.png', fit: BoxFit.cover),
-                                  ClipRRect( // Clip it cleanly.
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                                      child: Container(
-                                        color:blue5.withOpacity(0.5),
-                                        alignment: Alignment.center,
-                                      ),
+                            Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Image.asset('images/profile.png', fit: BoxFit.cover),
+                                ClipRRect( // Clip it cleanly.
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                                    child: Container(
+                                      color:blue5.withOpacity(0.5),
+                                      alignment: Alignment.center,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
 //image
                             Center(

@@ -110,68 +110,66 @@ class EditAccountScreen extends StatelessWidget {
                           children:
                           [
 //background
-                            Expanded(
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  Image.asset(
-                                      'images/doctor.jpg', fit: BoxFit.cover),
-                                  ClipRRect( // Clip it cleanly.
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                          sigmaX: 1, sigmaY: 1),
-                                      child: Container(
-                                        color: blue5.withOpacity(0.3),
-                                        alignment: Alignment.center,
-                                      ),
+                            Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Image.asset(
+                                    'images/doctor.jpg', fit: BoxFit.cover),
+                                ClipRRect( // Clip it cleanly.
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                        sigmaX: 1, sigmaY: 1),
+                                    child: Container(
+                                      color: blue5.withOpacity(0.3),
+                                      alignment: Alignment.center,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                        vertical: 70
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .start,
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration
-                                            (
-                                              color: blue5,
-                                              borderRadius: BorderRadius
-                                                  .circular(25)
-                                          ),
-                                          child: IconButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              icon: Icon(Icons.arrow_back,
-                                                color: Colors.white,
-                                                size: 25,)
-                                          ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 70
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .start,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration
+                                          (
+                                            color: blue5,
+                                            borderRadius: BorderRadius
+                                                .circular(25)
                                         ),
-
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8.0, left: 65),
-                                          child: Text(
-                                            'Edit Account', style: TextStyle(
+                                        child: IconButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            icon: Icon(Icons.arrow_back,
                                               color: Colors.white,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 22
-
-                                          ),),
+                                              size: 25,)
                                         ),
-                                      ],
-                                    ),
+                                      ),
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8.0, left: 65),
+                                        child: Text(
+                                          'Edit Account', style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 22
+
+                                        ),),
+                                      ),
+                                    ],
                                   ),
+                                ),
 
 
-                                ],
-                              ),
+                              ],
                             ),
 
 //image
@@ -357,10 +355,10 @@ class EditAccountScreen extends StatelessWidget {
                               left: size.width * .08,
                               right: size.width * .08),
                           child: defaultFormFeild1(
-                              validatorText: 'Jop must not be empty',
+                              validatorText: 'Specialization must not be empty',
                               controller: jopController,
                               inputType: TextInputType.text,
-                              labelText: 'Jop'
+                              labelText: 'Specialization'
                           )
 
                       ),

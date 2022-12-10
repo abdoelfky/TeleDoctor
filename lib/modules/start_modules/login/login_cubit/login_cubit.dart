@@ -69,7 +69,7 @@ class LoginCubit extends Cubit<LoginStates> {
       }
       else
       {
-        emit(LoginErrorState('this user can\' access these data'));
+        emit(LoginErrorState('this user can\'t access these data'));
 
       }
 

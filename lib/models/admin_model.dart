@@ -1,6 +1,6 @@
 class AdminModel
 {
-  String? name,id,email,phone,uId,hospitalName,hospitalLocation,password,type;
+  String? name,id,email,phone,uId,hospitalName,hospitalLocation,floorNumbers,password,type;
   AdminModel({
     required this.uId,
     required this.id,
@@ -9,6 +9,7 @@ class AdminModel
     required this.name,
     required this.hospitalLocation,
     required this.hospitalName,
+    required this.floorNumbers,
     required this.password,
     required this.type
 
@@ -23,6 +24,7 @@ class AdminModel
     id=json['id'];
     hospitalLocation=json['hospitalLocation'];
     hospitalName=json['hospitalName'];
+    floorNumbers=json['floorNumbers'];
     password =json['password'];
     type =json['type'];
 
@@ -38,6 +40,7 @@ class AdminModel
       'id':id,
       'hospitalLocation':hospitalLocation,
       'hospitalName':hospitalName,
+      'floorNumbers':floorNumbers,
       'password':password,
       'type':type,
     };

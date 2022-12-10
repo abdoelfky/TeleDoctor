@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -65,11 +66,43 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
 
                                 icon: Icon(Icons.refresh,color: Colors.white,))),
                       ),
-                      IconButton(onPressed:()
-                      {
-                        cubit.logOut(context);
-                      },
-                          icon:Icon(Icons.logout,color: Colors.red[600],))
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (_) => AlertDialog(
+                                  elevation: 24.0,
+                                  title: Text('Are You Sure?',
+                                      style: TextStyle(color: primaryColor)),
+                                  content: Text('You will log out',
+                                      style: TextStyle(color: primaryColor)),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      child: Container(
+                                        child: Text(
+                                          'Log out',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        cubit.logOut(context);
+                                      },
+                                    ),
+                                    CupertinoDialogAction(
+                                      child: Text('Cancel',
+                                          style: TextStyle(color: primaryColor)),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ));
+                          },
+                          icon: Icon(
+                            Icons.logout_outlined,
+                            color: Colors.red[400],
+                            size: 40,
+                          )),
                     ],
                   ),
                   Row(

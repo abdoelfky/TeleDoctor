@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
 import 'package:teledoctor/models/room_model.dart';
+import 'package:teledoctor/modules/admin_modules/home_layout_screen.dart';
 import 'package:teledoctor/shared/component/components.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 
@@ -22,6 +23,8 @@ class AddNewPatientScreen extends StatelessWidget {
     'Male',
     'Female',
   ];
+  List<RoomModel> rooms=[];
+
   String? genderSelectedValue;
   String? doctorSelectedValue;
   String? roomNoSelectedValue;
@@ -30,9 +33,11 @@ class AddNewPatientScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
 
+
     return BlocConsumer<AppCubit, AppState>(
         listener: (context, state)
         {
+
           if(state is AddNewPatientSuccessState)
           {
 
@@ -49,6 +54,7 @@ class AddNewPatientScreen extends StatelessWidget {
                 state: ToastStates.SUCCESS
             );
             AppCubit.get(context).changeBottomNav(0);
+            navigateTo(context, HomeLayoutScreen());
 
           }
           if(state is AddNewPatientErrorState)
@@ -65,9 +71,14 @@ class AddNewPatientScreen extends StatelessWidget {
               .of(context)
               .size;
 
-          List<RoomModel> rooms=[];
-          rooms=cubit.floorNumber1+cubit.floorNumber2;
-
+          rooms=[];
+          AppCubit.get(context).rooms.forEach((element)
+          {
+            if(element.roomType.toString().toUpperCase()=='EMPTY')
+            {
+              rooms.add(element);
+            }
+          });
 
 
           return Scaffold(
@@ -450,7 +461,7 @@ class AddNewPatientScreen extends StatelessWidget {
                     Padding(
                         padding:
                         const EdgeInsets.only(left: 20, right: 20, top: 20),
-                        child: defaultButton2(
+                        child: !cubit.addPatientIsLoading?defaultButton2(
                           height: 60,
                             string: 'Add Patient',
                             function: () {
@@ -475,13 +486,13 @@ class AddNewPatientScreen extends StatelessWidget {
 
 
 
-
 // print('patientIdController :${patientIdController.text}');
                               }
 
 
                             }
-                        )
+                        ):
+                            CircularProgressIndicator()
 
                     ),
                   ],

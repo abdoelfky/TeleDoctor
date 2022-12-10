@@ -12,10 +12,8 @@ import '../../models/room_model.dart';
 import '../../shared/component/components.dart';
 
 class FullRoomsScreen extends StatelessWidget {
-  final List<String> floors = [
-    '1',
-    '2',
-  ];
+  var floors = [for(var i=1; i<int.parse(adminModel!.floorNumbers.toString()); i+=1) i];
+
 
   @override
   Widget build(BuildContext context) {
@@ -133,20 +131,19 @@ class FullRoomsScreen extends StatelessWidget {
                             }
                           },
                           onChanged: (value) {
-                            cubit.changeSelectedRoom(
+                            cubit.changeFullSelectedRoom(
                                 floorSelectedVal: value.toString());
                             // floorSelectedValue=value.toString();
                           },
                           onSaved: (value) {},
                         ),
-                        cubit.floorSelectedValue == '1' &&
-                                cubit.fullRooms1.isNotEmpty
-                            ? GridView.builder(
+                    cubit.fullRoomsInFloor.isNotEmpty?
+                    GridView.builder(
                                 shrinkWrap: true,
                                 physics: const BouncingScrollPhysics(),
-                                itemCount: cubit.fullRooms1.length,
+                                itemCount: cubit.fullRoomsInFloor.length,
                                 itemBuilder: (context, index) {
-                                  return roomItem(size, cubit.fullRooms1[index],
+                                  return roomItem(size, cubit.fullRoomsInFloor[index],
                                       context, index);
                                 },
                                 gridDelegate:
@@ -156,27 +153,7 @@ class FullRoomsScreen extends StatelessWidget {
                                         crossAxisSpacing: size.width * .03,
                                         mainAxisSpacing: size.height * .02),
                               )
-                            : cubit.floorSelectedValue == '2' &&
-                                    cubit.fullRooms2.isNotEmpty
-                                ? GridView.builder(
-                                    shrinkWrap: true,
-                                    physics: const BouncingScrollPhysics(),
-                                    itemCount: cubit.fullRooms2.length,
-                                    itemBuilder: (context, index) {
-                                      return roomItem(
-                                          size,
-                                          cubit.fullRooms2[index],
-                                          context,
-                                          index);
-                                    },
-                                    gridDelegate:
-                                        SliverGridDelegateWithMaxCrossAxisExtent(
-                                            maxCrossAxisExtent: 150,
-                                            childAspectRatio: 2 / 1.3,
-                                            crossAxisSpacing: size.width * .03,
-                                            mainAxisSpacing: size.height * .02),
-                                  )
-                                : Padding(
+                            : Padding(
                                     padding: EdgeInsets.symmetric(
                                         vertical: size.height * .2),
                                     child: Text(

@@ -45,24 +45,22 @@ class DoctorAndNurseProfileScreen extends StatelessWidget {
                           children:
                           [
 //background
-                            Expanded(
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  isAdmin!?
-                                  Image.asset('images/profile.png', fit: BoxFit.cover):
+                            Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                isAdmin!?
+                                Image.asset('images/profile.png', fit: BoxFit.cover):
 
-                                  Image.asset('images/${userModel!.type.toString().toLowerCase()}.jpg', fit: BoxFit.cover),                                  ClipRRect( // Clip it cleanly.
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                                      child: Container(
-                                        color:blue5.withOpacity(0.5),
-                                        alignment: Alignment.center,
-                                      ),
+                                Image.asset('images/${userModel!.type.toString().toLowerCase()}.jpg', fit: BoxFit.cover),                                  ClipRRect( // Clip it cleanly.
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                                    child: Container(
+                                      color:blue5.withOpacity(0.5),
+                                      alignment: Alignment.center,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
 //image
                             Center(
@@ -184,7 +182,7 @@ class DoctorAndNurseProfileScreen extends StatelessWidget {
                           ),
                           child: defaultFormFeild2(
                               controller: jopController,
-                              labelText: 'Jop'
+                              labelText: 'Specialization'
                           )
                           ,
                         ),

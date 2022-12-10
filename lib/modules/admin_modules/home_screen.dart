@@ -42,14 +42,42 @@ class HomeScreen extends StatelessWidget {
                     ),
                     Spacer(),
                     IconButton(
-                        onPressed: ()
-                        {
-                          cubit.logOut(context);
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                elevation: 24.0,
+                                title: Text('Are You Sure?',
+                                    style: TextStyle(color: primaryColor)),
+                                content: Text('You will log out',
+                                    style: TextStyle(color: primaryColor)),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: Container(
+                                      child: Text(
+                                        'Log out',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      cubit.logOut(context);
+                                    },
+                                  ),
+                                  CupertinoDialogAction(
+                                    child: Text('Cancel',
+                                        style: TextStyle(color: primaryColor)),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ));
                         },
                         icon: Icon(
-                          Icons.logout,
-                          color: Colors.red[600],
-                        ))
+                          Icons.logout_outlined,
+                          color: Colors.red[400],
+                          size: 40,
+                        )),
                   ],
                 ),
                 const Text(

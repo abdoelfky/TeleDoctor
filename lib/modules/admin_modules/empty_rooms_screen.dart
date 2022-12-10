@@ -13,10 +13,8 @@ import '../../shared/component/components.dart';
 
 class EmptyRoomsScreen extends StatelessWidget {
 
-  final List<String> floors = [
-    '1',
-    '2',
-  ];
+  var floors = [for(var i=1; i<int.parse(adminModel!.floorNumbers.toString()); i+=1) i];
+
 
 
   @override
@@ -142,7 +140,7 @@ class EmptyRoomsScreen extends StatelessWidget {
                             }
                           },
                           onChanged: (value) {
-                            cubit.changeSelectedRoom(floorSelectedVal:value.toString());
+                            cubit.changeEmptySelectedRoom(floorSelectedVal:value.toString());
                             // floorSelectedValue=value.toString();
                           },
                           onSaved: (value) {
@@ -150,14 +148,15 @@ class EmptyRoomsScreen extends StatelessWidget {
                           },
                         ),
 
-                        cubit.floorSelectedValue=='1'&&cubit.floorNumber1.isNotEmpty?
+                        cubit.emptyRoomsInFloor.isNotEmpty?
                         GridView.builder(
                           shrinkWrap:true,
                           physics: const BouncingScrollPhysics(),
-                          itemCount:cubit.floorNumber1.length ,
+                          itemCount:cubit.emptyRoomsInFloor.length ,
                           itemBuilder:(context,index)
                           {
-                            return roomItem(size,cubit.floorNumber1[index],context,index);
+                            return roomItem(size,
+                                (cubit.emptyRoomsInFloor[index]),context,index);
                           },
                           gridDelegate:SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 150,
@@ -168,24 +167,24 @@ class EmptyRoomsScreen extends StatelessWidget {
                           ),
 
                         ):
-                        cubit.floorSelectedValue=='2'&&cubit.floorNumber2.isNotEmpty?
-                        GridView.builder(
-                          shrinkWrap:true,
-                          physics: const BouncingScrollPhysics(),
-                          itemCount:cubit.floorNumber2.length ,
-                          itemBuilder:(context,index)
-                          {
-                            return roomItem(size,cubit.floorNumber2[index],context,index);
-                          },
-                          gridDelegate:SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 150,
-                              childAspectRatio: 2/1.3,
-                              crossAxisSpacing: size.width*.03,
-                              mainAxisSpacing: size.height*.02
-
-                          ),
-
-                        ):
+                        // cubit.floorSelectedValue=='2'&&cubit.floorNumber2.isNotEmpty?
+                        // GridView.builder(
+                        //   shrinkWrap:true,
+                        //   physics: const BouncingScrollPhysics(),
+                        //   itemCount:cubit.floorNumber2.length ,
+                        //   itemBuilder:(context,index)
+                        //   {
+                        //     return roomItem(size,cubit.floorNumber2[index],context,index);
+                        //   },
+                        //   gridDelegate:SliverGridDelegateWithMaxCrossAxisExtent(
+                        //       maxCrossAxisExtent: 150,
+                        //       childAspectRatio: 2/1.3,
+                        //       crossAxisSpacing: size.width*.03,
+                        //       mainAxisSpacing: size.height*.02
+                        //
+                        //   ),
+                        //
+                        // ):
                         Padding(
                           padding: EdgeInsets.symmetric(vertical:size.height*.2),
                           child: Text('No Rooms Added Yet',style:
