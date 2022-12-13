@@ -26,7 +26,10 @@ class CheckOutScreen extends StatelessWidget {
     var enterBedNo = TextEditingController();
     var enterPricePerNight = TextEditingController();
     RoomModel? roomModel;
-    AppCubit.get(context).rooms.forEach((element) {
+    AppCubit
+        .get(context)
+        .rooms
+        .forEach((element) {
       if (element.roomNo.toString() == model.roomNo) {
         roomModel = element;
       }
@@ -44,7 +47,9 @@ class CheckOutScreen extends StatelessWidget {
       }
     }, builder: (context, state) {
       var cubit = AppCubit.get(context);
-      Size size = MediaQuery.of(context).size;
+      Size size = MediaQuery
+          .of(context)
+          .size;
       return Scaffold(
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -72,7 +77,7 @@ class CheckOutScreen extends StatelessWidget {
                     ),
                     Padding(
                       padding:
-                          EdgeInsets.only(top: 7.0, left: size.width * .12),
+                      EdgeInsets.only(top: 7.0, left: size.width * .12),
                       child: Text(
                         'Check Out',
                         style: TextStyle(
@@ -87,9 +92,13 @@ class CheckOutScreen extends StatelessWidget {
               QrImage(
                 data: 'Name :${model.name} , '
                     'Room Number :${model.roomNo} , '
-                    'Nights Number :${cubit.daysBetween(DateTime.parse('${model.registeredDate}'), DateTime.now())}  '
+                    'Nights Number :${cubit.daysBetween(
+                    DateTime.parse('${model.registeredDate}'),
+                    DateTime.now())}  '
                     'Patient ID :${model.id} , '
-                    'Total Cash :${cubit.daysBetween(DateTime.parse('${model.registeredDate}'), DateTime.now()) * int.parse('${roomModel!.pricePerNight}')}  , ',
+                    'Total Cash :${cubit.daysBetween(
+                    DateTime.parse('${model.registeredDate}'), DateTime.now()) *
+                    int.parse('${roomModel!.pricePerNight}')}  , ',
                 version: QrVersions.auto,
                 size: 170.0,
               ),
@@ -168,7 +177,8 @@ class CheckOutScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '${DateFormat("yyyy-MM-dd").format(DateTime.parse(model.registeredDate.toString()))}',
+                          '${DateFormat("yyyy-MM-dd").format(DateTime.parse(
+                              model.registeredDate.toString()))}',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.black),
                         ),
@@ -176,7 +186,8 @@ class CheckOutScreen extends StatelessWidget {
                           width: size.width * .08,
                         ),
                         Text(
-                          '${DateFormat("yyyy-MM-dd").format(DateTime.parse(DateTime.now().toString()))}',
+                          '${DateFormat("yyyy-MM-dd").format(
+                              DateTime.parse(DateTime.now().toString()))}',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.black),
                         ),
@@ -215,7 +226,9 @@ class CheckOutScreen extends StatelessWidget {
                           width: size.width * .25,
                         ),
                         Text(
-                          '${cubit.daysBetween(DateTime.parse('${model.registeredDate}'), DateTime.now())} Nights',
+                          '${cubit.daysBetween(
+                              DateTime.parse('${model.registeredDate}'),
+                              DateTime.now())} Nights',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.black),
                         ),
@@ -254,7 +267,10 @@ class CheckOutScreen extends StatelessWidget {
                           width: size.width * .14,
                         ),
                         Text(
-                          '${cubit.daysBetween(DateTime.parse('${model.registeredDate}'), DateTime.now()) * int.parse('${roomModel!.pricePerNight}')} \$',
+                          '${cubit.daysBetween(
+                              DateTime.parse('${model.registeredDate}'),
+                              DateTime.now()) *
+                              int.parse('${roomModel!.pricePerNight}')} LE',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.black),
                         ),
@@ -270,55 +286,79 @@ class CheckOutScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
                   child: !cubit.checkOutIsLoading
                       ? defaultButton2(
-                          height: 60,
-                          string: 'Check Out',
-                          function: () {
-                            showDialog(
-                                context: context,
-                                builder: (_) => AlertDialog(
-                                      elevation: 24.0,
-                                      title: Text('Are You Sure?',
+                      height: 60,
+                      string: 'Check Out',
+                      function: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) =>
+                                AlertDialog(
+                                  elevation: 24.0,
+                                  title: Text('Are You Sure?',
+                                      style:
+                                      TextStyle(color: primaryColor)),
+                                  content: Text('You will Check Out',
+                                      style:
+                                      TextStyle(color: primaryColor)),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      child: Container(
+                                        child: Text(
+                                          'Check Out',
                                           style:
-                                              TextStyle(color: primaryColor)),
-                                      content: Text('You will Check Out',
-                                          style:
-                                              TextStyle(color: primaryColor)),
-                                      actions: [
-                                        CupertinoDialogAction(
-                                          child: Container(
-                                            child: Text(
-                                              'Check Out',
-                                              style:
-                                                  TextStyle(color: Colors.red),
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            cubit.checkOut(
-                                                patientName:
-                                                    model.name.toString(),
-                                                id: model.id.toString(),
-                                                selectedDoctorUID: model
-                                                    .selectedDoctorUID
-                                                    .toString(),
-                                                selectedNurseUID: model
-                                                    .selectedNurseUID
-                                                    .toString(),
-                                                roomNo:
-                                                    model.roomNo.toString());
-                                            Navigator.pop(context);
-                                          },
+                                          TextStyle(color: Colors.red),
                                         ),
-                                        CupertinoDialogAction(
-                                          child: Text('Cancel',
-                                              style: TextStyle(
-                                                  color: primaryColor)),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    ));
-                          })
+                                      ),
+                                      onPressed: () {
+                                        cubit.checkOut(
+                                            patientName:
+                                            model.name.toString(),
+                                            id: model.id.toString(),
+                                            selectedDoctorUID: model
+                                                .selectedDoctorUID
+                                                .toString(),
+                                            selectedNurseUID: model
+                                                .selectedNurseUID
+                                                .toString(),
+                                            roomNo: model.roomNo.toString(),
+                                            registeredDate: '${DateFormat(
+                                                "yyyy-MM-dd")
+                                                .format(DateTime
+                                                .parse(model.registeredDate
+                                                .toString()))}',
+                                            exitDate: '${DateFormat(
+                                                "yyyy-MM-dd")
+                                                .format(DateTime
+                                                .parse(DateTime.now()
+                                                .toString()))}',
+                                            nightsNo: '${cubit.daysBetween(
+                                                DateTime.parse(
+                                                    '${model.registeredDate}'),
+                                                DateTime.now())} Nights',
+
+                                            totalCash: '${cubit.daysBetween(
+                                                DateTime.parse(
+                                                    '${model.registeredDate}'),
+                                                DateTime.now()) *
+                                                int.parse('${roomModel!
+                                                    .pricePerNight}')} LE',
+                                          patientEmail: model.patientEmail,
+
+                                        );
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    CupertinoDialogAction(
+                                      child: Text('Cancel',
+                                          style: TextStyle(
+                                              color: primaryColor)),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ));
+                      })
                       : CircularProgressIndicator()),
             ],
           ),

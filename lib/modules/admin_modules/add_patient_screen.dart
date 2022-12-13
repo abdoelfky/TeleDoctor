@@ -19,6 +19,7 @@ class AddNewPatientScreen extends StatelessWidget {
   var selectNurseController = TextEditingController();
   var selectGenderController = TextEditingController();
   var patientIdController = TextEditingController();
+  var patientEmailController=TextEditingController();
   final List<String> genders = [
     'Male',
     'Female',
@@ -48,6 +49,7 @@ class AddNewPatientScreen extends StatelessWidget {
             selectNurseController.text ='';
             selectGenderController.text ='';
             patientIdController.text ='';
+            patientEmailController.text ='';
 
             showToast(
                 text: 'Patient Added Successfully',
@@ -457,6 +459,15 @@ class AddNewPatientScreen extends StatelessWidget {
                           controller: patientIdController,
                           labelText: 'Patient ID'),
                     ),
+                    Padding(
+                      padding:
+                      const EdgeInsets.only(left: 20, right: 20, top: 20),
+                      child: defaultFormFeild1(
+                          inputType: TextInputType.emailAddress,
+                          validatorText: 'Patient Email must not be empty',
+                          controller: patientEmailController,
+                          labelText: 'Patient Email'),
+                    ),
 
                     Padding(
                         padding:
@@ -465,12 +476,7 @@ class AddNewPatientScreen extends StatelessWidget {
                           height: 60,
                             string: 'Add Patient',
                             function: () {
-
-
-
                               if (formKey.currentState!.validate()) {
-
-
                                 cubit.addNewPatient(
                                     name:patientNameController.text.trim(),
                                     age:patientAgeController.text.trim(),
@@ -480,7 +486,8 @@ class AddNewPatientScreen extends StatelessWidget {
                                     gender: selectGenderController.text.trim(),
                                     id: patientIdController.text.trim(),
                                     registeredDate:DateTime.now().toString(),
-                                    newPatient:patientIdController.text.trim()
+                                    newPatient:patientIdController.text.trim(),
+                                    patientEmail: patientEmailController.text.trim()
 
                                 );
 

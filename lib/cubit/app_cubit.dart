@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:intl/intl.dart';
 import 'package:teledoctor/models/notification_model.dart';
 import 'package:teledoctor/models/patient_model.dart';
@@ -310,6 +311,7 @@ class AppCubit extends Cubit<AppState> {
     required id,
     required registeredDate,
     required newPatient,
+    required patientEmail
   }) async {
     emit(AddNewPatientLoadingState());
 
@@ -346,6 +348,7 @@ class AppCubit extends Cubit<AppState> {
         .doc(roomNo)
         .update({'patientList': patientList});
     PatientModel model = PatientModel(
+
         name: name,
         age: age,
         roomNo: roomNo,
@@ -356,7 +359,8 @@ class AppCubit extends Cubit<AppState> {
         registeredDate: registeredDate,
         temp: '-',
         suger: '-',
-        pressure: '-');
+        pressure: '-',
+        patientEmail: patientEmail);
 
     try {
       final snapShot =
@@ -720,7 +724,13 @@ class AppCubit extends Cubit<AppState> {
       required id,
       required selectedDoctorUID,
       required selectedNurseUID,
-      required roomNo}) async {
+      required roomNo,
+        required registeredDate,
+        required exitDate,
+        required nightsNo,
+        required totalCash,
+        required patientEmail
+      }) async {
 
     emit(CheckOutLoadingState());
     checkOutIsLoading=true;
@@ -744,7 +754,7 @@ class AppCubit extends Cubit<AppState> {
       await FirebaseFirestore.instance.collection('rooms').doc(roomNo).update({
         'patientList': checkOutPatientList,
         'roomType': 'EMPTY'
-      }).then((value) {
+      }).then((value) async {
         print(patientList);
 
 
@@ -754,6 +764,24 @@ class AppCubit extends Cubit<AppState> {
             nurseUID: selectedNurseUID,
             patientId: id,
             sendDate: DateTime.now().toString());
+
+        final Email email = Email(
+          body: 'Welcome ${patientName} \n'
+              'Room Number: #${roomNo}\n'
+              'Registered Date: ${registeredDate}\n'
+              'Exit Date: ${exitDate}\n'
+              'Nights Number: ${nightsNo}\n'
+              'Total Cash: ${totalCash}\n'
+
+          ,
+          subject: 'TeleDoctor',
+          recipients: ['${patientEmail}'],
+          isHTML: false,
+
+        );
+
+        await FlutterEmailSender.send(email);
+
         checkOutIsLoading=false;
         getAllRooms();
 

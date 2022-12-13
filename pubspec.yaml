@@ -48,6 +48,7 @@ dependencies:
   intl:
   qr_flutter: ^4.0.0
   conditional_builder_null_safety: ^0.0.6
+  flutter_email_sender: ^5.2.0
 
   #FIREBASE
   firebase_core:
