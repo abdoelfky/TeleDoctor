@@ -199,10 +199,18 @@ class ChatScreen extends StatelessWidget {
                                       AppCubit.get(context).messages[index];
 
                                   if (userModel!.uId.toString() ==
-                                      message.receiverId) {
+                                          message.receiverId &&
+                                      AppCubit.get(context)
+                                              .messages[index]
+                                              .patientID ==
+                                          patientModel.id) {
                                     return buildMessage(message, context, size);
                                   } else if (userModel!.uId.toString() ==
-                                      message.senderId) {
+                                          message.senderId &&
+                                      AppCubit.get(context)
+                                              .messages[index]
+                                              .patientID ==
+                                          patientModel.id) {
                                     return buildMyMessage(
                                         message, context, size);
                                   }
@@ -255,9 +263,11 @@ class ChatScreen extends StatelessWidget {
                                             receiverId: receiverUID.toString(),
                                             dateTime: DateTime.now().toString(),
                                             text: messageController.text,
+                                            patientID: patientModel.id!,
                                           );
                                           scrollController.animateTo(
-                                            scrollController.position.maxScrollExtent,
+                                            scrollController
+                                                .position.maxScrollExtent,
                                             curve: Curves.easeOut,
                                             duration: const Duration(
                                                 milliseconds: 300),

@@ -1,11 +1,12 @@
 class MessageModel{
-  String? senderId,receiverId,dateTime,text;
+  String? senderId,receiverId,dateTime,text,patientID;
 
   MessageModel({
     required this.senderId,
     required this.receiverId,
     required this.dateTime,
     required this.text,
+    required this.patientID,
 
   });
 
@@ -15,6 +16,7 @@ class MessageModel{
     receiverId =json['receiverId'];
     dateTime =json['dateTime'];
     text =json['text'];
+    patientID =json['patientID'];
 
 
   }
@@ -26,6 +28,7 @@ class MessageModel{
       'receiverId':receiverId,
       'dateTime':dateTime,
       'text':text,
+      'patientID':patientID,
 
     };
   }

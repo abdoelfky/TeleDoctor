@@ -654,8 +654,10 @@ class AppCubit extends Cubit<AppState> {
     required String dateTime,
     required String text,
     required String senderId,
+    required String patientID
   }) {
     MessageModel model = MessageModel(
+      patientID:patientID,
       text: text,
       senderId: senderId,
       receiverId: receiverId,
