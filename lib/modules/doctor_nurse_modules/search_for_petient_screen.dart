@@ -41,7 +41,7 @@ class _SearchForPatientScreenState extends State<SearchForPatientScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 7.0, left: size.width * .1),
+                    padding: EdgeInsets.only(top: 7.0, left: size.width * .08),
                     child: Text(
                       '  Search For Patients ',
                       style: TextStyle(
@@ -113,7 +113,8 @@ class _SearchForPatientScreenState extends State<SearchForPatientScreen> {
                             .toString()
                             .toLowerCase()
                             .startsWith(name.toLowerCase())
-                            && (data['selectedDoctorUID'] == uId))
+                            &&( (data['selectedDoctorUID'] == uId)||
+                                (data['selectedNurseUID'] == uId)))
                         {
                           return InkWell(
                               onTap: () {},

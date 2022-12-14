@@ -248,7 +248,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     '${patientModel.age} Years',
                                     style:
                                         TextStyle(
-                                            fontSize:(size.height*size.width)*.00004 ,
+                                            fontSize:13 ,
                                             fontWeight: FontWeight.bold),
                                   )
                                 ],
@@ -283,7 +283,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     '${patientModel.gender}',
                                     style:
                                     TextStyle(
-                                        fontSize:(size.height*size.width)*.00004 ,
+                                        fontSize:13 ,
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
@@ -319,7 +319,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                         .format(DateTime
                                         .parse(patientModel.registeredDate.toString()))}',
                                     style:TextStyle(
-                                        fontSize:(size.height*size.width)*.00004 ,
+                                        fontSize:13 ,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
@@ -354,7 +354,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     'Registered',
                                     style:
                                     TextStyle(
-                                        fontSize:(size.height*size.width)*.0000345 ,
+                                        fontSize:12 ,
                                         fontWeight: FontWeight.bold),                                  )
                                 ],
                               ),
@@ -367,6 +367,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
+                  //hospital info
                   Row(
                     children: [
                       Padding(
@@ -420,7 +421,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                       'Dr ${doctor!.name}',
                                       overflow: TextOverflow.fade,
                                       style:TextStyle(
-                                          fontSize:(size.height*size.width)*.00004 ,
+                                          fontSize:14.5 ,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -442,7 +443,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     'Room No. ${patientModel.roomNo}',
 
                                     style:TextStyle(
-                                        fontSize:(size.height*size.width)*.00004 ,
+                                        fontSize:15 ,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -503,6 +504,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                       ),
                     ),
                   ),
+                  //normaill rates
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Row(

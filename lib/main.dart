@@ -16,15 +16,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    //   options:
-    // const FirebaseOptions(
-    //   apiKey: "AIzaSyAIDHvKqrJ4g4kz49y00xmMPaTE8mi1Y7Q",
-    //   authDomain: "teledoctor-94083.firebaseapp.com",
-    //   projectId: "teledoctor-94083",
-    //   storageBucket: "teledoctor-94083.appspot.com",
-    //   messagingSenderId: "134827706672",
-    //   appId: "1:134827706672:web:62160ff2c031c3cd0920f5",
-    //   measurementId: "G-HBETJMWD9F")
+      options:
+    const FirebaseOptions(
+      apiKey: "AIzaSyAIDHvKqrJ4g4kz49y00xmMPaTE8mi1Y7Q",
+      authDomain: "teledoctor-94083.firebaseapp.com",
+      projectId: "teledoctor-94083",
+      storageBucket: "teledoctor-94083.appspot.com",
+      messagingSenderId: "134827706672",
+      appId: "1:134827706672:web:62160ff2c031c3cd0920f5",
+      measurementId: "G-HBETJMWD9F")
   );
 
       await CacheHelper.init();

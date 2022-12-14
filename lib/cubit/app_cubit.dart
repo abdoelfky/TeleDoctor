@@ -103,10 +103,12 @@ class AppCubit extends Cubit<AppState> {
         .doc(uId)
         .get()
         .then((value) async {
-      isSuper = CacheHelper.getData(key: 'isSuper');
-      isDoctor = CacheHelper.getData(key: 'isDoctor');
-      isAdmin = CacheHelper.getData(key: 'isAdmin');
-      isNurse = CacheHelper.getData(key: 'isNurse');
+
+      isSuper  =  CacheHelper.getData(key: 'isSuper');
+      isDoctor =  CacheHelper.getData(key: 'isDoctor');
+      isAdmin  =  CacheHelper.getData(key: 'isAdmin');
+      isNurse  =  CacheHelper.getData(key: 'isNurse');
+
       //if user is Admin
       print(isAdmin);
       print(isDoctor);
@@ -427,7 +429,7 @@ class AppCubit extends Cubit<AppState> {
           nurseUID: selectedNurseUID,
           patientId: id,
           sendDate: DateTime.now().toString());
-      getAllPatients();
+      // getAllPatients();
       emit(UpdatePatientRecordSuccessState());
     }).catchError((onError) {
       emit(UpdatePatientRecordErrorState(onError.toString()));
@@ -698,7 +700,7 @@ class AppCubit extends Cubit<AppState> {
   void getMessages({
     required String receiverId,
     required String senderId,
-  }) {
+  }){
     FirebaseFirestore.instance
         .collection('admins')
         .doc(senderId)

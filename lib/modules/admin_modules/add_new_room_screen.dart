@@ -11,7 +11,7 @@ import 'package:teledoctor/shared/constants/constants.dart';
 class AddNewRoomsScreen extends StatelessWidget {
 
   var formKey = GlobalKey<FormState>();
-  var floors = [for(var i=1; i<int.parse(adminModel!.floorNumbers.toString()); i+=1) i];
+  var floors = [for(var i=1; i<int.parse(adminModel!.floorNumbers.toString())+1; i+=1) i];
 
   @override
   Widget build(BuildContext context) {

@@ -12,7 +12,7 @@ import '../../models/room_model.dart';
 import '../../shared/component/components.dart';
 
 class FullRoomsScreen extends StatelessWidget {
-  var floors = [for(var i=1; i<int.parse(adminModel!.floorNumbers.toString()); i+=1) i];
+  var floors = [for(var i=1; i<int.parse(adminModel!.floorNumbers.toString())+1; i+=1) i];
 
 
   @override
