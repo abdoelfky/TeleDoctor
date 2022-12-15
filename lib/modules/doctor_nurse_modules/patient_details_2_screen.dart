@@ -227,8 +227,8 @@ class PatientDetailsScreen2 extends StatelessWidget {
                                 selectedNurseUID: patientModel.selectedNurseUID,
                                 patientId: patientModel.id,
                                 data: recordController.text.trim(),
-                                nurseName: nurse!.name,
-                                patientName: patientModel.name
+                                nurseName: userModel!.name,
+                                patientName: patientModel.name, sendBy: userModel!.name
 
                             );
                             cubit.getAllRecords();

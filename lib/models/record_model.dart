@@ -1,12 +1,13 @@
 class RecoredModel{
-  String? data,patientId,selectedDoctorUID,selectedNurseUID,registeredDate;
-
+  String? data,patientId,registeredDate,sendBy;
+  List? selectedDoctorUID,selectedNurseUID;
   RecoredModel({
     required this.data,
     required this.selectedDoctorUID,
     required this.selectedNurseUID,
     required this.patientId,
     required this.registeredDate,
+    required this.sendBy
 
 
 
@@ -19,6 +20,7 @@ class RecoredModel{
     selectedDoctorUID =json['selectedDoctorUID'];
     selectedNurseUID =json['selectedNurseUID'];
     registeredDate =json['registeredDate'];
+    sendBy =json['sendBy'];
 
   }
 
@@ -30,6 +32,7 @@ class RecoredModel{
       'selectedNurseUID':selectedNurseUID,
       'patientId':patientId,
       'registeredDate':registeredDate,
+      'sendBy':sendBy,
 
     };
   }

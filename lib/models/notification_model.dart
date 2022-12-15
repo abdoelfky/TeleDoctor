@@ -1,5 +1,6 @@
 class NotificationModel{
-  String? text,patientId,doctorUID,nurseUID,sendDate;
+  String? text,patientId,sendDate;
+  var doctorUID,nurseUID;
 
   NotificationModel({
     required this.text,

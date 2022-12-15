@@ -451,7 +451,7 @@ class AppCubit extends Cubit<AppState> {
       });
 
       print('patients length${patients.length}');
-      getAllRecords();
+      // getAllRecords();
       emit(GetAllPatientsSuccessState());
     }).catchError((onError) {
       emit(GetAllPatientsErrorState(onError.toString()));
@@ -559,7 +559,8 @@ class AppCubit extends Cubit<AppState> {
       required selectedDoctorUID,
       required selectedNurseUID,
       required registeredDate,
-      required nurseName,
+        required nurseName,
+        required sendBy,
       required patientName}) async {
     RecoredModel model = RecoredModel(
       data: data,
@@ -567,6 +568,7 @@ class AppCubit extends Cubit<AppState> {
       registeredDate: registeredDate,
       selectedDoctorUID: selectedDoctorUID,
       selectedNurseUID: selectedNurseUID,
+      sendBy:sendBy ,
     );
 
     try {
@@ -612,8 +614,8 @@ class AppCubit extends Cubit<AppState> {
 
   Future<void> sendNotification({
     required String text,
-    required String doctorUID,
-    required String nurseUID,
+    required doctorUID,
+    required nurseUID,
     required String patientId,
     required String sendDate,
   }) async {

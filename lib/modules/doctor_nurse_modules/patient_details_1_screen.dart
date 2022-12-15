@@ -34,15 +34,19 @@ class PatientDetailsScreen1 extends StatelessWidget {
           Size size = MediaQuery.of(context).size;
           String uId = CacheHelper.getData(key: 'uId');
 
-          UserModel? doctor;
-          UserModel? nurse;
+          List<UserModel> doctor = [];
+          List<UserModel> nurse = [];
           cubit.users.forEach((element) {
-            if (element.uId.toString() == patientModel.selectedDoctorUID) {
-              doctor = element;
-            } else if (element.uId.toString() ==
-                patientModel.selectedNurseUID) {
-              nurse = element;
-            }
+            patientModel.selectedDoctorUID!.forEach((element2) {
+              if (element.uId.toString() == element2) {
+                doctor.add(element);
+              }
+            });
+            patientModel.selectedNurseUID!.forEach((element3) {
+              if (element.uId.toString() == element3) {
+                nurse.add(element);
+              }
+            });
           });
 
           List<RecoredModel> records = cubit.records;
@@ -50,7 +54,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
 
           records.forEach((recordElement) {
             if (patientModel.id == recordElement.patientId.toString()) {
-              patientRecords.insert(patientRecords.length, recordElement);
+              patientRecords.add(recordElement);
             }
           });
 
@@ -246,10 +250,9 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                   ),
                                   Text(
                                     '${patientModel.age} Years',
-                                    style:
-                                        TextStyle(
-                                            fontSize:13 ,
-                                            fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
                                   )
                                 ],
                               ),
@@ -281,9 +284,8 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                   ),
                                   Text(
                                     '${patientModel.gender}',
-                                    style:
-                                    TextStyle(
-                                        fontSize:13 ,
+                                    style: TextStyle(
+                                        fontSize: 13,
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
@@ -315,11 +317,9 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                     height: size.height * .06,
                                   ),
                                   Text(
-                                    '${DateFormat("yy-MM-dd")
-                                        .format(DateTime
-                                        .parse(patientModel.registeredDate.toString()))}',
-                                    style:TextStyle(
-                                        fontSize:13 ,
+                                    '${DateFormat("yy-MM-dd").format(DateTime.parse(patientModel.registeredDate.toString()))}',
+                                    style: TextStyle(
+                                        fontSize: 13,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
@@ -352,10 +352,10 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                   ),
                                   Text(
                                     'Registered',
-                                    style:
-                                    TextStyle(
-                                        fontSize:12 ,
-                                        fontWeight: FontWeight.bold),                                  )
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  )
                                 ],
                               ),
                             )
@@ -395,111 +395,152 @@ class PatientDetailsScreen1 extends StatelessWidget {
                         color: Colors.grey.shade300,
                       ),
                       width: size.width * .93,
-                      height: size.height * .2,
                       child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal:(size.height*size.width)*.00004 ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: (size.height * size.width) * .00004),
+                        child: SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 8, left: 8),
-                                  child: Image.asset(
-                                    'images/doctor.png',
-                                    width: size.width * .09,
-                                    height: size.height * .06,
+                                if (userModel!.type == 'NURSE')
+                                  Text(
+                                    'Doctors',
+                                    style: TextStyle(
+                                        fontSize: 20, color: primaryColor),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: Container(
-                                    width:80,
+                                if (userModel!.type == 'NURSE')
+                                  ListView.separated(
+                                      physics: BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: doctor.length,
+                                      itemBuilder: (context, index) => InkWell(
+                                            onTap: () {
+                                              if (uId != doctor[index].uId) {
+                                                navigateTo(
+                                                    context,
+                                                    ChatScreen(
+                                                        patientModel:
+                                                            patientModel,
+                                                        doctor: doctor[index],
+                                                        nurse: userModel));
+                                              }
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 8, left: 8),
+                                                    child: Image.asset(
+                                                      'images/doctor.png',
+                                                      width: size.width * .09,
+                                                      height: size.height * .06,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8),
+                                                    child: Container(
+                                                      child: Text(
+                                                        'Dr ${doctor[index].name}',
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                            fontSize: 14.5,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                      separatorBuilder: (context, index) =>
+                                          Container(
+                                            height: 5,
+                                          )),
+                                if (userModel!.type == 'DOCTOR')
+                                  Text(
+                                    'Nurses',
+                                    style: TextStyle(
+                                        fontSize: 20, color: primaryColor),
+                                  ),
+                                if (userModel!.type == 'DOCTOR')
+                                  ListView.separated(
+                                      physics: BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: nurse.length,
+                                      itemBuilder: (context, index) => InkWell(
+                                            onTap: () {
+                                              if (uId != nurse[index].uId) {
+                                                navigateTo(
+                                                    context,
+                                                    ChatScreen(
+                                                        patientModel:
+                                                            patientModel,
+                                                        doctor: userModel,
+                                                        nurse: nurse[index]));
+                                              }
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 8, left: 8),
+                                                    child: Image.asset(
+                                                      'images/nurse.png',
+                                                      width: size.width * .09,
+                                                      height: size.height * .06,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8),
+                                                    child: Container(
+                                                      child: Text(
+                                                        'Mrs ${nurse[index].name}',
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                            fontSize: 14.5,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                      separatorBuilder: (context, index) =>
+                                          Container(
+                                            height: 5,
+                                          )),
 
-                                    child: Text(
-                                      'Dr ${doctor!.name}',
-                                      overflow: TextOverflow.fade,
-                                      style:TextStyle(
-                                          fontSize:14.5 ,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                                Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15),
-                                  child: Image.asset(
-                                    'images/bed.png',
-                                    width: size.width * .09,
-                                    height: size.height * .06,
-                                  ),
-                                ),
-                                Padding(
-                                  padding:EdgeInsets.only(right:(size.height*size.width)*.00004 ),
-                                  child: Text(
-
-                                    'Room No. ${patientModel.roomNo}',
-
-                                    style:TextStyle(
-                                        fontSize:15 ,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
+                                SizedBox(height: 30,)
                               ],
                             ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 8, left: 8),
-                                  child: Image.asset(
-                                    'images/nurse.png',
-                                    width: size.width * .09,
-                                    height: size.height * .06,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: Container(
-                                    width: 80,
-                                    child: Text(
-                                      'Mrs ${nurse!.name}',
-                                      overflow: TextOverflow.fade,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Spacer(),
-                                TextButton(
-                                  child: doctor!.uId == uId
-                                      ? Text(
-                                          'Chat with Nurse.',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 15),
-                                        )
-                                      : Text(
-                                          'Chat with Doctor.',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 15),
-                                        ),
-                                  onPressed: () {
-                                    navigateTo(
-                                        context,
-                                        ChatScreen(
-                                            patientModel: patientModel,
-                                            doctor: doctor,
-                                            nurse: nurse));
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
@@ -526,7 +567,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                               color: blue3),
                         ),
                         Spacer(),
-                        uId == patientModel.selectedNurseUID
+                        userModel!.type=='NURSE'
                             ? TextButton(
                                 onPressed: () {
                                   navigateTo(
@@ -669,7 +710,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                       )
                     ],
                   ),
-                  uId == patientModel.selectedNurseUID
+                  userModel!.type == 'NURSE'
                       ? Padding(
                           padding: const EdgeInsets.only(
                               left: 20, right: 20, top: 20),
@@ -686,7 +727,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                               }))
                       : SizedBox(),
 
-                  //recored
+                  //records
                   Padding(
                     padding: const EdgeInsets.all(0),
                     child: ListView.separated(
@@ -694,7 +735,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: patientRecords.length,
                       itemBuilder: (context, index) => buildItem(
-                          context, size, patientRecords[index], nurse!),
+                          context, size, patientRecords[index],patientRecords[index].sendBy),
                       separatorBuilder: (context, index) => SizedBox(
                         height: 8,
                       ),
@@ -708,7 +749,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
   }
 }
 
-Widget buildItem(context, size, RecoredModel recordModel, UserModel nurse) {
+Widget buildItem(context, size, RecoredModel recordModel,SendBy) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: size.width * .03),
     child: Row(
@@ -727,7 +768,7 @@ Widget buildItem(context, size, RecoredModel recordModel, UserModel nurse) {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: Text(
-                      'Mrs. ${nurse.name}',
+                      'Mrs. ${SendBy}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),

@@ -1,7 +1,8 @@
 class PatientModel
 {
-  String? name,age,roomNo,selectedDoctorUID,selectedNurseUID,gender,id,registeredDate
+  String? name,age,roomNo,gender,id,registeredDate
   ,temp,suger,pressure,patientEmail;
+  List? selectedDoctorUID,selectedNurseUID;
 
   PatientModel({
     required this.name,

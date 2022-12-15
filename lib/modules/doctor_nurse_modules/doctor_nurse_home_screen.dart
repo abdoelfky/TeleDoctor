@@ -22,14 +22,27 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           Size size = MediaQuery.of(context).size;
-          String uId=CacheHelper.getData(key: 'uId');
+          String uId = CacheHelper.getData(key: 'uId');
           List<PatientModel> patients = [];
           cubit.patients.forEach((element) {
-            if(element.selectedDoctorUID.toString()==uId||element.selectedNurseUID.toString()==uId)
-            {
-              patients.insert(patients.length, element);
-
+            if (userModel!.type == 'NURSE') {
+              element.selectedNurseUID!.forEach((element2) {
+                if (element2.toString() == uId)
+                {
+                  patients.add(element);
+                }
+              });
             }
+            if (userModel!.type == 'DOCTOR') {
+              element.selectedDoctorUID!.forEach((element3) {
+                if (element3.toString() == uId)
+                {
+                  patients.add(element);
+                }
+              });
+            }
+            print('565e5d5d5ds5----------');
+            print(patients.length);
           });
 
           return SingleChildScrollView(
@@ -46,57 +59,63 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
                     children: [
                       const Text(
                         'Good evening,',
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.w600),
                       ),
                       Spacer(),
                       InkWell(
-                        onTap: (){},
+                        onTap: () {},
                         child: Container(
-                            width:40 ,
-                            height:40 ,
+                            width: 40,
+                            height: 40,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50),
                               color: primaryColor,
-
                             ),
-                            child: IconButton(onPressed:()
-                            {
-                              cubit.getAllPatients();
-                            },
-
-                                icon: Icon(Icons.refresh,color: Colors.white,))),
+                            child: IconButton(
+                                onPressed: () {
+                                  cubit.getAllPatients();
+                                },
+                                icon: Icon(
+                                  Icons.refresh,
+                                  color: Colors.white,
+                                ))),
                       ),
                       IconButton(
                           onPressed: () {
                             showDialog(
                                 context: context,
                                 builder: (_) => AlertDialog(
-                                  elevation: 24.0,
-                                  title: Text('Are You Sure?',
-                                      style: TextStyle(color: primaryColor)),
-                                  content: Text('You will log out',
-                                      style: TextStyle(color: primaryColor)),
-                                  actions: [
-                                    CupertinoDialogAction(
-                                      child: Container(
-                                        child: Text(
-                                          'Log out',
-                                          style: TextStyle(color: Colors.red),
+                                      elevation: 24.0,
+                                      title: Text('Are You Sure?',
+                                          style:
+                                              TextStyle(color: primaryColor)),
+                                      content: Text('You will log out',
+                                          style:
+                                              TextStyle(color: primaryColor)),
+                                      actions: [
+                                        CupertinoDialogAction(
+                                          child: Container(
+                                            child: Text(
+                                              'Log out',
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            cubit.logOut(context);
+                                          },
                                         ),
-                                      ),
-                                      onPressed: () {
-                                        cubit.logOut(context);
-                                      },
-                                    ),
-                                    CupertinoDialogAction(
-                                      child: Text('Cancel',
-                                          style: TextStyle(color: primaryColor)),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  ],
-                                ));
+                                        CupertinoDialogAction(
+                                          child: Text('Cancel',
+                                              style: TextStyle(
+                                                  color: primaryColor)),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    ));
                           },
                           icon: Icon(
                             Icons.logout_outlined,
@@ -107,16 +126,17 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      userModel!.type=="DOCTOR"?
-                      Text(
-                        'Dr. ${userModel!.name}',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.w600),
-                      ):Text(
-                        'Mrs. ${userModel!.name}',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.w600),
-                      ),
+                      userModel!.type == "DOCTOR"
+                          ? Text(
+                              'Dr. ${userModel!.name}',
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.w600),
+                            )
+                          : Text(
+                              'Mrs. ${userModel!.name}',
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.w600),
+                            ),
                       SizedBox(
                         width: 8,
                       ),
@@ -143,7 +163,7 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           border:
-                          Border.all(color: Colors.grey.shade400, width: 2),
+                              Border.all(color: Colors.grey.shade400, width: 2),
                         ),
                         child: Row(
                           children: [
@@ -164,27 +184,28 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  patients.isNotEmpty?
-                  ListView.separated(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: patients.length,
-                    itemBuilder: (context, index) =>
-                        buildItem(context, patients[index]),
-                    separatorBuilder: (context, index) => SizedBox(
-                      height: 12,
-                    ),
-                  ):
-                  Padding(
-                    padding:  EdgeInsets.symmetric(vertical: size.height*.2),
-                    child: Center(child:
-                    Text('No Patients Add Yet',style: TextStyle
-                      (
-                        fontSize: 25,
-                        fontWeight: FontWeight.w500
-                    ),)
-                      ,),
-                  )
+                  patients.isNotEmpty
+                      ? ListView.separated(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: patients.length,
+                          itemBuilder: (context, index) =>
+                              buildItem(context, patients[index]),
+                          separatorBuilder: (context, index) => SizedBox(
+                            height: 12,
+                          ),
+                        )
+                      : Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: size.height * .2),
+                          child: Center(
+                            child: Text(
+                              'No Patients Add Yet',
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        )
                 ],
               ),
             ),
@@ -194,99 +215,101 @@ class DoctorAndNurseHomeScreen extends StatelessWidget {
 }
 
 Widget buildItem(context, PatientModel patient) => InkWell(
-  onTap: () {
-    AppCubit.get(context).getAllRecords();
-    if(patient!=null){
-    navigateTo(context, PatientDetailsScreen1(patientModel: patient,));
-  }
-    },
-  child: Card(
-    color: Colors.grey[100],
+      onTap: () {
+        AppCubit.get(context).getAllRecords();
+        if (patient != null) {
+          navigateTo(
+              context,
+              PatientDetailsScreen1(
+                patientModel: patient,
+              ));
+        }
+      },
+      child: Card(
+        color: Colors.grey[100],
 
-    elevation: 5,
+        elevation: 5,
 
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(15))),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15))),
 
-    //  color: Colors.blue,
+        //  color: Colors.blue,
 
-    child: Padding(
-      padding:
-      const EdgeInsets.only(right: 12, left: 12, top: 12, bottom: 12),
-      child: Container(
-        child: Row(
-          children: [
-            //image
-            Container(
-              width: 80,
-              height: 85,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(
-                    width: 6,
-                    color: Colors.white,
-                  )),
-              child: Center(
-                child: Image(
-                  image: AssetImage(
-                    'images/profile.jpeg',
-                  ),
-                  fit: BoxFit.fill,
-                  width: 100,
-                  height: 100,
-                ),
-              ),
-            ),
-
-            SizedBox(
-              width: 10.0,
-            ),
-
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    '${patient.name}',
-                    style: TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.bold),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    'Registered Date: ${DateFormat("yyyy-MM-dd")
-                        .format(DateTime
-                        .parse(patient.registeredDate.toString()))}',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 13.0,
-                      fontWeight: FontWeight.w200,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Room No : ${patient.roomNo}',
-                        style: TextStyle(color: primaryColor),
+        child: Padding(
+          padding:
+              const EdgeInsets.only(right: 12, left: 12, top: 12, bottom: 12),
+          child: Container(
+            child: Row(
+              children: [
+                //image
+                Container(
+                  width: 80,
+                  height: 85,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        width: 6,
+                        color: Colors.white,
+                      )),
+                  child: Center(
+                    child: Image(
+                      image: AssetImage(
+                        'images/profile.jpeg',
                       ),
-                      Spacer(),
+                      fit: BoxFit.fill,
+                      width: 100,
+                      height: 100,
+                    ),
+                  ),
+                ),
+
+                SizedBox(
+                  width: 10.0,
+                ),
+
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 5,
+                      ),
                       Text(
-                        'Active',
-                        style: TextStyle(color: Colors.red[800]),
+                        '${patient.name}',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        'Registered Date: ${DateFormat("yyyy-MM-dd").format(DateTime.parse(patient.registeredDate.toString()))}',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w200,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Room No : ${patient.roomNo}',
+                            style: TextStyle(color: primaryColor),
+                          ),
+                          Spacer(),
+                          Text(
+                            'Active',
+                            style: TextStyle(color: Colors.red[800]),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
-    ),
-  ),
-);
+    );
