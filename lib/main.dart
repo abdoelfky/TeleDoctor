@@ -16,73 +16,73 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-      options:
-    const FirebaseOptions(
-      apiKey: "AIzaSyAIDHvKqrJ4g4kz49y00xmMPaTE8mi1Y7Q",
-      authDomain: "teledoctor-94083.firebaseapp.com",
-      projectId: "teledoctor-94083",
-      storageBucket: "teledoctor-94083.appspot.com",
-      messagingSenderId: "134827706672",
-      appId: "1:134827706672:web:62160ff2c031c3cd0920f5",
-      measurementId: "G-HBETJMWD9F")
+      // options: const FirebaseOptions(
+      //     apiKey: "AIzaSyAIDHvKqrJ4g4kz49y00xmMPaTE8mi1Y7Q",
+      //     authDomain: "teledoctor-94083.firebaseapp.com",
+      //     projectId: "teledoctor-94083",
+      //     storageBucket: "teledoctor-94083.appspot.com",
+      //     messagingSenderId: "134827706672",
+      //     appId: "1:134827706672:web:62160ff2c031c3cd0920f5",
+      //     measurementId: "G-HBETJMWD9F")
   );
 
-      await CacheHelper.init();
+  await CacheHelper.init();
   Widget widget;
-  bool onBoarding =false;
-  if (await CacheHelper.getData(key: 'onBoarding')!=
-      null&&await CacheHelper.getData(key: 'onBoarding')==true) {
-    if (CacheHelper.getData(key: 'uId')!=null) {
-      userType=CacheHelper.getData(key: 'userType');
+  bool onBoarding = false;
+  if (await CacheHelper.getData(key: 'onBoarding') != null &&
+      await CacheHelper.getData(key: 'onBoarding') == true) {
+    if (CacheHelper.getData(key: 'uId') != null) {
+      userType = CacheHelper.getData(key: 'userType');
       print(uId);
       uId = CacheHelper.getData(key: 'uId');
-      widget =HomeLayoutScreen();
+      widget = HomeLayoutScreen();
     } else {
       widget = LoginScreen();
-    }    }
-   else {
-    CacheHelper.saveData(key: 'onBoarding',value: false);
+    }
+  } else {
+    CacheHelper.saveData(key: 'onBoarding', value: false);
     onBoarding = await CacheHelper.getData(key: 'onBoarding');
     widget = OnBoardingScreen();
   }
 
-
-  runApp(MyApp(onBoarding: onBoarding, startWidget: widget,));}
+  runApp(MyApp(
+    onBoarding: onBoarding,
+    startWidget: widget,
+  ));
+}
 
 class MyApp extends StatelessWidget {
   final Widget startWidget;
   final bool onBoarding;
+
   const MyApp({required this.onBoarding, required this.startWidget});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-
     return MultiBlocProvider(
-
-      providers: [
-        BlocProvider(create: (BuildContext context) =>AppCubit()..getAllNotifications()..getAllRecords()..getAllPatients()..getAllRooms()..getUserData()..getAllUsers(),
-
-        )
-        ,
-        BlocProvider(create: (BuildContext context) =>LoginCubit(),
-        )
-
-      ],
-
-      child:MaterialApp(
-
-            theme: ThemeData(
+        providers: [
+          BlocProvider(
+            create: (BuildContext context) => AppCubit()
+              ..getAllNotifications()
+              ..getAllRecords()
+              ..getAllPatients()
+              ..getAllRooms()
+              ..getUserData()
+              ..getAllUsers(),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => LoginCubit(),
+          )
+        ],
+        child: MaterialApp(
+          theme: ThemeData(
             textTheme: GoogleFonts.amikoTextTheme(
               Theme.of(context).textTheme,
-        ),),
+            ),
+          ),
           debugShowCheckedModeBanner: false,
-          home:startWidget,
-
-
-    )
-    );
+          home: startWidget,
+        ));
   }
 }
-
-

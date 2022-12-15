@@ -81,7 +81,7 @@ class AddNewRoomsScreen extends StatelessWidget {
                           ),
                           Padding(
                             padding:
-                            EdgeInsets.only(top: 7.0, left: size.width * .12),
+                            EdgeInsets.only(top: 7.0, left: size.width * .06),
                             child: Text(
                               'Add New Room',
                               style: TextStyle(
@@ -112,6 +112,7 @@ class AddNewRoomsScreen extends StatelessWidget {
                       padding:
                       const EdgeInsets.only(left: 20, right: 20, top: 20),
                       child:DropdownButtonFormField2(
+                        dropdownMaxHeight:150,
                         focusColor: primaryColor,
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
@@ -142,7 +143,7 @@ class AddNewRoomsScreen extends StatelessWidget {
                         hint: Text(
                           'Select Floor',
                           style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 20,
                             color: primaryColor,
                           ),
                         ),
@@ -163,7 +164,7 @@ class AddNewRoomsScreen extends StatelessWidget {
                           child: Text(
                             'Floor Number ${item}',
                             style: TextStyle(
-                                fontSize: 20, color: primaryColor),
+                                fontSize: 18, color: primaryColor),
                           ),
                         ))
                             .toList(),

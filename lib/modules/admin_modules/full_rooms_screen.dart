@@ -70,6 +70,7 @@ class FullRoomsScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         DropdownButtonFormField2(
+                          dropdownMaxHeight:150,
                           focusColor: primaryColor,
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
@@ -100,7 +101,7 @@ class FullRoomsScreen extends StatelessWidget {
                           hint: Text(
                             'Select Floor',
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                               color: primaryColor,
                             ),
                           ),
@@ -121,7 +122,7 @@ class FullRoomsScreen extends StatelessWidget {
                                     child: Text(
                                       'Floor Number ${item}',
                                       style: TextStyle(
-                                          fontSize: 20, color: primaryColor),
+                                          fontSize: 16, color: primaryColor),
                                     ),
                                   ))
                               .toList(),

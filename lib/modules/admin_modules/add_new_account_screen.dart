@@ -266,6 +266,8 @@ class AddNewAccountScreen extends StatelessWidget {
                             left:size.width*.08 ,
                             right:size.width*.08   ),
                         child: DropdownButtonFormField2(
+                          dropdownMaxHeight:150,
+
                           focusColor: primaryColor,
                           decoration: InputDecoration(
 
@@ -347,10 +349,10 @@ class AddNewAccountScreen extends StatelessWidget {
                               left:size.width*.08 ,
                               right:size.width*.08   ),
                           child: defaultFormFeild1(
-                              validatorText: 'Jop must not be empty',
+                              validatorText: 'Job must not be empty',
                               controller: jopController,
                               inputType: TextInputType.text,
-                              labelText: 'Specialization'
+                              labelText: 'Specialization/Department'
                           )
 
                       ),

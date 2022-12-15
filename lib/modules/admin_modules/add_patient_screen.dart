@@ -140,6 +140,8 @@ class AddNewPatientScreen extends StatelessWidget {
                       padding:
                       const EdgeInsets.only(left: 20, right: 20, top: 20),
                         child:DropdownButtonFormField2(
+                          dropdownMaxHeight:150,
+
                           focusColor: primaryColor,
                           decoration: InputDecoration(
 
@@ -219,6 +221,8 @@ class AddNewPatientScreen extends StatelessWidget {
                       padding:
                       const EdgeInsets.only(left: 20, right: 20, top: 20),
                       child:DropdownButtonFormField2(
+                        dropdownMaxHeight:150,
+
                         focusColor: primaryColor,
                         decoration: InputDecoration(
 
@@ -297,6 +301,8 @@ class AddNewPatientScreen extends StatelessWidget {
                       padding:
                       const EdgeInsets.only(left: 20, right: 20, top: 20),
                       child: DropdownButtonFormField2(
+                        dropdownMaxHeight:150,
+
                         focusColor: primaryColor,
                         decoration: InputDecoration(
 
@@ -376,6 +382,8 @@ class AddNewPatientScreen extends StatelessWidget {
                       padding:
                       const EdgeInsets.only(left: 20, right: 20, top: 20),
                       child: DropdownButtonFormField2(
+                        dropdownMaxHeight:150,
+
                         focusColor: primaryColor,
                         decoration: InputDecoration(
 

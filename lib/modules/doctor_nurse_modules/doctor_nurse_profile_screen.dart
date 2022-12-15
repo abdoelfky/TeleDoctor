@@ -182,7 +182,7 @@ class DoctorAndNurseProfileScreen extends StatelessWidget {
                           ),
                           child: defaultFormFeild2(
                               controller: jopController,
-                              labelText: 'Specialization'
+                              labelText: userModel!.type=='DOCTOR'?'Specialization':'Department'
                           )
                           ,
                         ),

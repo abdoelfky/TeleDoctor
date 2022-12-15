@@ -282,6 +282,8 @@ class EditAccountScreen extends StatelessWidget {
                             left: size.width * .08,
                             right: size.width * .08),
                         child: DropdownButtonFormField2(
+                          dropdownMaxHeight:150,
+
                           focusColor: primaryColor,
                           value: model.type.toString(),
                           decoration: InputDecoration(
