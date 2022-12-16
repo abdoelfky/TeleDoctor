@@ -113,8 +113,8 @@ class _SearchForPatientScreenState extends State<SearchForPatientScreen> {
                             .toString()
                             .toLowerCase()
                             .startsWith(name.toLowerCase())
-                            &&( (data['selectedDoctorUID'] == uId)||
-                                (data['selectedNurseUID'] == uId)))
+                            &&(model.selectedDoctorUID!.contains(uId)||model.selectedNurseUID!.contains(uId))
+                            )
                         {
                           return InkWell(
                               onTap: () {},

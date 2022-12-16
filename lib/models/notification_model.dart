@@ -1,6 +1,6 @@
 class NotificationModel{
   String? text,patientId,sendDate;
-  var doctorUID,nurseUID;
+  List? doctorUID,nurseUID;
 
   NotificationModel({
     required this.text,

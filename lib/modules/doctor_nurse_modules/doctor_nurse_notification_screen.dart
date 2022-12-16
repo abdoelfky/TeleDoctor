@@ -25,21 +25,25 @@ class DoctorAndNurseNotificationScreen extends StatelessWidget {
           Size size = MediaQuery.of(context).size;
           String uId = CacheHelper.getData(key: 'uId');
           List<NotificationModel> notifications =[];
-          UserModel? doctor;
 
-          cubit.users.forEach((element1) {
-            cubit.notifications.forEach((element2)
-            {
-              if(element1.uId==element2.doctorUID)
-              {
-
-                notifications.insert(notifications.length,element2);
-
-              }
-
-            });
+          cubit.notifications.forEach((element) {
+            if (userModel!.type == 'NURSE') {
+              element.nurseUID!.forEach((element2) {
+                if (element2.toString() == uId)
+                {
+                  notifications.add(element);
+                }
+              });
+            }
+            else if (userModel!.type == 'DOCTOR') {
+              element.doctorUID!.forEach((element3) {
+                if (element3.toString() == uId)
+                {
+                  notifications.add(element);
+                }
+              });
+            }
           });
-
 
 
 
