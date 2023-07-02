@@ -217,7 +217,7 @@ Widget buildItem(AppCubit cubit, List<NotificationModel> notifications,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ):                                  Text(
-                                    'Nurse,${nurse!.name}',
+                                    'Nurse,${nurse?.name}',
                                     style: TextStyle(
                                         color: primaryColor,
                                         fontSize: 18.0,

@@ -158,3 +158,25 @@ class CheckOutErrorState extends AppState
   final error;
   CheckOutErrorState(this.error);
 }
+
+
+
+class UploadImgLoadingState extends AppState {}
+
+class UploadImgSuccessState extends AppState {}
+
+class UploadImgErrorState extends AppState
+{
+  final error;
+  UploadImgErrorState(this.error);
+}
+
+class ImagePickedSuccessState extends AppState {}
+
+class ImagePickedErrorState extends AppState
+{
+  final error;
+  ImagePickedErrorState(this.error);
+}
+
+

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:teledoctor/cubit/app_cubit.dart';
 import 'package:teledoctor/cubit/app_state.dart';
 import 'package:teledoctor/models/patient_model.dart';
+import 'package:teledoctor/shared/component/dialoge_component.dart';
 import 'package:teledoctor/shared/constants/constants.dart';
 import '../../models/user_model.dart';
 import '../../models/chat_model.dart';
@@ -29,16 +30,25 @@ class ChatScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Builder(
       builder: (BuildContext context) {
-        AppCubit.get(context).getMessages(
-          senderId: patientModel.selectedDoctorUID![index!].toString(),
-          receiverId: userModel!.uId!,
-        );
+
+        if (userModel!.type == 'DOCTOR') {
+          AppCubit.get(context).getMessages(
+            senderId: nurse!.uId!,
+            receiverId: userModel!.uId!,
+          );        }
+        if (userModel!.type == 'NURSE') {
+          AppCubit.get(context).getMessages(
+            senderId: doctor!.uId!,
+            receiverId: userModel!.uId!,
+          );        }
+
+
 
         return BlocConsumer<AppCubit, AppState>(
           listener: (context, state) {
             if (state is SendMessageSuccessState) {
               messageController.text = '';
-              AppCubit.get(context).messages.length.toString();
+              // AppCubit.get(context).messages.length.toString();
             }
           },
           builder: (context, state) {
@@ -200,24 +210,100 @@ class ChatScreen extends StatelessWidget {
                                 itemBuilder: (context, index) {
                                   var message =
                                       AppCubit.get(context).messages[index];
-
+                                  print(message.text.toString());
                                   if (userModel!.uId.toString() ==
                                           message.receiverId &&
                                       AppCubit.get(context)
                                               .messages[index]
                                               .patientID ==
-                                          patientModel.id) {
+                                          patientModel.id
+                                  && message.isImg==false) {
                                     return buildMessage(message, context, size);
-                                  } else if (userModel!.uId.toString() ==
+                                  }
+                                  else if (userModel!.uId.toString() ==
                                           message.senderId &&
                                       AppCubit.get(context)
                                               .messages[index]
                                               .patientID ==
-                                          patientModel.id) {
+                                          patientModel.id
+                                      && message.isImg==false) {
                                     return buildMyMessage(
                                         message, context, size);
                                   }
-                                  return Container();
+                                  else if (userModel!.uId.toString() ==
+                                      message.receiverId &&
+                                      AppCubit.get(context)
+                                          .messages[index]
+                                          .patientID ==
+                                          patientModel.id
+                                      && message.isImg==true) {
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                            height:300 ,
+                                            child: Image.network(message.text.toString())),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal:7),
+                                              child: Icon(
+                                                Icons.watch_later,
+                                                size: 11,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Text(
+                                              '${DateFormat("MM-dd hh:mm").format(DateTime.parse(message.dateTime.toString()))}',
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                  else if (userModel!.uId.toString() ==
+                                      message.senderId &&
+                                      AppCubit.get(context)
+                                          .messages[index]
+                                          .patientID ==
+                                          patientModel.id
+                                      && message.isImg==true) {
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                            height:300 ,
+                                            child: Image.network(message.text.toString())),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal:7),
+                                              child: Icon(
+                                                Icons.watch_later,
+                                                size: 11,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Text(
+                                              '${DateFormat("MM-dd hh:mm").format(DateTime.parse(message.dateTime.toString()))}',
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                  }
+
+                                   return Container();
                                 },
                                 separatorBuilder: (context, index) => SizedBox(
                                   height: 15.0,
@@ -255,6 +341,38 @@ class ChatScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Container(
+                                    width: 50,
+                                    height: 50.0,
+                                    color: Colors.grey[800],
+                                    child: MaterialButton(
+                                      child:Icon(
+                                        Icons.attach_file,
+                                        size: 16.0,
+                                        color: Colors.white,
+                                      ),
+                                      onPressed: () async {
+                                        final option = await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return MyDialog(
+                                              receiverId:  receiverUID.toString(),
+                                              patientID: patientModel.id!,
+                                            );
+                                          },
+                                        );
+
+                                        // Perform actions based on the selected option
+                                        if (option == 'camera') {
+                                          // Perform camera action
+                                          print('Camera option selected');
+                                        } else if (option == 'attach') {
+                                          // Perform attach image action
+                                          print('Attach image option selected');
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  Container(
                                     height: 50.0,
                                     color: primaryColor,
                                     child: MaterialButton(
@@ -267,6 +385,7 @@ class ChatScreen extends StatelessWidget {
                                             dateTime: DateTime.now().toString(),
                                             text: messageController.text,
                                             patientID: patientModel.id!,
+                                            isImg: false,
                                           );
                                           scrollController.animateTo(
                                             scrollController

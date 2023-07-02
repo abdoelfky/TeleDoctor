@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:teledoctor/models/notification_model.dart';
 import 'package:teledoctor/models/patient_model.dart';
@@ -25,6 +28,7 @@ import '../shared/component/components.dart';
 import '../shared/constants/constants.dart';
 import '../shared/local/shared_preference.dart';
 import 'app_state.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitial());
@@ -658,7 +662,8 @@ class AppCubit extends Cubit<AppState> {
     required String dateTime,
     required String text,
     required String senderId,
-    required String patientID
+    required String patientID,
+    required bool isImg
   }) {
     MessageModel model = MessageModel(
       patientID:patientID,
@@ -666,6 +671,7 @@ class AppCubit extends Cubit<AppState> {
       senderId: senderId,
       receiverId: receiverId,
       dateTime: dateTime,
+      isImg: isImg,
     );
 
     // set my chats
@@ -706,20 +712,19 @@ class AppCubit extends Cubit<AppState> {
     print(receiverId);
     print(senderId);
      FirebaseFirestore.instance
-        .collection('admins')
-        .doc(senderId)
-        .collection('chats')
-        .doc(receiverId)
-        .collection('messages')
-        .orderBy('dateTime')
-        .snapshots()
-        .listen((event) {
+         .collection('admins')
+         .doc(senderId)
+         .collection('chats')
+         .doc(receiverId)
+         .collection('messages')
+         .orderBy('dateTime')
+         .snapshots()
+         .listen((event) {
       messages = [];
 
       event.docs.forEach((element) {
         messages.add(MessageModel.fromJson(element.data()));
       });
-      print('loly'+messages.length.toString());
       emit(GetMessagesSuccessState());
     });
   }
@@ -803,4 +808,78 @@ class AppCubit extends Cubit<AppState> {
       emit(CheckOutErrorState(onError.toString()));
     });
   }
+
+
+  File? image;
+  var picker = ImagePicker();
+
+  Future <void> getImage({
+    required bool camera,
+    required String receiverId,
+    required String patientID,}) async //
+      {
+        var pickedFile = camera? await picker.pickImage(source: ImageSource.camera,
+          imageQuality: 5,)
+            :
+        await picker.pickImage(source: ImageSource.gallery,
+          imageQuality: 5,)
+        ;
+    if (pickedFile != null) {
+      image = File(pickedFile.path);
+      uploadImage(
+          receiverId: receiverId,
+          patientID: patientID);
+      emit(ImagePickedSuccessState());
+    }
+    else {
+      emit(ImagePickedErrorState('no Image selected'));
+      print('no Image selected');
+    }
+  }
+
+
+  String imageUrl = '';
+
+
+  void uploadImage({
+    required String receiverId,
+    required String patientID,
+
+  }) {
+    emit(UploadImgLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri
+        .file(image!.path)
+        .pathSegments
+        .last}')
+        .putFile(image!)
+        .then((value) {
+      value.ref.getDownloadURL()
+          .then((value) {
+        emit(UploadImgSuccessState());
+        imageUrl = value;
+        sendMessage(
+            isImg: true,
+            receiverId: receiverId,
+            dateTime: DateTime.now().toString(),
+            text: imageUrl,
+            senderId: userModel!.uId!.toString(),
+            patientID: patientID);
+        // updateUserData(name: name, bio: bio, phone: phone, cover: value);
+      })
+          .catchError((onError) {
+        emit(UploadImgErrorState(onError.toString()));
+      });
+    })
+        .catchError((onError) {
+      emit(UploadImgErrorState(onError.toString()));
+    });
+  }
+
+
+
+
+
+
 }

@@ -1,5 +1,6 @@
 class MessageModel{
   String? senderId,receiverId,dateTime,text,patientID;
+  bool? isImg;
 
   MessageModel({
     required this.senderId,
@@ -7,6 +8,8 @@ class MessageModel{
     required this.dateTime,
     required this.text,
     required this.patientID,
+    required this.isImg,
+
 
   });
 
@@ -17,6 +20,7 @@ class MessageModel{
     dateTime =json['dateTime'];
     text =json['text'];
     patientID =json['patientID'];
+    isImg =json['isImg'];
 
 
   }
@@ -29,6 +33,7 @@ class MessageModel{
       'dateTime':dateTime,
       'text':text,
       'patientID':patientID,
+      'isImg':isImg,
 
     };
   }
