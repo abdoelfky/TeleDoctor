@@ -289,8 +289,8 @@ class AddNewPatientScreen extends StatelessWidget {
                         const EdgeInsets.only(left: 20, right: 20, top: 20),
                     child: DropdownButtonFormField2(
                       dropdownMaxHeight: 150,
-                      focusColor: primaryColor,
                       decoration: InputDecoration(
+                        focusColor: primaryColor,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
                           borderSide: BorderSide(

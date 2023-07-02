@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +43,6 @@ class ProfileScreen extends StatelessWidget {
                         child: Stack(
                           children:
                           [
-//background
                             Stack(
                               fit: StackFit.expand,
                               children: [
@@ -59,8 +57,7 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 ),
                               ],
-                            ),
-//image
+                            ), //image
                             Center(
                               child: Container(
                                 width:size.width*.4 ,
@@ -83,8 +80,6 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-
-
                     ],
                   ),
                   Padding(

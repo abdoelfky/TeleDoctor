@@ -702,8 +702,10 @@ class AppCubit extends Cubit<AppState> {
   void getMessages({
     required String receiverId,
     required String senderId,
-  }){
-    FirebaseFirestore.instance
+  }) {
+    print(receiverId);
+    print(senderId);
+     FirebaseFirestore.instance
         .collection('admins')
         .doc(senderId)
         .collection('chats')
@@ -717,7 +719,7 @@ class AppCubit extends Cubit<AppState> {
       event.docs.forEach((element) {
         messages.add(MessageModel.fromJson(element.data()));
       });
-
+      print('loly'+messages.length.toString());
       emit(GetMessagesSuccessState());
     });
   }

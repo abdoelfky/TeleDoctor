@@ -7,8 +7,6 @@ import 'package:teledoctor/shared/constants/constants.dart';
 import '../../models/onBoarding_model.dart';
 
 
-
-
 class OnBoardingScreen extends StatelessWidget {
   var boardController = PageController();
 

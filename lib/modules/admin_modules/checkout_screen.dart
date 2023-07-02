@@ -89,7 +89,7 @@ class CheckOutScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              QrImage(
+              QrImageView(
                 data: 'Name :${model.name} , '
                     'Room Number :${model.roomNo} , '
                     'Nights Number :${cubit.daysBetween(

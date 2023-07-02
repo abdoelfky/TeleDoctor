@@ -13,6 +13,7 @@ class ChatScreen extends StatelessWidget {
   final PatientModel patientModel;
   final UserModel? doctor;
   final UserModel? nurse;
+  final int? index;
   var messageController = TextEditingController();
   ScrollController scrollController = new ScrollController();
 
@@ -20,7 +21,8 @@ class ChatScreen extends StatelessWidget {
       {super.key,
       required this.patientModel,
       required this.doctor,
-      required this.nurse});
+      required this.nurse,
+      required  this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +30,15 @@ class ChatScreen extends StatelessWidget {
     return Builder(
       builder: (BuildContext context) {
         AppCubit.get(context).getMessages(
-          senderId: patientModel.selectedDoctorUID.toString(),
-          receiverId: patientModel.selectedNurseUID.toString(),
+          senderId: patientModel.selectedDoctorUID![index!].toString(),
+          receiverId: userModel!.uId!,
         );
 
         return BlocConsumer<AppCubit, AppState>(
           listener: (context, state) {
             if (state is SendMessageSuccessState) {
               messageController.text = '';
+              AppCubit.get(context).messages.length.toString();
             }
           },
           builder: (context, state) {

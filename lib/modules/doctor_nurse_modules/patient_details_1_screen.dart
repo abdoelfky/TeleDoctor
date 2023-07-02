@@ -424,6 +424,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                                         patientModel:
                                                             patientModel,
                                                         doctor: doctor[index],
+                                                        index: index,
                                                         nurse: userModel));
                                               }
                                             },
@@ -490,6 +491,7 @@ class PatientDetailsScreen1 extends StatelessWidget {
                                                         patientModel:
                                                             patientModel,
                                                         doctor: userModel,
+                                                        index: index,
                                                         nurse: nurse[index]));
                                               }
                                             },
